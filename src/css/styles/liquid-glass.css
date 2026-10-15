@@ -14,14 +14,25 @@
     background-image: var(--ms-bg-image, radial-gradient(at 12% 8%, color-mix(in oklab, var(--ms-c-primary) 50%, var(--ms-c-surface)), transparent 55%), radial-gradient(at 88% 18%, color-mix(in oklab, var(--ms-c-secondary) 45%, var(--ms-c-surface)), transparent 50%), radial-gradient(at 50% 100%, color-mix(in oklab, var(--ms-c-primary) 30%, var(--ms-c-surface)), transparent 60%));
     background-attachment: fixed;
   }
-  :where(.style-liquid-glass) :where(article, dialog, nav, details, [role="tablist"], input:not([type=checkbox], [type=radio], [type=range]), select, textarea, .chip, .alert, [role="alert"]) {
+  :where(.style-liquid-glass) :where(article, nav, details, [role="tablist"], input:not([type=checkbox], [type=radio], [type=range]), select, textarea, .chip, .alert, [role="alert"]) {
     -webkit-backdrop-filter: blur(24px) saturate(1.6); backdrop-filter: blur(24px) saturate(1.6);
   }
   :where(.style-liquid-glass) :where(article > header, article > footer) { background: transparent; }
   :where(.style-liquid-glass) :where(input:not([type=checkbox], [type=radio], [type=range]), select, textarea) { --_bd: var(--_edge); background-color: var(--_glass); }
   :where(.style-liquid-glass) :where(button:hover, [role="button"]:hover) { transform: translateY(-1px); }
-  :where(.style-liquid-glass) :where(dialog) { background: var(--_glass); border: 1px solid var(--_edge); }
-  :where(.style-liquid-glass) :where(dialog > article) { background: transparent; }
+  /* dialogs: the article is the glass pane (one backdrop-filter, rounded); the dialog box stays bare.
+     Light, unblurred backdrop so the page actually shows through the pane. */
+  :where(.style-liquid-glass) :where(dialog) { background: transparent; border: 0; backdrop-filter: none; }
+  :where(.style-liquid-glass) :where(dialog)::backdrop { background: color-mix(in oklch, var(--ms-c-text) 18%, transparent); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  :where(.style-liquid-glass) :where(dialog > article) {
+    background: color-mix(in oklab, var(--ms-c-surface) 45%, transparent); border: 1px solid var(--_edge); border-radius: var(--ms-c-radius-card);
+    -webkit-backdrop-filter: blur(28px) saturate(1.8); backdrop-filter: blur(28px) saturate(1.8);
+  }
+  /* drawers float as rounded panes inset from the edge */
+  :where(.style-liquid-glass) :where(dialog.drawer) { margin: .75rem; width: min(24rem, 100vw - 1.5rem); height: calc(100dvh - 1.5rem); }
+  :where(.style-liquid-glass) :where(dialog.drawer:is([data-side=top], [data-side=bottom])) { width: calc(100vw - 1.5rem); height: auto; }
+  :where(.style-liquid-glass) :where(dialog.drawer > article) { border-width: 1px; border-radius: var(--ms-c-radius-card); }
+  :where(.style-liquid-glass) :where(dialog[data-size=full] > article) { border-radius: 0; border-width: 0; }
   :where(.style-liquid-glass) :where(.field, .ms-multi-control, .ms-code, dialog.command, .ms-toast, .ms-multi-list, [popover], .carousel-prev, .carousel-next, select.custom::picker(select)) { -webkit-backdrop-filter: blur(24px) saturate(1.6); backdrop-filter: blur(24px) saturate(1.6); }
   :where(.style-liquid-glass) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--_edge); background-color: var(--_glass); }
   :where(.style-liquid-glass) :where(dialog.command, [popover], .ms-multi-list, select.custom::picker(select)) { background: var(--_glass); border-color: var(--_edge); }
