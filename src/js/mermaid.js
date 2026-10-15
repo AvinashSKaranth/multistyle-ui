@@ -1,12 +1,15 @@
 // Mermaid bridge: MS.mermaid + .mermaid blocks. Never imports Mermaid (uses window.mermaid).
 export function init(MS) {
   let q = Promise.resolve(), warned;
+  // hidden diagrams (closed tab, details...) can't be measured and render as "Syntax error": draw once shown
+  const io = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting && (io.unobserve(e.target), draw(e.target))));
 
   // Mermaid config is global: initialize with this diagram's tokens, render, next (queue keeps order).
   const draw = (el) => {
     const m = window.mermaid;
     if (!m) { warned || console.warn('[multistyle-ui] Mermaid not found: load it before calling MS.mermaid'); warned = 1; return q; }
     el.dataset.msSrc ??= el.textContent; // mermaid replaces content with SVG
+    if (!el.getClientRects().length) { io.observe(el); return q; }
     el.setAttribute('data-ms-wait', '');
     return q = q.then(async () => {
       const r = (n) => MS.resolveColor(n.startsWith('color') ? n : '--ms-c-' + n, el);
@@ -34,7 +37,8 @@ export function init(MS) {
     return Promise.all([...l].map(draw)).then(() => q);
   };
 
-  const scan = () => document.querySelectorAll('.mermaid:not([data-ms-src])').forEach(draw);
+  // mermaid's own window-load run would also draw hidden diagrams (broken): we render instead
+  const scan = () => (window.mermaid && (mermaid.startOnLoad = false), document.querySelectorAll('.mermaid:not([data-ms-src])').forEach(draw));
   document.addEventListener('ms:change', () => MS.mermaid());
   addEventListener('load', scan);
   scan();

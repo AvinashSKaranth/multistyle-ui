@@ -72,9 +72,8 @@
 
     const show = (p) => {
       if (location.hash !== '#' + p.id) history.replaceState(null, '', '#' + p.id);
-      // hidden panels measure 0: re-fit charts, render diagrams that missed layout
+      // hidden panels measure 0: re-fit charts (mermaid defers hidden diagrams itself)
       $$('canvas', p).forEach((c) => window.Chart?.getChart(c)?.resize());
-      if (window.MS?.mermaid) $$('pre.mermaid', p).forEach((m) => m.querySelector('svg') || MS.mermaid(m));
     };
     new MutationObserver((ms) => ms.forEach((m) => panels.includes(m.target) && !m.target.hidden && show(m.target)))
       .observe(wrap, { attributes: true, attributeFilter: ['hidden'], subtree: true });

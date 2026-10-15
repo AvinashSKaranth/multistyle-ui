@@ -154,51 +154,6 @@ MS.set({ font: 'auto' }, el); // scoped: sets --ms-font on el only</code></pre>
   </template>
 </section>
 
-<section role="tabpanel" id="c-floating" data-title="Floating label" data-desc="Label floats up on focus or when filled (CSS only)">
-  <template class="example" data-title="Automatic (no classes)" data-note="In material and material3 (and with no style class at all) plain labels float by themselves: wrap the field in a label, or put label[for] right before it. Switch the style in the top bar: every other style keeps the normal stacked label. date/time fields and selects are always floated; checkboxes, radios, range, colour and file inputs never. A label with several controls is left alone. forms.js adds placeholder=' ' to fields that have none (no JS: the label just stays floated).">
-    <label>Email <input type="email"></label>
-    <label>Required <input type="text" required></label>
-    <label>Message <textarea rows="3"></textarea></label>
-    <label>Plan <select><option value="">Choose</option><option>Free</option><option>Pro</option></select></label>
-    <label>Birthday <input type="date"></label>
-    <label for="af-b">Sibling (label for, right before the field)</label>
-    <input id="af-b" type="text">
-    <label><span class="ms-icon">mail</span>With icon <input type="email"><small>Helper text inside the label</small></label>
-    <label><input type="checkbox"> A checkbox label is untouched</label>
-  </template>
-  <template class="example" data-title="data-ms-fields" data-note='data-ms-fields on any ancestor (nearest wins): stacked turns floating off (material scopes), floating = the active style&apos;s natural variant (outlined in material3, filled elsewhere), filled / outlined force a variant in ANY style. Limits: the attribute is read when the page renders and fields are scanned (JS placeholder sync runs on load, added nodes and ms:change); needs @container style() queries (Chromium, Safari, current Firefox).'>
-    <div data-ms-fields="stacked"><label>Stacked (off) <input type="text"></label></div>
-    <div data-ms-fields="floating"><label>Floating (natural) <input type="text"></label></div>
-    <div data-ms-fields="filled"><label>Filled <input type="text"></label></div>
-    <div data-ms-fields="outlined"><label>Outlined <input type="text"></label></div>
-  </template>
-  <template class="example" data-title="Floating labels" data-note='label.floating > input|textarea|select + span. The input needs placeholder=" " (a single space). The visual follows the active style: filled (Material 2) in material / default, outlined with a notched label (Material 3) in material3, the classic floating look elsewhere. Selects float once an option with a value is chosen.'>
-    <label class="floating"><input type="email" placeholder=" "><span>Email</span></label>
-    <label class="floating"><textarea placeholder=" "></textarea><span>Message</span></label>
-    <label class="floating"><select><option value="">Choose</option><option>Free</option><option>Pro</option></select><span>Plan</span></label>
-  </template>
-  <template class="example" data-title="Filled and outlined" data-note='Add .filled or .outlined to label.floating to force a Material variant in any style (default: filled in material, outlined in material3). The outlined notch uses --ms-field-bg (surface; cards and popovers set it automatically). The visual follows the active style otherwise.'>
-    <label class="floating filled"><input type="text" placeholder=" "><span>Filled</span></label>
-    <label class="floating outlined"><input type="text" placeholder=" "><span>Outlined</span></label>
-  </template>
-  <template class="example" data-title="Leading and trailing icons" data-note='A .ms-icon as first child is the leading icon; an .ms-icon or button.ghost.icon after the span is trailing. The visual follows the active style.'>
-    <label class="floating"><span class="ms-icon">mail</span><input type="email" placeholder=" "><span>Email</span></label>
-    <label class="floating"><input type="password" placeholder=" "><span>Password</span><button type="button" class="ghost icon" aria-label="Show password"><span class="ms-icon">visibility</span></button></label>
-    <label class="floating outlined"><span class="ms-icon">search</span><input type="search" placeholder=" "><span>Search</span><span class="ms-icon">tune</span></label>
-  </template>
-  <template class="example" data-title="Helper text and counter" data-note='Put small after the label for helper text. data-ms-counter on a maxlength field adds small.counter, right-aligned on the same line. The visual follows the active style.'>
-    <label class="floating"><textarea maxlength="40" data-ms-counter placeholder=" "></textarea><span>Bio</span></label>
-    <small>Tell us a little about you</small>
-    <label class="floating outlined"><textarea maxlength="60" data-ms-counter placeholder=" "></textarea><span>Notes</span></label>
-    <small>Letters and digits only</small>
-  </template>
-  <template class="example" data-title="Error and disabled" data-note='aria-invalid="true" or :user-invalid colours the indicator, label and helper with the error token; disabled dims the field. The visual follows the active style.'>
-    <label class="floating"><input type="email" value="nope" aria-invalid="true" placeholder=" "><span>Email</span></label>
-    <small>Enter a valid address</small>
-    <label class="floating"><input type="text" value="Read only value" disabled placeholder=" "><span>Disabled</span></label>
-  </template>
-</section>
-
 <section role="tabpanel" id="c-checkbox-radio" data-title="Checkbox & Radio" data-desc="Native checkboxes and radios, restyled.">
   <template class="example" data-title="Checkbox and radio" data-note="Classless. Put the input inside its label for an implicit association.">
     <fieldset>

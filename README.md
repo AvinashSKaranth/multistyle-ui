@@ -68,7 +68,26 @@ Or from JS: `MS.set({ primary: '#ff6600', secondary: '#0066ff', surface: '#fffaf
 
 ## LLM skill
 
-`skill/SKILL.md` (+ `skill/references/*.md`) teaches an AI assistant to build pages with multistyle-ui. To use it, copy the `skill/` folder into your project's `.claude/skills/multistyle-ui/` (or `~/.claude/skills/multistyle-ui/`). It is not part of the npm package.
+`skill/SKILL.md` (+ `skill/references/<group>/*.md`) teaches an AI assistant (Claude Code) to build pages with multistyle-ui. It is not part of the npm package. Install it with one command:
+
+macOS / Linux / Git Bash:
+
+```bash
+mkdir -p ~/.claude/skills/multistyle-ui && curl -fsSL https://github.com/AvinashSKaranth/multistyle-ui/archive/refs/heads/master.tar.gz \
+  | tar -xz --strip-components=2 -C ~/.claude/skills/multistyle-ui multistyle-ui-master/skill
+```
+
+Windows PowerShell:
+
+```powershell
+$t = "$env:TEMP\multistyle-ui"; Remove-Item $t -Recurse -Force -ErrorAction Ignore
+Invoke-WebRequest https://github.com/AvinashSKaranth/multistyle-ui/archive/refs/heads/master.zip -OutFile "$t.zip"
+Expand-Archive "$t.zip" $t -Force
+$d = "$HOME\.claude\skills\multistyle-ui"; New-Item -ItemType Directory -Force $d | Out-Null
+Copy-Item "$t\multistyle-ui-master\skill\*" $d -Recurse -Force
+```
+
+That installs it for every project (`~/.claude/skills/`). For one project only, use `.claude/skills/multistyle-ui` inside that project instead. Re-run to update.
 
 ## Develop
 

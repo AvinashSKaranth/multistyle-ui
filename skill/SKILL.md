@@ -5,7 +5,18 @@ description: Build standalone HTML pages with multistyle-ui, a framework-free cl
 
 # multistyle-ui
 
-Semantic HTML is styled with no classes; a few short classes opt in to extras. One CSS + one JS file. Per-component notes: `references/<component>.md`.
+Semantic HTML is styled with no classes; a few short classes opt in to extras. One CSS + one JS file. Per-component notes live in `references/<group>/`: read only the files for the components the page uses.
+
+## Reference index
+| Group | Files |
+|---|---|
+| Getting started | [classless-basics](references/getting-started/classless-basics.md), [layout](references/getting-started/layout.md), [fonts](references/getting-started/fonts.md) |
+| Buttons | [buttons](references/buttons/buttons.md), [group](references/buttons/group.md) (button group), [chip-badge-avatar](references/buttons/chip-badge-avatar.md) |
+| Inputs | [inputs](references/inputs/inputs.md) (text, icons/affixes, floating labels), [textarea](references/inputs/textarea.md), [select](references/inputs/select.md), [multiselect](references/inputs/multiselect.md), [checkbox-radio-range-rating](references/inputs/checkbox-radio-range-rating.md), [dropzone](references/inputs/dropzone.md) |
+| Navigation | [tabs](references/navigation/tabs.md), [pagination](references/navigation/pagination.md), [stepper](references/navigation/stepper.md), [command](references/navigation/command.md) (Ctrl/Cmd+K palette) |
+| Overlays (modals, drawers) | [modal](references/overlays/modal.md), [drawer](references/overlays/drawer.md), [dropdown](references/overlays/dropdown.md) (popover), [toast](references/overlays/toast.md) |
+| Data display | [table](references/data-display/table.md), [alert](references/data-display/alert.md), [skeleton-progress-spinner](references/data-display/skeleton-progress-spinner.md), [carousel](references/data-display/carousel.md), [sortable](references/data-display/sortable.md), [icons](references/data-display/icons.md) |
+| Add-ons (CDN) | [charts](references/add-ons/charts.md) (Chart.js), [mermaid](references/add-ons/mermaid.md), [editor](references/add-ons/editor.md) (Quill), [code](references/add-ons/code.md) (Prism) |
 
 ## 1. CDN setup (order matters)
 ```html
