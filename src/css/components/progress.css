@@ -19,4 +19,13 @@
   :where(meter:-moz-meter-optimum)::-moz-meter-bar { background: var(--ms-c-success); }
   :where(meter:-moz-meter-sub-optimum)::-moz-meter-bar { background: var(--ms-c-warning); }
   :where(meter:-moz-meter-sub-sub-optimum)::-moz-meter-bar { background: var(--ms-c-error); }
+  :where(progress.sm) { height: .25rem; }
+  :where(progress.lg) { height: .875rem; }
+  :where(progress.striped)::-webkit-progress-value { background: repeating-linear-gradient(45deg, var(--ms-c-primary) 0 .5rem, var(--ms-c-primary-400) .5rem 1rem) 0 0 / 1.414rem 100%; }
+  :where(progress.striped)::-moz-progress-bar { background: repeating-linear-gradient(45deg, var(--ms-c-primary) 0 .5rem, var(--ms-c-primary-400) .5rem 1rem) 0 0 / 1.414rem 100%; }
+  :where(progress.striped.animated)::-webkit-progress-value { animation: ms-stripes .8s linear infinite; }
+  :where(progress.striped.animated)::-moz-progress-bar { animation: ms-stripes .8s linear infinite; }
+  @keyframes ms-stripes { to { background-position: 1.414rem 0; } }
+  :where(label:has(> progress)) { display: block; }
+  :where(label > progress) { margin-top: .35rem; }
 }

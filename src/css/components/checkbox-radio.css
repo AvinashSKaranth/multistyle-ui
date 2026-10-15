@@ -35,4 +35,8 @@
     transform: translate(0, -50%); transition: transform var(--ms-transition);
   }
   :where(input[type=checkbox][role=switch]:checked)::before { transform: translate(1.1em, -50%); background: var(--ms-c-on-primary); }
+
+  /* sizes (em-based, so font-size scales the control) */
+  :where(input:is([type=checkbox], [type=radio]).sm) { padding: 0; font-size: .875rem; }
+  :where(input:is([type=checkbox], [type=radio]).lg) { padding: 0; font-size: 1.5rem; }
 }

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../dist/multistyle.min.css"></head>
+<body data-ms-icons="off">
+<main class="container">
+<p>
+  <button id="filled">Filled</button> <button id="tonal" class="tonal">Tonal</button> <button class="tonal secondary">Tonal 2</button>
+  <button class="info">Info</button> <button class="tonal info">Tonal info</button>
+  <button class="icon"><span class="ms-icon" aria-hidden="true">star</span></button>
+  <span class="chip sm">sm</span> <span class="chip">chip</span> <span class="chip lg">lg</span>
+  <span class="avatar-group"><span class="avatar" data-status="online">AB</span><span class="avatar" data-status="busy">CD</span><span class="avatar" data-status="away">EF</span></span>
+</p>
+<div role="alert" data-type="success" id="al"><strong>Saved</strong>All good.<button class="close" aria-label="Close" data-ms-dismiss></button></div>
+<div role="alert" data-type="error" data-icon="none" id="al-none">No icon</div>
+<div role="alert" data-type="warning">Careful</div>
+<div class="divider">OR</div>
+<div id="g3" class="grid" style="--cols:3"><article class="flat">1</article><article class="elevated">2</article><article class="compact">3</article><article class="spacious">4</article><article>5</article><article>6</article></div>
+<progress class="striped animated lg" value="40" max="100"></progress>
+<p><span class="skeleton circle" style="width:3rem"></span> <span class="skeleton text" style="width:10rem"></span></p>
+<div class="table-wrap" style="--ms-table-h:8rem"><table class="sticky compact hover"><thead><tr><th>A</th><th>B</th></tr></thead><tbody>
+<tr><td>1</td><td>x</td></tr><tr><td>2</td><td>x</td></tr><tr><td>3</td><td>x</td></tr><tr><td>4</td><td>x</td></tr><tr><td>5</td><td>x</td></tr><tr><td>6</td><td>x</td></tr><tr><td>7</td><td>x</td></tr></tbody></table></div>
+</main>
+<dialog id="d-sm" data-size="sm"><article><header><h3>sm</h3></header><p>x</p></article></dialog>
+<dialog id="d-md"><article><header><h3>md</h3></header><p>x</p></article></dialog>
+<dialog id="d-lg" data-size="lg"><article><header><h3>lg</h3></header><p>x</p></article></dialog>
+<dialog id="d-full" data-size="full"><article><header><h3>full</h3></header><p>x</p></article></dialog>
+<dialog id="d-top" class="drawer" data-side="top"><article><header><h3>top</h3></header><p>x</p></article></dialog>
+<dialog id="d-bottom" class="drawer" data-side="bottom"><article><header><h3>bottom</h3></header><p>x</p></article></dialog>
+<script src="../../dist/multistyle.min.js"></script>
+</body></html>

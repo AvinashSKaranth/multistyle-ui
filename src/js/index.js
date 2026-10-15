@@ -3,6 +3,15 @@ import { init as initToast } from './toast.js';   // later phase: MS.toast
 import { init as initTabs } from './tabs.js';     // later phase: [role=tablist] wiring
 import { init as initRipple } from './ripple.js'; // later phase: material ripple
 import { init as initChart } from './chart.js';   // later phase: MS.chart + data-ms-chart
+import { init as initMermaid } from './mermaid.js'; // MS.mermaid + .mermaid
+import { init as initEditor } from './editor.js';   // MS.editor + [data-ms-editor]
+import { init as initIcons } from './icons.js';     // .ms-icon + Material Symbols loader
+import { init as initForms } from './forms.js';     // textarea counter, dropzone
+import { init as initMultiselect } from './multiselect.js'; // [data-ms-multiselect]
+import { init as initCommand } from './command.js'; // MS.command palette
+import { init as initSortable } from './sortable.js'; // [data-ms-sortable]
+import { init as initWidgets } from './widgets.js'; // carousel, pagination, button group, dropdown, alert dismiss
+import { init as initCode } from './code.js';       // MS.code + Prism bridge
 
 const STYLES = ['material', 'material3', 'fluent', 'brutalist', 'pixel', 'neon', 'metro', 'bootstrap', 'cartoon', 'illustration', 'carbon', 'liquid-glass'];
 const THEMES = ['blue', 'red', 'pink', 'fuchsia', 'purple', 'violet', 'indigo', 'azure', 'cyan', 'jade', 'green', 'lime', 'yellow', 'amber', 'pumpkin', 'orange', 'sand', 'grey', 'zinc', 'slate',
@@ -11,16 +20,30 @@ const MODES = ['light', 'dark', 'system'];
 const DEF = { style: 'material', theme: 'blue', mode: 'system' };
 // Google Fonts families per style (other styles use system stacks defined in CSS)
 const FONTS = { material: 'Roboto:wght@400;500;700', material3: 'Roboto:wght@400;500;700', neon: 'Exo+2:wght@400;600;700', cartoon: 'Comic+Neue:wght@400;700', illustration: 'Dancing+Script:wght@400;700', carbon: 'IBM+Plex+Sans:wght@400;500;600' };
+// curated font picker: key -> [css stack, Google Fonts family spec (omit when system)]
+const SANS = ", system-ui, sans-serif";
+const FONTLIST = {
+  auto: [''], system: ['system-ui, -apple-system, "Segoe UI", Roboto, sans-serif'],
+  inter: ["'Inter'" + SANS, 'Inter:wght@400;500;700'], roboto: ["'Roboto'" + SANS, 'Roboto:wght@400;500;700'],
+  'open-sans': ["'Open Sans'" + SANS, 'Open+Sans:wght@400;600;700'], lato: ["'Lato'" + SANS, 'Lato:wght@400;700'],
+  poppins: ["'Poppins'" + SANS, 'Poppins:wght@400;500;600'], montserrat: ["'Montserrat'" + SANS, 'Montserrat:wght@400;500;700'],
+  'source-sans-3': ["'Source Sans 3'" + SANS, 'Source+Sans+3:wght@400;600;700'],
+  merriweather: ["'Merriweather', Georgia, serif", 'Merriweather:wght@400;700'],
+  'playfair-display': ["'Playfair Display', Georgia, serif", 'Playfair+Display:wght@400;600;700'],
+  'fira-code': ["'Fira Code', ui-monospace, monospace", 'Fira+Code:wght@400;500'],
+  'jetbrains-mono': ["'JetBrains Mono', ui-monospace, monospace", 'JetBrains+Mono:wght@400;500'],
+};
+const fkey = (v) => { const k = String(v).trim().toLowerCase().replace(/\s+/g, '-'); return FONTLIST[k] ? k : String(v); };
 const LS = 'multistyle-ui';
 const doc = document;
-const lists = { style: STYLES, theme: THEMES, mode: MODES };
+const lists = { style: STYLES, theme: THEMES, mode: MODES, font: Object.keys(FONTLIST) };
 const body = () => doc.body;
 const safe = (fn) => { try { return fn(); } catch (e) { /* storage blocked */ } };
 const dark = () => matchMedia('(prefers-color-scheme: dark)').matches;
 const fire = () => doc.dispatchEvent(new CustomEvent('ms:change', { detail: MS.get() }));
 
 const MS = {
-  styles: STYLES, themes: THEMES, modes: MODES,
+  styles: STYLES, themes: THEMES, modes: MODES, fonts: Object.keys(FONTLIST),
 
   get(el = body()) {
     const o = {};
@@ -28,6 +51,7 @@ const MS = {
       const m = [...el.classList].find((c) => c.startsWith(k + '-'));
       o[k] = m ? m.slice(k.length + 1) : DEF[k];
     }
+    o.font = el.dataset.msFont || 'auto';
     o.resolvedMode = o.mode === 'system' ? (dark() ? 'dark' : 'light') : o.mode;
     return o;
   },
@@ -43,6 +67,11 @@ const MS = {
     for (const p of ['primary', 'secondary', 'surface']) if (o[p]) el.style.setProperty('--ms-' + p, o[p]);
     if (o.surface && MS.lightness(o.surface, el) < 0.85) console.warn('[multistyle-ui] custom surface should be a LIGHT color (OKLCH lightness >= 0.85); dark mode uses the default dark surface.');
     if (o.style) MS.font(o.style);
+    if (o.font) {  // font key from MS.fonts (case-insensitive) or any CSS font-family string; 'auto' = style default
+      const k = fkey(o.font), f = FONTLIST[k];
+      if (k === 'auto') { delete el.dataset.msFont; el.style.removeProperty('--ms-font'); }
+      else { el.dataset.msFont = k; el.style.setProperty('--ms-font', f ? f[0] : k); f?.[1] && MS.font(k); }
+    }
     if (el === body()) {
       if (el.hasAttribute('data-ms-persist')) {
         const s = { ...MS.get() };
@@ -59,8 +88,8 @@ const MS = {
     return MS.set({ mode: MODES[(MODES.indexOf(MS.get().mode) + 1) % 3] });
   },
 
-  font(style) {
-    const f = FONTS[style];
+  font(style) {  // style key or MS.fonts key -> inject its Google Fonts <link> once
+    const f = FONTS[style] || FONTLIST[style]?.[1];
     if (!f || body().dataset.msFonts === 'off' || doc.getElementById('ms-font-' + style)) return;
     const l = doc.createElement('link');
     l.id = 'ms-font-' + style; l.rel = 'stylesheet';
@@ -102,7 +131,7 @@ function init() {
     const saved = safe(() => JSON.parse(localStorage.getItem(LS)));
     if (saved) {
       const o = {};
-      for (const k of ['style', 'theme', 'mode', 'primary', 'secondary', 'surface']) if (saved[k]) o[k] = saved[k];
+      for (const k of ['style', 'theme', 'mode', 'font', 'primary', 'secondary', 'surface']) if (saved[k]) o[k] = saved[k];
       MS.set(o);
     }
   }
@@ -113,14 +142,19 @@ function init() {
   sync();
   doc.addEventListener('change', (e) => { const k = e.target.dataset?.ms; if (k && lists[k]) MS.set({ [k]: e.target.value }); });
   doc.addEventListener('click', (e) => {
-    const t = e.target.closest?.('[data-ms-mode-toggle],[data-ms-open],[data-ms-close]');
-    if (!t) return;
+    const t = e.target.closest?.('[data-ms-mode-toggle],[data-ms-open],[data-ms-close],dialog [rel=prev]');
+    if (!t) {  // backdrop click: target is the dialog itself and the point is outside its box
+      const d = e.target; if (d.localName !== 'dialog' || !d.open) return;
+      const r = d.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) MS.close(d);
+      return;
+    }
     if (t.hasAttribute('data-ms-mode-toggle')) MS.toggleMode();
     else if (t.hasAttribute('data-ms-open')) MS.open(t.getAttribute('data-ms-open'));
-    else MS.close(t.getAttribute('data-ms-close') || t.closest('dialog'));
+    else { if (t.matches('a')) e.preventDefault(); MS.close(t.getAttribute('data-ms-close') || t.closest('dialog')); }
   });
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => MS.get().mode === 'system' && fire());
-  [initToast, initTabs, initRipple, initChart].forEach((f) => f(MS));
+  [initToast, initTabs, initRipple, initChart, initMermaid, initEditor, initIcons, initForms, initMultiselect, initCommand, initSortable, initWidgets, initCode].forEach((f) => f(MS));
 }
 
 window.MS = MS;

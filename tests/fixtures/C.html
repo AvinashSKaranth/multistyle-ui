@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../dist/multistyle.min.css">
+<style>body{padding:1rem;max-width:56rem;margin:auto}.demo-box{display:grid;place-items:center;min-height:6rem;background:var(--ms-c-surface-3);border-radius:8px}section{margin-bottom:1.5rem}</style></head>
+<body>
+<section><h4>Command</h4><button id="openc" onclick="MS.command('#cmd')">Open</button>
+<dialog class="command" id="cmd"><input type="search" placeholder="Type a command…" aria-label="Command"><ul role="listbox">
+<li role="option" data-group="Navigation" data-keywords="home start" data-shortcut="G H">Go home</li>
+<li role="option" data-group="Navigation" data-keywords="preferences" data-shortcut="G S">Settings</li>
+<li role="option" data-group="Actions" data-keywords="new add" data-shortcut="N">New document</li>
+<li role="option" data-group="Actions" data-keywords="dark light">Toggle theme</li></ul></dialog></section>
+<section><h4>Sortable</h4><ul id="sl" data-ms-sortable><li id="a">Alpha</li><li id="b">Bravo</li><li id="c">Charlie</li></ul>
+<ol id="sh" data-ms-sortable><li><span data-ms-handle aria-label="Reorder">⠿</span> One</li><li><span data-ms-handle aria-label="Reorder">⠿</span> Two</li></ol></section>
+<section><h4>Carousel</h4><div id="car" class="carousel full" tabindex="0" aria-label="Slides" data-ms-arrows data-ms-dots>
+<div class="demo-box">Slide 1</div><div class="demo-box">Slide 2</div><div class="demo-box">Slide 3</div></div></section>
+<section><h4>Pagination</h4><nav id="pg" class="pagination" aria-label="Pages" data-ms-pages="20" data-ms-page="3" data-ms-window="1"></nav></section>
+<section><h4>Group</h4><div id="g1" role="group" data-ms-select="single"><button class="outline" aria-pressed="true">Day</button><button class="outline">Week</button><button class="outline">Month</button></div>
+<div id="g2" role="group" data-ms-select="multi" aria-orientation="vertical"><button class="outline">Bold</button><button class="outline">Italic</button></div></section>
+<section><h4>Menu</h4><button id="mb" popovertarget="m1">Actions</button>
+<menu popover id="m1"><li><button>Edit <kbd>E</kbd></button></li><li><button>Copy</button></li><li><hr></li><li><button class="active">Archive</button></li></menu>
+<button id="pb" popovertarget="p1">Top</button><div popover id="p1" data-placement="top">Popover top</div></section>
+<section><h4>Dismiss</h4><div id="al" role="alert" data-type="info">Dismiss me <button class="ghost sm" data-ms-dismiss aria-label="Dismiss">×</button></div></section>
+<script src="../../dist/multistyle.min.js"></script>
+</body></html>

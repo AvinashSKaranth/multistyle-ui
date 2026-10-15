@@ -1,0 +1,15 @@
+@layer ms.base {
+  :where([data-ms-sortable]) { display: flex; flex-direction: column; gap: .5rem; margin: 0 0 var(--ms-space); padding: 0; list-style: none; }
+  :where([data-ms-sortable="horizontal"]) { flex-direction: row; flex-wrap: wrap; }
+  :where([data-ms-sortable] > *) {
+    display: flex; align-items: center; gap: .6rem; margin: 0; padding: .6rem .85rem; border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-input);
+    background: var(--ms-c-card); cursor: grab; transition: box-shadow var(--ms-transition), opacity var(--ms-transition);
+  }
+  :where([data-ms-sortable] > :has([data-ms-handle])) { cursor: default; }
+  :where([data-ms-sortable] > :focus-visible, [data-ms-sortable] [data-ms-handle]:focus-visible) { outline: 3px solid var(--ms-c-focus); outline-offset: 2px; }
+  :where([data-ms-sortable] > .ms-dragging) { opacity: .45; border-style: dashed; border-color: var(--ms-c-primary); cursor: grabbing; }
+  :where([data-ms-sortable] > [data-ms-grabbed]) { border-color: var(--ms-c-primary); box-shadow: var(--ms-shadow-md); }
+  :where([data-ms-sortable] [data-ms-handle]) { color: var(--ms-c-muted); cursor: grab; touch-action: none; user-select: none; }
+  :where([data-ms-sortable] [data-ms-handle]:hover) { color: var(--ms-c-text); }
+  :where(.ms-live) { position: fixed; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}

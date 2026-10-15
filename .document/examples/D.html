@@ -1,0 +1,72 @@
+<!-- panel: c-code | Code | Prism syntax highlighting (CDN bridge) and a textarea code editor -->
+
+<template class="example" data-title="Load Prism from a CDN" data-note="multistyle-ui never bundles Prism. Load core + the autoloader (languages such as js, ts, html, css, json, bash, python, svelte are fetched on demand). No Prism theme CSS: tokens are themed by multistyle-ui.">
+<pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"&gt;&lt;/script&gt;
+&lt;script src="multistyle.min.js"&gt;&lt;/script&gt;</code></pre>
+</template>
+
+<template class="example" data-title="Highlighted block" data-note="Read-only: pre &gt; code with a language-* class. Highlighted on load and for nodes added later.">
+<pre><code class="language-javascript">// themed by the active style, theme and mode
+export function greet(name = "world") {
+  return `Hello, ${name}!`;
+}</code></pre>
+<pre><code class="language-css">.card { color: var(--ms-c-primary); padding: 1rem; }</code></pre>
+<pre><code class="language-bash">npm install multistyle-ui &amp;&amp; npm run build</code></pre>
+</template>
+
+<template class="example" data-title="Code editor" data-note="textarea[data-ms-code=lang]: still the form field (name, value). Tab inserts 2 spaces, Shift+Tab outdents, Esc then Tab moves focus away. Works without Prism (no colors).">
+<textarea data-ms-code="javascript" name="snippet" rows="6">const total = items
+  .filter((i) => i.active)
+  .reduce((sum, i) => sum + i.price, 0);</textarea>
+</template>
+
+<template class="example" data-title="Line numbers" data-note="Add data-ms-lines.">
+<textarea data-ms-code="json" data-ms-lines rows="6" spellcheck="false">{
+  "name": "multistyle-ui",
+  "styles": 12,
+  "themes": 30
+}</textarea>
+</template>
+
+<template class="example" data-title="Read-only editor" data-note="The readonly attribute is honoured (Tab moves focus).">
+<textarea data-ms-code="html" data-ms-lines readonly rows="4">&lt;button class="outline"&gt;Save&lt;/button&gt;</textarea>
+</template>
+
+<template class="example" data-title="In a form" data-note="The textarea posts as usual; reset restores the original text.">
+<form onsubmit="event.preventDefault(); this.querySelector('output').textContent = new FormData(this).get('src');">
+  <label>Script
+    <textarea data-ms-code="python" name="src" rows="5">def add(a, b):
+    return a + b</textarea>
+  </label>
+  <div role="group"><button type="submit">Submit</button><button type="reset" class="secondary">Reset</button></div>
+  <pre><output>(submitted value appears here)</output></pre>
+</form>
+</template>
+
+<template class="example" data-title="Manual init" data-note="MS.code(el, {language, lines}) returns {el, update(), destroy()}. Call update() after setting .value in script.">
+<textarea id="code-manual" rows="4">SELECT * FROM users WHERE active = true;</textarea>
+<button type="button" onclick="(window.__c ||= MS.code('#code-manual', { language: 'sql', lines: true })).update()">Init / refresh</button>
+</template>
+
+
+<!-- panel: c-fonts | Fonts | MS.set({font}) with a curated list, lazy-loaded from Google Fonts -->
+
+<template class="example" data-title="Font picker" data-note="Declarative: a select[data-ms=font] is auto-populated from MS.fonts (auto = style default). Persisted with body[data-ms-persist].">
+<label>Font <select data-ms="font"></select></label>
+<p>The quick brown fox jumps over the lazy dog. 0123456789</p>
+</template>
+
+<template class="example" data-title="MS.set / MS.get" data-note="Keys are case-insensitive: 'Inter', 'open-sans'. Any CSS font-family string also works. 'auto' removes the override. ms:change detail includes font.">
+<div role="group">
+  <button type="button" onclick="MS.set({ font: 'Inter' })">Inter</button>
+  <button type="button" onclick="MS.set({ font: 'Playfair Display' })">Playfair</button>
+  <button type="button" onclick="MS.set({ font: 'JetBrains Mono' })">JetBrains Mono</button>
+  <button type="button" onclick="MS.set({ font: 'Georgia, serif' })">Georgia (CSS)</button>
+  <button type="button" class="outline" onclick="MS.set({ font: 'auto' })">auto</button>
+</div>
+<pre><code class="language-javascript">MS.fonts;               // ['auto','system','inter','roboto', ...]
+MS.set({ font: 'inter' });
+MS.get().font;          // 'inter'
+MS.set({ font: 'auto' }, el); // scoped: sets --ms-font on el only</code></pre>
+</template>

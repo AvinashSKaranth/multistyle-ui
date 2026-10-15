@@ -9,4 +9,6 @@
   :where(.dropzone.dragover) { border-style: solid; }
   /* the file input covers the zone, so native drag & drop onto it works */
   :where(.dropzone > input[type=file]) { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; cursor: pointer; }
+  :where(.dropzone > small.files) { display: flex; flex-wrap: wrap; justify-content: center; gap: .25rem .75rem; margin: 0; color: var(--ms-c-text); }
+  :where(.dropzone > small.files:empty) { display: none; }
 }

@@ -23,6 +23,13 @@
   :where(.success:is(button, [role="button"], input)) { --_c: var(--ms-c-success); --_on: #fff; }
   :where(.warning:is(button, [role="button"], input)) { --_c: var(--ms-c-warning); --_on: #fff; }
   :where(.error:is(button, [role="button"], input)) { --_c: var(--ms-c-error); --_on: #fff; }
+  :where(.info:is(button, [role="button"], input)) { --_c: var(--ms-c-info); --_on: #fff; }
+  :where(.tonal:is(button, [role="button"], input)) {
+    --_bg: color-mix(in oklch, var(--_c) 16%, var(--ms-c-surface)); --_bd: transparent; --_sh: none; --_shh: none;
+    --_fg: light-dark(color-mix(in oklch, var(--_c) 55%, black), color-mix(in oklch, var(--_c) 60%, white));
+    --_hbg: color-mix(in oklch, var(--_c) 26%, var(--ms-c-surface)); --_abg: color-mix(in oklch, var(--_c) 34%, var(--ms-c-surface));
+  }
+  :where(.tonal:is(button, [role="button"], input):is(:hover, :active)) { border-color: transparent; }
   :where(.outline:is(button, [role="button"], input)) {
     --_bg: transparent; --_fg: var(--_c); --_sh: none; --_shh: none;
     --_hbg: color-mix(in oklch, var(--_c) 12%, transparent); --_abg: color-mix(in oklch, var(--_c) 22%, transparent);
@@ -49,6 +56,7 @@
     --_bg: var(--ms-c-surface-3); --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3); --_bd: transparent; --_fg: var(--ms-c-disabled);
     --_sh: none; --_shh: none; cursor: not-allowed; pointer-events: none;
   }
+  :where(.tonal:is(button, [role="button"], input):disabled) { --_bg: var(--ms-c-surface-3); --_fg: var(--ms-c-disabled); }
   :where(.outline:is(button, [role="button"], input):disabled) { --_bd: var(--ms-c-border); --_bg: transparent; --_hbg: transparent; --_abg: transparent; }
   :where(.ghost:is(button, [role="button"], input):disabled) { --_bg: transparent; --_hbg: transparent; --_abg: transparent; }
 

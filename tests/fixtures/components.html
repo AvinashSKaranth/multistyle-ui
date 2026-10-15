@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../dist/multistyle.min.css"></head>
+<body>
+<button id="open-modal" data-ms-open="#m">Open</button>
+<dialog id="m"><article><header><h3>Title</h3><button rel="prev" aria-label="Close"></button></header><p>Body</p>
+<footer><form method="dialog"><button id="form-close">Cancel</button></form></footer></article></dialog>
+<dialog id="m2"><article><header><h3>Title</h3><button data-ms-close aria-label="Close"></button></header><p>Body</p></article></dialog>
+<dialog id="m3"><article><header><h3>Title</h3></header><button id="by-id" data-ms-close="#m3">x</button></article></dialog>
+<dialog id="dl" class="drawer"><article><header><h3>Left</h3><button rel="prev" aria-label="Close"></button></header></article></dialog>
+<dialog id="dr" class="drawer" data-side="right"><article><header><h3>Right</h3><button data-ms-close aria-label="Close"></button></header></article></dialog>
+<script src="../../dist/multistyle.min.js"></script>
+</body></html>

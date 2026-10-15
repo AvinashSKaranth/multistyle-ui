@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../dist/multistyle.min.css"></head>
+<body style="padding:2rem;max-width:520px">
+<form id="f">
+<label id="a">Email <input id="ia" type="email"></label>
+<label id="a2"><input id="ia2" type="text"> After text</label>
+<label id="b" for="ib">Sibling</label><input id="ib" type="text">
+<label id="req">Required <input id="ireq" type="text" required></label>
+<label id="ph">With placeholder <input id="iph" placeholder="you@x.com"></label>
+<label id="h">Help <input id="ih" type="text"><small id="sh">Helper text</small></label>
+<label id="ic"><span class="ms-icon">mail</span>Icon <input id="iic" type="email"></label>
+<label id="bad">Bad <input id="ibad" value="bad" aria-invalid="true"></label>
+<label id="dis">Disabled <input id="idis" value="x" disabled></label>
+<label id="t">Message <textarea id="it" rows="3"></textarea></label>
+<label id="tb" for="itb">Message B</label><textarea id="itb" rows="3"></textarea>
+<label id="s">Plan <select id="is"><option value="">Pick</option><option>One</option></select></label>
+<label id="sb" for="isb">Plan B</label><select id="isb"><option value="">Pick</option><option>One</option></select>
+<label id="d">Date <input id="id" type="date"></label>
+<label id="long">A very long label text that certainly will not fit into the box width available here <input id="ilong"></label>
+<label id="cb"><input id="icb" type="checkbox"> Check me</label>
+<label id="rg">Range <input id="irg" type="range"></label>
+<label id="two">Two <input id="i2a"><input id="i2b"></label>
+<label class="floating" id="fl"><input id="ifl" placeholder=" "><span>Explicit</span></label>
+</form>
+<div id="scope-s" data-ms-fields="stacked"><label id="st">Stacked <input id="ist"></label></div>
+<div id="scope-f" data-ms-fields="floating"><label id="fo">Forced <input id="ifo"></label></div>
+<input id="ref" type="text">
+<button id="btn" type="button">x</button>
+<script src="../../dist/multistyle.min.js"></script>
+</body></html>

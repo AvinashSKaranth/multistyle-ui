@@ -7,7 +7,7 @@
     --ms-shadow-lg: 0 6px 16px -4px var(--ms-c-shadow-color);
   }
   /* pill buttons, flat; secondary = tonal */
-  :where(.style-material3) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev]), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { padding-inline: 1.5rem; font-weight: 500; letter-spacing: .01em; --_sh: none; --_shh: var(--ms-shadow-md); }
+  :where(.style-material3) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *, nav.pagination *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { padding-inline: 1.5rem; font-weight: 500; letter-spacing: .01em; --_sh: none; --_shh: var(--ms-shadow-md); }
   :where(.style-material3) :where(.secondary:is(button, [role=button], input):not(.outline,.ghost)) {
     --_bg: color-mix(in oklch, var(--ms-c-secondary) 18%, var(--ms-c-surface)); --_bd: transparent; --_fg: var(--ms-c-secondary);
     --_hbg: color-mix(in oklch, var(--ms-c-secondary) 28%, var(--ms-c-surface)); --_abg: var(--_hbg);
@@ -19,4 +19,10 @@
   :where(.style-material3) :where(.chip, .badge) { border-radius: 8px; }
   :where(.style-material3) :where([role=tab]) { border-radius: 0; font-weight: 500; }
   :where(.style-material3) :where(dialog > article) { border-radius: 28px; box-shadow: var(--ms-shadow-lg); }
+  :where(.style-material3) :where(.field, .ms-multi-control, .ms-code) { --_bd: transparent; background-color: var(--ms-c-surface-3); }
+  :where(.style-material3) :where(.ms-code) { border-color: var(--ms-c-border); }
+  :where(.style-material3) :where(.ms-toast, dialog.command) { border-color: transparent; border-radius: 16px; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-material3) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-material3) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
 }

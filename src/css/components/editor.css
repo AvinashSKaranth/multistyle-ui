@@ -1,0 +1,57 @@
+/* Quill snow re-theme. Deliberately NOT in an @layer: Quill's stylesheet is unlayered and unlayered
+   rules beat every layered rule, so layered overrides could never win. The exception is limited to
+   Quill's own classes. Specificity is boosted by repeating classes (T/C below) so we win regardless of
+   stylesheet order; only --ms-c-* tokens are used so every style/theme/mode applies. */
+.ql-toolbar.ql-snow.ql-snow {
+  background: var(--ms-c-surface-2); border: var(--ms-c-border-w) solid var(--ms-c-border); color: var(--ms-c-text);
+  border-radius: var(--ms-c-radius-input) var(--ms-c-radius-input) 0 0; font-family: var(--ms-font); padding: .25rem;
+}
+.ql-container.ql-snow.ql-snow {
+  background: var(--ms-c-surface); border: var(--ms-c-border-w) solid var(--ms-c-border); border-top: 0; color: var(--ms-c-text);
+  border-radius: 0 0 var(--ms-c-radius-input) var(--ms-c-radius-input); font-family: inherit; font-size: inherit;
+  transition: border-color var(--ms-transition), box-shadow var(--ms-transition);
+}
+.ql-container.ql-snow.ql-snow:focus-within { border-color: var(--ms-c-primary); box-shadow: 0 0 0 3px var(--ms-c-focus); }
+.ql-container.ql-snow.ql-snow .ql-editor { min-height: 10rem; line-height: var(--ms-line-height); }
+.ql-container.ql-snow.ql-snow .ql-editor.ql-blank::before { color: var(--ms-c-muted); font-style: normal; }
+.ql-container.ql-snow.ql-snow .ql-editor a { color: var(--ms-c-primary); }
+.ql-container.ql-snow.ql-snow .ql-editor blockquote { border-left: 4px solid var(--ms-c-border); color: var(--ms-c-muted); }
+.ql-container.ql-snow.ql-snow .ql-editor :is(pre, pre.ql-syntax, code) { background: var(--ms-c-surface-3); color: var(--ms-c-text); border-radius: var(--ms-c-radius-input); }
+
+/* toolbar buttons: undo the library's classless button look */
+.ql-toolbar.ql-snow.ql-snow button {
+  background: none; border: 0; box-shadow: none; color: var(--ms-c-text); margin: 0; min-height: 0; transform: none;
+  border-radius: var(--ms-c-radius-btn);
+}
+/* pickers are span[role=button]: neutralize the classless button look too */
+.ql-toolbar.ql-snow.ql-snow :is(.ql-picker-label, .ql-picker-item) {
+  background: none; box-shadow: none; overflow: visible; font-weight: inherit; text-align: left; color: inherit;
+  border-color: transparent; border-radius: var(--ms-c-radius-input); min-height: 0;
+}
+.ql-toolbar.ql-snow.ql-snow .ql-picker-label { padding-top: 0; padding-bottom: 0; }
+.ql-toolbar.ql-snow.ql-snow .ql-picker-item:not(.ql-color-picker *) { padding-left: 0; padding-right: 0; }
+.ql-toolbar.ql-snow.ql-snow .ql-picker { color: var(--ms-c-text); font-family: inherit; }
+.ql-toolbar.ql-snow.ql-snow :is(.ql-stroke, .ql-stroke-miter) { stroke: var(--ms-c-text); }
+.ql-toolbar.ql-snow.ql-snow :is(.ql-fill, .ql-stroke.ql-fill) { fill: var(--ms-c-text); }
+
+/* hover / active / selected = primary (:not(.x) x2 only raises specificity above Quill's :hover:not(.ql-active) rules) */
+.ql-toolbar.ql-snow.ql-snow :is(button:hover, button:focus-visible, button.ql-active, .ql-picker-label:hover, .ql-picker-label.ql-active, .ql-picker-item:hover, .ql-picker-item.ql-selected, .ql-picker.ql-expanded .ql-picker-label):not(.x):not(.x) { color: var(--ms-c-primary); }
+.ql-toolbar.ql-snow.ql-snow :is(button:hover, button:focus-visible, button.ql-active, .ql-picker-label:hover, .ql-picker-label.ql-active, .ql-picker-item:hover, .ql-picker-item.ql-selected, .ql-picker.ql-expanded .ql-picker-label):not(.x):not(.x) :is(.ql-stroke, .ql-stroke-miter) { stroke: var(--ms-c-primary); }
+.ql-toolbar.ql-snow.ql-snow :is(button:hover, button:focus-visible, button.ql-active, .ql-picker-label:hover, .ql-picker-label.ql-active, .ql-picker-item:hover, .ql-picker-item.ql-selected, .ql-picker.ql-expanded .ql-picker-label):not(.x):not(.x) :is(.ql-fill, .ql-stroke.ql-fill) { fill: var(--ms-c-primary); }
+.ql-toolbar.ql-snow.ql-snow button:focus-visible { outline: 2px solid var(--ms-c-focus); }
+
+/* dropdowns + link tooltip */
+.ql-toolbar.ql-snow.ql-snow .ql-picker-options, .ql-container.ql-snow.ql-snow .ql-tooltip {
+  background: var(--ms-c-surface); border: var(--ms-c-border-w) solid var(--ms-c-border); color: var(--ms-c-text);
+  box-shadow: var(--ms-shadow-md); border-radius: var(--ms-c-radius-input);
+}
+.ql-toolbar.ql-snow.ql-snow .ql-picker.ql-expanded .ql-picker-label { border-color: var(--ms-c-border); }
+.ql-toolbar.ql-snow.ql-snow .ql-picker-label { border-radius: var(--ms-c-radius-input); }
+.ql-toolbar.ql-snow.ql-snow .ql-color-picker .ql-picker-item:hover, .ql-toolbar.ql-snow.ql-snow .ql-color-picker .ql-picker-item.ql-selected { border-color: var(--ms-c-primary); }
+.ql-container.ql-snow.ql-snow .ql-tooltip input[type=text] {
+  background: var(--ms-c-surface); color: var(--ms-c-text); border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-input);
+  height: 2rem; margin: 0; padding: .25rem .5rem; box-shadow: none;
+}
+.ql-container.ql-snow.ql-snow .ql-tooltip a { color: var(--ms-c-primary); }
+.ql-container.ql-snow.ql-snow .ql-tooltip a.ql-action::after { border-right-color: var(--ms-c-border); }
+.ql-toolbar.ql-snow.ql-snow .ms-ripple { display: none; }

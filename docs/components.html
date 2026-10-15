@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>multistyle-ui components</title>
+  <link rel="stylesheet" href="./multistyle.min.css">
+  <link rel="stylesheet" href="./docs.css">
+  <script defer src="./multistyle.min.js"></script>
+  <script defer src="./docs.js"></script>
+  <script defer src="./vendor/alpine.min.js"></script>
+  <script defer src="./vendor/chart.umd.min.js"></script>
+  <!-- CDN demos (need network): Prism, Mermaid, Quill, Material Symbols (loaded by multistyle) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+</head>
+<body data-ms-persist>
+<div id="app" x-data="app" @ms:change.document="tick++">
+
+<header class="topbar" data-ms-fields="stacked">
+  <div class="topbar-row">
+    <span class="brand">multistyle-ui</span>
+    <nav class="pages" aria-label="Pages"><a href="index.html">Guide</a><a href="components.html" aria-current="page">Components</a></nav>
+    <label>Style <select data-ms="style" aria-label="Style"></select></label>
+    <label>Theme
+      <select data-ms="theme" aria-label="Theme" @change="$event.target.value === 'custom' && apply()"></select>
+    </label>
+    <label>Mode <select data-ms="mode" aria-label="Mode"></select></label>
+    <label>Font <select data-ms="font" aria-label="Font"></select></label>
+    <button type="button" class="sm outline" data-ms-mode-toggle>Toggle mode</button>
+    <template x-if="$store.ms.theme === 'custom'">
+      <span class="topbar-row" style="gap:.35rem">
+        <label>Primary <input type="color" aria-label="Primary" :value="p" @input="p = $event.target.value; apply()"></label>
+        <label>Secondary <input type="color" aria-label="Secondary" :value="s" @input="s = $event.target.value; apply()"></label>
+        <label>Surface <input type="color" aria-label="Surface" :value="f" @input="f = $event.target.value; apply()"></label>
+      </span>
+    </template>
+  </div>
+  <div class="bodystr">
+    <code id="bodystr" x-text="bodyTag()"></code>
+    <button type="button" class="sm" data-copy="#bodystr">Copy</button>
+  </div>
+</header>
+
+<div class="layout single">
+<main>
+<h1>Components</h1>
+<p>One tab per component. Each example has a <strong>Preview</strong> and a <strong>Code</strong> view generated from the same source. Deep links work, e.g. <a href="#c-modal"><code>#c-modal</code></a>. Mermaid, Text editor, Code and Icons load from a CDN and need network.</p>
+<section id="components">
+  <div class="explorer" id="explorer">
+
+<section role="tabpanel" id="c-typography" data-title="Typography" data-desc="Headings, text and quotes are styled with no classes.">
+  <template class="example" data-title="Text elements" data-note="Classless.">
+    <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>
+    <p>Paragraph with <a href="#c-typography">a link</a>, <strong>strong</strong>, <em>em</em>, <mark>mark</mark>, <kbd>Ctrl</kbd>, <code>code</code> and <small>small text</small>.</p>
+    <blockquote>A blockquote.<footer><cite>Someone</cite></footer></blockquote>
+    <hr>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-fonts" data-title="Fonts" data-desc="MS.set({font}) with a curated list, lazy-loaded from Google Fonts">
+  <template class="example" data-title="Font picker" data-note="Declarative: a select[data-ms=font] is auto-populated from MS.fonts (auto = style default). Persisted with body[data-ms-persist].">
+  <label>Font <select data-ms="font"></select></label>
+  <p>The quick brown fox jumps over the lazy dog. 0123456789</p>
+  </template>
+  <template class="example" data-title="MS.set / MS.get" data-note="Keys are case-insensitive: 'Inter', 'open-sans'. Any CSS font-family string also works. 'auto' removes the override. ms:change detail includes font.">
+  <div role="group">
+    <button type="button" onclick="MS.set({ font: 'Inter' })">Inter</button>
+    <button type="button" onclick="MS.set({ font: 'Playfair Display' })">Playfair</button>
+    <button type="button" onclick="MS.set({ font: 'JetBrains Mono' })">JetBrains Mono</button>
+    <button type="button" onclick="MS.set({ font: 'Georgia, serif' })">Georgia (CSS)</button>
+    <button type="button" class="outline" onclick="MS.set({ font: 'auto' })">auto</button>
+  </div>
+  <pre><code class="language-javascript">MS.fonts;               // ['auto','system','inter','roboto', ...]
+MS.set({ font: 'inter' });
+MS.get().font;          // 'inter'
+MS.set({ font: 'auto' }, el); // scoped: sets --ms-font on el only</code></pre>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-buttons" data-title="Buttons" data-desc="button, input[type=submit] and [role=button] share one look; classes add variants and sizes.">
+  <template class="example" data-title="Basic buttons" data-note="Classless. aria-busy=true shows a spinner; disabled is native.">
+    <button>Button</button>
+    <button disabled>Disabled</button>
+    <input type="submit" value="Submit">
+    <a href="#c-buttons" role="button">Link button</a>
+    <button aria-busy="true">Loading</button>
+  </template>
+  <template class="example" data-title="Variants and sizes" data-note='Opt-in classes. Variants combine: class="outline secondary". Sizes: sm, lg, icon, fab.'>
+    <button>Primary</button>
+    <button class="secondary">Secondary</button>
+    <button class="outline">Outline</button>
+    <button class="ghost">Ghost</button>
+    <button class="contrast">Contrast</button>
+    <button class="success">Success</button>
+    <button class="warning">Warning</button>
+    <button class="error">Error</button>
+    <button class="outline secondary">Outline secondary</button>
+    <hr>
+    <button class="sm">Small</button>
+    <button>Medium</button>
+    <button class="lg">Large</button>
+    <button class="icon" aria-label="Add">+</button>
+    <button class="fab" aria-label="Add">+</button>
+  </template>
+  <template class="example" data-title="Tonal and info buttons" data-note="Opt-in .tonal (soft fill) and .info status colour; both combine with .secondary, .success, .warning, .error, .sm, .lg.">
+    <button class="tonal">Tonal</button>
+    <button class="tonal secondary">Tonal secondary</button>
+    <button class="tonal error">Tonal error</button>
+    <button class="info">Info</button>
+    <button class="tonal info">Tonal info</button>
+    <button class="tonal sm" disabled>Disabled</button>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-icons" data-title="Icons" data-desc="Material Symbols Outlined ligature icons, loaded on demand." data-net="1">
+  <template class="example" data-title="Icons" data-note='span.ms-icon with the ligature name. The font loads from Google Fonts only when a .ms-icon exists; ligature text is hidden until ready. Opt out / self-host: body data-ms-icons="off". Add .filled for the solid style. Without the font (offline) icons stay blank, so keep aria-hidden and a text label or aria-label.'>
+    <button><span class="ms-icon" aria-hidden="true">star</span> Favourite</button>
+    <button class="tonal"><span class="ms-icon filled" aria-hidden="true">favorite</span> Like</button>
+    <button class="icon outline" aria-label="Settings"><span class="ms-icon" aria-hidden="true">settings</span></button>
+    <button class="fab" aria-label="Add"><span class="ms-icon" aria-hidden="true">add</span></button>
+    <span class="chip"><span class="ms-icon" aria-hidden="true">sell</span> Tag</span>
+    <span class="badge"><span class="ms-icon" aria-hidden="true">bolt</span> New</span>
+  </template>
+  <template class="example" data-title="Icon in an input" data-note="Put the icon before the input inside its label.">
+    <label>Search <span class="ms-icon" aria-hidden="true">search</span><input type="search" placeholder="Search"></label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-inputs" data-title="Inputs" data-desc="All text-like input types, styled without classes.">
+  <template class="example" data-title="Input types" data-note="Classless. Wrap in a label; use small for helper text.">
+    <div class="cols">
+      <label>Text <input type="text" placeholder="Text"></label>
+      <label>Email <input type="email" placeholder="you@x.com"></label>
+      <label>Password <input type="password" value="secret"></label>
+      <label>Number <input type="number" value="3"></label>
+      <label>Search <input type="search" placeholder="Search"></label>
+      <label>URL <input type="url" placeholder="https://"></label>
+      <label>Tel <input type="tel" placeholder="+1 555"></label>
+      <label>Date <input type="date"></label>
+      <label>Time <input type="time"></label>
+      <label>Datetime <input type="datetime-local"></label>
+      <label>Month <input type="month"></label>
+      <label>Colour <input type="color" value="#2060df"></label>
+      <label>File <input type="file"></label>
+    </div>
+  </template>
+  <template class="example" data-title="Icons and affixes" data-note='The label.field wrapper takes the input look (border, radius, focus ring); inner input is borderless. Slots: .ms-icon, .affix, button.ghost.icon.'>
+    <label class="field"><span class="ms-icon">search</span><input type="search" placeholder="Search" aria-label="Search"><button type="button" class="ghost icon" aria-label="Clear">×</button></label>
+    <label class="field"><span class="affix">https://</span><input placeholder="example" aria-label="Domain"><span class="affix">.com</span></label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-floating" data-title="Floating label" data-desc="Label floats up on focus or when filled (CSS only)">
+  <template class="example" data-title="Automatic (no classes)" data-note="In material and material3 (and with no style class at all) plain labels float by themselves: wrap the field in a label, or put label[for] right before it. Switch the style in the top bar: every other style keeps the normal stacked label. date/time fields and selects are always floated; checkboxes, radios, range, colour and file inputs never. A label with several controls is left alone. forms.js adds placeholder=' ' to fields that have none (no JS: the label just stays floated).">
+    <label>Email <input type="email"></label>
+    <label>Required <input type="text" required></label>
+    <label>Message <textarea rows="3"></textarea></label>
+    <label>Plan <select><option value="">Choose</option><option>Free</option><option>Pro</option></select></label>
+    <label>Birthday <input type="date"></label>
+    <label for="af-b">Sibling (label for, right before the field)</label>
+    <input id="af-b" type="text">
+    <label><span class="ms-icon">mail</span>With icon <input type="email"><small>Helper text inside the label</small></label>
+    <label><input type="checkbox"> A checkbox label is untouched</label>
+  </template>
+  <template class="example" data-title="data-ms-fields" data-note='data-ms-fields on any ancestor (nearest wins): stacked turns floating off (material scopes), floating = the active style&apos;s natural variant (outlined in material3, filled elsewhere), filled / outlined force a variant in ANY style. Limits: the attribute is read when the page renders and fields are scanned (JS placeholder sync runs on load, added nodes and ms:change); needs @container style() queries (Chromium, Safari, current Firefox).'>
+    <div data-ms-fields="stacked"><label>Stacked (off) <input type="text"></label></div>
+    <div data-ms-fields="floating"><label>Floating (natural) <input type="text"></label></div>
+    <div data-ms-fields="filled"><label>Filled <input type="text"></label></div>
+    <div data-ms-fields="outlined"><label>Outlined <input type="text"></label></div>
+  </template>
+  <template class="example" data-title="Floating labels" data-note='label.floating > input|textarea|select + span. The input needs placeholder=" " (a single space). The visual follows the active style: filled (Material 2) in material / default, outlined with a notched label (Material 3) in material3, the classic floating look elsewhere. Selects float once an option with a value is chosen.'>
+    <label class="floating"><input type="email" placeholder=" "><span>Email</span></label>
+    <label class="floating"><textarea placeholder=" "></textarea><span>Message</span></label>
+    <label class="floating"><select><option value="">Choose</option><option>Free</option><option>Pro</option></select><span>Plan</span></label>
+  </template>
+  <template class="example" data-title="Filled and outlined" data-note='Add .filled or .outlined to label.floating to force a Material variant in any style (default: filled in material, outlined in material3). The outlined notch uses --ms-field-bg (surface; cards and popovers set it automatically). The visual follows the active style otherwise.'>
+    <label class="floating filled"><input type="text" placeholder=" "><span>Filled</span></label>
+    <label class="floating outlined"><input type="text" placeholder=" "><span>Outlined</span></label>
+  </template>
+  <template class="example" data-title="Leading and trailing icons" data-note='A .ms-icon as first child is the leading icon; an .ms-icon or button.ghost.icon after the span is trailing. The visual follows the active style.'>
+    <label class="floating"><span class="ms-icon">mail</span><input type="email" placeholder=" "><span>Email</span></label>
+    <label class="floating"><input type="password" placeholder=" "><span>Password</span><button type="button" class="ghost icon" aria-label="Show password"><span class="ms-icon">visibility</span></button></label>
+    <label class="floating outlined"><span class="ms-icon">search</span><input type="search" placeholder=" "><span>Search</span><span class="ms-icon">tune</span></label>
+  </template>
+  <template class="example" data-title="Helper text and counter" data-note='Put small after the label for helper text. data-ms-counter on a maxlength field adds small.counter, right-aligned on the same line. The visual follows the active style.'>
+    <label class="floating"><textarea maxlength="40" data-ms-counter placeholder=" "></textarea><span>Bio</span></label>
+    <small>Tell us a little about you</small>
+    <label class="floating outlined"><textarea maxlength="60" data-ms-counter placeholder=" "></textarea><span>Notes</span></label>
+    <small>Letters and digits only</small>
+  </template>
+  <template class="example" data-title="Error and disabled" data-note='aria-invalid="true" or :user-invalid colours the indicator, label and helper with the error token; disabled dims the field. The visual follows the active style.'>
+    <label class="floating"><input type="email" value="nope" aria-invalid="true" placeholder=" "><span>Email</span></label>
+    <small>Enter a valid address</small>
+    <label class="floating"><input type="text" value="Read only value" disabled placeholder=" "><span>Disabled</span></label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-checkbox-radio" data-title="Checkbox & Radio" data-desc="Native checkboxes and radios, restyled.">
+  <template class="example" data-title="Checkbox and radio" data-note="Classless. Put the input inside its label for an implicit association.">
+    <fieldset>
+      <label><input type="checkbox" checked> Checkbox</label>
+      <label><input type="checkbox"> Unchecked</label>
+      <label><input type="radio" name="r1" checked> Radio A</label>
+      <label><input type="radio" name="r1"> Radio B</label>
+    </fieldset>
+  </template>
+  <template class="example" data-title="Sizes and indeterminate" data-note='.sm / .lg scale the control. Indeterminate is set from JS: el.indeterminate = true.'>
+    <label><input type="checkbox" class="sm"> Small</label>
+    <label><input type="checkbox" checked> Default</label>
+    <label><input type="checkbox" class="lg" checked> Large</label>
+    <label><input type="checkbox" id="ex-ind"> Indeterminate</label>
+    <label><input type="radio" name="ex-r" class="lg" checked> Radio</label>
+    <label><input type="checkbox" role="switch" checked> Switch</label>
+    <script>document.getElementById('ex-ind').indeterminate = true;</script>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-switch" data-title="Switch" data-desc="A checkbox with role=switch becomes a toggle.">
+  <template class="example" data-title="Switch" data-note="Classless. role=switch is announced as on/off by screen readers.">
+    <label><input type="checkbox" role="switch" checked> Notifications</label>
+    <label><input type="checkbox" role="switch"> Dark sidebar</label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-range" data-title="Range" data-desc="Slider input.">
+  <template class="example" data-title="Range" data-note="Classless. Give it a visible label or aria-label.">
+    <label>Volume <input type="range" min="0" max="100" value="40"></label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-select" data-title="Select" data-desc="Single and multiple select.">
+  <template class="example" data-title="Select" data-note="Classless.">
+    <label>Select
+      <select><option>One</option><option>Two</option><option>Three</option></select>
+    </label>
+    <label>Multiple <select multiple><option>One</option><option selected>Two</option><option>Three</option></select></label>
+  </template>
+  <template class="example" data-title="Custom select" data-note='class="custom" opts in to appearance: base-select (Chromium 135+); other browsers keep the native select unchanged.'>
+    <select class="custom" aria-label="Fruit"><option>Apple</option><option>Banana</option><option>Cherry</option><option disabled>Durian (sold out)</option></select>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-multiselect" data-title="Multi-select" data-desc="Chips, filter and listbox over a real select multiple">
+  <template class="example" data-title="Multi-select" data-note='select[multiple][data-ms-multiselect] stays in the form as the source of truth and fires change (works with Alpine x-model). Keys: Up/Down/Enter/Escape, Backspace removes the last chip. MS.multiselect(el) inits manually.'>
+    <label>Skills
+      <select name="skills" multiple data-ms-multiselect data-placeholder="Pick skills…">
+        <option value="js">JavaScript</option><option value="css" selected>CSS</option><option value="html">HTML</option><option value="py">Python</option>
+      </select>
+    </label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-textarea" data-title="Textarea" data-desc="Multi-line text input.">
+  <template class="example" data-title="Textarea" data-note="Classless.">
+    <label>Message <textarea rows="3" placeholder="Write something"></textarea></label>
+  </template>
+  <template class="example" data-title="Autoresize and counter" data-note='.autoresize uses field-sizing: content (Chromium/Safari 26); bound rows with style="--min-rows:2;--max-rows:8". data-ms-counter + maxlength appends small.counter (aria-live).'>
+    <textarea class="autoresize" style="--min-rows:2;--max-rows:8" maxlength="200" data-ms-counter placeholder="Type here, it grows"></textarea>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-fieldset" data-title="Fieldset & Validation" data-desc="Group fields with fieldset and flag state with aria-invalid.">
+  <template class="example" data-title="Fieldset" data-note="Classless. legend labels the group for assistive tech.">
+    <fieldset>
+      <legend>Plan</legend>
+      <label><input type="radio" name="plan" checked> Free</label>
+      <label><input type="radio" name="plan"> Pro</label>
+    </fieldset>
+  </template>
+  <template class="example" data-title="Validation" data-note="Use aria-invalid=true/false plus a small element for the message.">
+    <label>Valid <input value="ok@x.com" aria-invalid="false"><small>Looks good.</small></label>
+    <label>Invalid <input value="nope" aria-invalid="true"><small>Enter a valid email.</small></label>
+    <label>Required <input type="email" required placeholder="Type then clear"></label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-group" data-title="Group" data-desc="role=group joins buttons, or an input and a button, into one control.">
+  <template class="example" data-title="Button group and input group" data-note="Classless. Add aria-label on the group when there is no visible label.">
+    <div role="group"><button>One</button><button>Two</button><button>Three</button></div>
+    <form role="group" onsubmit="return false"><input type="email" placeholder="Email" aria-label="Email"><input type="submit" value="Subscribe"></form>
+  </template>
+  <template class="example" data-title="Single select" data-note="role=group + data-ms-select=single|multi toggles aria-pressed; fires ms:select {values}.">
+    <div role="group" data-ms-select="single" aria-label="View">
+      <button class="outline" aria-pressed="true">Day</button><button class="outline">Week</button><button class="outline">Month</button>
+    </div>
+  </template>
+  <template class="example" data-title="Multi select, vertical" data-note="aria-orientation=vertical stacks the group.">
+    <div role="group" data-ms-select="multi" aria-orientation="vertical" aria-label="Format">
+      <button class="outline">Bold</button><button class="outline">Italic</button><button class="outline">Underline</button>
+    </div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-table" data-title="Table" data-desc="Plain tables; add striped for zebra rows.">
+  <template class="example" data-title="Striped table" data-note="Classless; class=striped is optional. Wrap in an overflow-x:auto div on small screens.">
+    <div class="table-wrap">
+    <table class="striped">
+      <thead><tr><th>Name</th><th>Role</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td>Ada</td><td>Engineer</td><td>98</td></tr>
+        <tr><td>Linus</td><td>Maintainer</td><td>91</td></tr>
+        <tr><td>Grace</td><td>Admiral</td><td>99</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </template>
+  <template class="example" data-title="Sticky header, compact, hover" data-note="Wrap in .table-wrap (scrolls, height via --ms-table-h, default 22rem) and add .sticky to pin the header. .compact tightens cells, .hover highlights rows.">
+    <div class="table-wrap" style="--ms-table-h:10rem">
+      <table class="sticky compact hover">
+        <thead><tr><th>#</th><th>Name</th><th>Role</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Ada</td><td>Admin</td></tr><tr><td>2</td><td>Linus</td><td>Dev</td></tr>
+          <tr><td>3</td><td>Grace</td><td>Dev</td></tr><tr><td>4</td><td>Alan</td><td>QA</td></tr>
+          <tr><td>5</td><td>Edsger</td><td>Dev</td></tr><tr><td>6</td><td>Barbara</td><td>PM</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-accordion" data-title="Accordion" data-desc="details and summary, no JavaScript.">
+  <template class="example" data-title="Exclusive accordion" data-note="Classless. The same name attribute makes the group exclusive, natively. Keyboard and a11y come from details.">
+    <details name="acc" open><summary>First</summary><p>Opens by default.</p></details>
+    <details name="acc"><summary>Second</summary><p>Opening this closes the first.</p></details>
+    <details name="acc"><summary>Third</summary><p>No JavaScript.</p></details>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-modal" data-title="Modal" data-desc="A native dialog with focus trap and Esc built in.">
+  <template class="example" data-title="Modal with header close and form footer" data-note='Classless dialog > article. Open: data-ms-open="#id". Close: empty button rel=prev (renders ×), data-ms-close, or form method=dialog buttons.'>
+    <button data-ms-open="#dlg1">Open modal</button>
+    <dialog id="dlg1" aria-labelledby="dlg1-t">
+      <article>
+        <header><button rel="prev" aria-label="Close"></button><h3 id="dlg1-t">Confirm</h3></header>
+        <p>Dialogs use the native element: focus trap and Esc come free.</p>
+        <form method="dialog">
+          <footer><button value="cancel" class="secondary">Cancel</button><button value="ok">OK</button></footer>
+        </form>
+      </article>
+    </dialog>
+  </template>
+  <template class="example" data-title="data-ms-close and MS.open" data-note="data-ms-close closes its dialog; MS.open(sel)/MS.close(sel) work from JS.">
+    <button onclick="MS.open('#dlg2')">MS.open('#dlg2')</button>
+    <dialog id="dlg2" aria-labelledby="dlg2-t">
+      <article>
+        <header><button data-ms-close aria-label="Close"></button><h3 id="dlg2-t">Opened from JS</h3></header>
+        <p>Click the × or the button below.</p>
+        <footer><button data-ms-close>Close</button></footer>
+      </article>
+    </dialog>
+  </template>
+  <template class="example" data-title="Modal sizes" data-note="data-size=sm|md|lg|full on the dialog (md is the default).">
+    <button class="sm" data-ms-open="#dlg-sm">Small</button>
+    <button class="sm" data-ms-open="#dlg-lg">Large</button>
+    <button class="sm" data-ms-open="#dlg-full">Full screen</button>
+    <dialog id="dlg-sm" data-size="sm"><article><header><button rel="prev" aria-label="Close"></button><h3>Small</h3></header><p>Narrow dialog.</p></article></dialog>
+    <dialog id="dlg-lg" data-size="lg"><article><header><button rel="prev" aria-label="Close"></button><h3>Large</h3></header><p>Wide dialog for tables and forms.</p></article></dialog>
+    <dialog id="dlg-full" data-size="full"><article><header><button rel="prev" aria-label="Close"></button><h3>Full screen</h3></header><p>Fills the viewport.</p></article></dialog>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-drawer" data-title="Drawer" data-desc="dialog.drawer slides in from a side.">
+  <template class="example" data-title="Right and left drawers" data-note="data-side=right flips it (default left). Same close controls as Modal.">
+    <button data-ms-open="#drw1">Open right drawer</button>
+    <button class="secondary" data-ms-open="#drw2">Open left drawer</button>
+    <dialog class="drawer" data-side="right" id="drw1" aria-labelledby="drw1-t">
+      <article>
+        <header><button rel="prev" aria-label="Close"></button><h3 id="drw1-t">Drawer</h3></header>
+        <p>Slides in from the right.</p>
+        <form method="dialog"><footer><button>Done</button></footer></form>
+      </article>
+    </dialog>
+    <dialog class="drawer" id="drw2" aria-labelledby="drw2-t">
+      <article>
+        <header><button data-ms-close aria-label="Close"></button><h3 id="drw2-t">Left drawer</h3></header>
+        <p>The default side.</p>
+      </article>
+    </dialog>
+  </template>
+  <template class="example" data-title="Top and bottom drawers" data-note="data-side=top|bottom gives a full-width sheet that slides vertically; left/right as before.">
+    <button data-ms-open="#drw-top">Top</button>
+    <button class="secondary" data-ms-open="#drw-bottom">Bottom sheet</button>
+    <dialog class="drawer" data-side="top" id="drw-top"><article><header><button rel="prev" aria-label="Close"></button><h3>Top drawer</h3></header><p>Slides down from the top.</p></article></dialog>
+    <dialog class="drawer" data-side="bottom" id="drw-bottom"><article><header><button rel="prev" aria-label="Close"></button><h3>Bottom sheet</h3></header><p>Slides up from the bottom.</p></article></dialog>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-card" data-title="Card" data-desc="A plain article is a card.">
+  <template class="example" data-title="Article card" data-note="Classless. header and footer inside are styled.">
+    <article>
+      <header><strong>Card title</strong></header>
+      <p>Cards are plain article elements.</p>
+      <footer><button class="sm">Action</button></footer>
+    </article>
+  </template>
+  <template class="example" data-title="Card variants" data-note=".flat (border only), .elevated (strong shadow), .compact / .spacious padding, .p-0 for edge-to-edge content.">
+    <div class="grid" style="--cols:2">
+      <article class="flat">.flat</article>
+      <article class="elevated">.elevated</article>
+      <article class="compact">.compact</article>
+      <article class="spacious">.spacious</article>
+    </div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-divider" data-title="Divider" data-desc="Plain and labelled separators.">
+  <template class="example" data-title="Divider" data-note="hr stays plain. Use .divider for a label; .vr or .divider.vertical inside a flex row for a vertical rule.">
+    <hr>
+    <div class="divider">OR</div>
+    <div class="row align-center"><span>Left</span><span class="vr"></span><span>Middle</span><span class="vr"></span><span>Right</span></div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-nav" data-title="Nav & Breadcrumb" data-desc="Navigation bars and breadcrumbs from semantic nav.">
+  <template class="example" data-title="Nav and breadcrumb" data-note="Classless. aria-current marks the active item; nav[aria-label=breadcrumb] switches to breadcrumb.">
+    <nav>
+      <ul><li><strong>Brand</strong></li></ul>
+      <ul><li><a href="#c-nav" aria-current="page">Home</a></li><li><a href="#c-nav">Docs</a></li><li><a href="#c-nav">About</a></li></ul>
+    </nav>
+    <nav aria-label="breadcrumb">
+      <ul><li><a href="#c-nav">Home</a></li><li><a href="#c-nav">Library</a></li><li>Data</li></ul>
+    </nav>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-progress" data-title="Progress & Meter" data-desc="Native progress and meter elements.">
+  <template class="example" data-title="Progress and meter" data-note="Classless. Omit value on progress for an indeterminate bar.">
+    <progress value="60" max="100"></progress>
+    <progress></progress>
+    <meter value="0.7" min="0" max="1"></meter>
+  </template>
+  <template class="example" data-title="Progress sizes and stripes" data-note=".sm / .lg height; .striped adds stripes, .animated moves them. A label can wrap the progress.">
+    <label>Upload <progress value="40" max="100"></progress></label>
+    <progress class="sm" value="25" max="100"></progress>
+    <progress class="lg striped" value="60" max="100"></progress>
+    <progress class="lg striped animated" value="80" max="100"></progress>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-spinner" data-title="Spinner" data-desc="aria-busy=true shows a spinner on any element.">
+  <template class="example" data-title="aria-busy" data-note="Classless. aria-busy also tells assistive tech the content is updating.">
+    <span aria-busy="true">Loading</span>
+    <button aria-busy="true">Saving</button>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-tooltip" data-title="Tooltip" data-desc="CSS-only tooltips from data-tooltip.">
+  <template class="example" data-title="data-tooltip" data-note="Classless, CSS only; data-placement=top|bottom|left|right. Use on focusable elements so keyboard users get it too.">
+    <button data-tooltip="Saves your work">Hover me</button>
+    <button data-tooltip="Below" data-placement="bottom" class="secondary">Bottom</button>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-alert" data-title="Alert" data-desc="Inline status messages.">
+  <template class="example" data-title="Alerts" data-note="Classless role=alert; data-type picks the colour.">
+    <div role="alert"><strong>Heads up.</strong> Default alert.</div>
+    <div role="alert" data-type="success">Saved successfully.</div>
+    <div role="alert" data-type="warning">Careful, this is risky.</div>
+    <div role="alert" data-type="error">Something failed.</div>
+    <div role="alert" data-type="info">FYI.</div>
+  </template>
+  <template class="example" data-title="Alert icons, title and dismiss" data-note='Each data-type gets a default icon (data-icon="none" removes it). A leading strong is the title. A .close button with data-ms-dismiss removes the alert.'>
+    <div role="alert" data-type="success"><strong>Saved</strong>Your changes were stored.<button class="close" aria-label="Close" data-ms-dismiss></button></div>
+    <div role="alert" data-type="warning">Disk space is low.</div>
+    <div role="alert" data-type="error"><strong>Failed</strong>Could not reach the server.</div>
+    <div role="alert" data-icon="none">Plain info alert without an icon.</div>
+  </template>
+  <template class="example" data-title="Dismiss" data-note="Any [data-ms-dismiss] click removes the closest [role=alert], .chip, .ms-toast or [data-ms-dismissable]; fires ms:dismiss first.">
+    <div role="alert" data-type="info">Heads up, this can be dismissed. <button class="ghost sm" data-ms-dismiss aria-label="Dismiss">×</button></div>
+    <span class="chip">Tag <button data-ms-dismiss aria-label="Remove"></button></span>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-tabs" data-title="Tabs" data-desc="This very explorer uses them: role=tablist, wired automatically.">
+  <template class="example" data-title="Tabs" data-note="Classless. role=tablist > role=tab[aria-controls] and role=tabpanel[id]. Click and Arrow/Home/End keys are wired automatically.">
+    <div role="tablist" aria-label="Demo tabs">
+      <button role="tab" aria-controls="tp1" aria-selected="true">Overview</button>
+      <button role="tab" aria-controls="tp2">Details</button>
+      <button role="tab" aria-controls="tp3">Reviews</button>
+    </div>
+    <div role="tabpanel" id="tp1"><p>Overview panel.</p></div>
+    <div role="tabpanel" id="tp2"><p>Details panel.</p></div>
+    <div role="tabpanel" id="tp3"><p>Reviews panel.</p></div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-sortable" data-title="Sortable list" data-desc="Drag, touch or keyboard reorder.">
+  <template class="example" data-title="Sortable list" data-note="Drag, or focus an item: Space grabs, arrows move, Space/Enter drops, Escape cancels. Fires ms:sort {from, to, order}. data-ms-sortable=&quot;horizontal&quot; for rows.">
+    <ul data-ms-sortable>
+      <li id="a">Alpha</li><li id="b">Bravo</li><li id="c">Charlie</li><li id="d">Delta</li>
+    </ul>
+  </template>
+  <template class="example" data-title="With drag handle" data-note="Add [data-ms-handle]; only the handle starts a drag (and takes focus for keyboard).">
+    <ol data-ms-sortable>
+      <li><span data-ms-handle aria-label="Reorder">⠿</span> Write docs</li>
+      <li><span data-ms-handle aria-label="Reorder">⠿</span> Ship it</li>
+      <li><span data-ms-handle aria-label="Reorder">⠿</span> Celebrate</li>
+    </ol>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-dropdown" data-title="Dropdown / Popover" data-desc="Native popover API; menu[popover] anchors below its trigger.">
+  <template class="example" data-title="Dropdown menu" data-note="Native popover attribute with popovertarget. Esc and outside click close it.">
+    <button popovertarget="menu1">Menu</button>
+    <menu popover id="menu1">
+      <li><button>Profile</button></li>
+      <li><button>Settings</button></li>
+      <hr>
+      <li><button class="error">Sign out</button></li>
+    </menu>
+  </template>
+  <template class="example" data-title="Popover placement" data-note="data-placement: top|bottom|left|right + -start/-end (CSS anchor positioning; flips when out of space).">
+    <button popovertarget="p1">Right-start</button>
+    <div popover id="p1" data-placement="right-start">Placed beside the trigger.</div>
+  </template>
+  <template class="example" data-title="Hover popover" data-note="data-ms-hover-popover=&quot;#id&quot; shows on hover/focus, hides 100ms after leaving.">
+    <button class="outline" data-ms-hover-popover="#p2">Hover me</button>
+    <div popover="manual" id="p2" data-placement="top">Hover content</div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-command" data-title="Command palette" data-desc="Ctrl/Cmd+K palette with grouped, filterable options.">
+  <template class="example" data-title="Command palette" data-note="dialog.command; press Ctrl/Cmd+K or call MS.command('#cmd'). Options: data-group, data-keywords, data-shortcut, data-href. Listen for ms:command.">
+    <button onclick="MS.command('#cmd')">Open palette <kbd>Ctrl K</kbd></button>
+    <dialog class="command" id="cmd">
+      <input type="search" placeholder="Type a command…" aria-label="Command">
+      <ul role="listbox">
+        <li role="option" data-group="Navigation" data-keywords="home start" data-shortcut="G H">Go home</li>
+        <li role="option" data-group="Navigation" data-keywords="preferences" data-shortcut="G S">Settings</li>
+        <li role="option" data-group="Actions" data-keywords="new add" data-shortcut="N">New document</li>
+        <li role="option" data-group="Actions" data-keywords="dark light mode">Toggle theme</li>
+      </ul>
+    </dialog>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-toast" data-title="Toast" data-desc="Transient messages, declarative or from JS.">
+  <template class="example" data-title="One button per type" data-note="Declarative: data-ms-toast + data-ms-toast-type. Toasts have a dismiss button and auto-close after 4s.">
+    <button data-ms-toast="Hello from a toast" data-ms-toast-type="info">Info</button>
+    <button class="success" data-ms-toast="Saved!" data-ms-toast-type="success">Success</button>
+    <button class="warning" data-ms-toast="Careful!" data-ms-toast-type="warning">Warning</button>
+    <button class="error" data-ms-toast="Something failed" data-ms-toast-type="error">Error</button>
+  </template>
+  <template class="example" data-title="Sticky and programmatic" data-note="MS.toast(msg, {type, timeout, dismissible}). timeout:0 keeps the toast until dismissed.">
+    <button class="secondary" onclick="MS.toast('Sticky until you close it', {type:'info', timeout:0})">Sticky toast</button>
+    <button class="outline" onclick="MS.toast('Custom 8s toast', {type:'warning', timeout:8000})">MS.toast()</button>
+  </template>
+  <template class="example" data-title="Toast positions and titles" data-note="MS.toast(msg, {type, timeout, dismissible, title, position, icon}). position: top|bottom + left|center|right (default bottom-right). icon is a Material Symbols name; omit for the per-type default. Declarative: data-ms-toast-position, data-ms-toast-title.">
+    <button onclick="MS.toast('Profile updated', {type:'success', title:'Saved', position:'top-right'})">Top right</button>
+    <button class="secondary" onclick="MS.toast('Connection lost', {type:'error', position:'bottom-center', icon:'wifi_off'})">Bottom center + icon</button>
+    <button class="outline" data-ms-toast="Hello" data-ms-toast-title="Heads up" data-ms-toast-position="top-left">Declarative top left</button>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-chip" data-title="Chip, Badge, Avatar" data-desc="Small labels and identity marks.">
+  <template class="example" data-title="Chip" data-note="Opt-in class. .selected or aria-pressed=true marks selection; an inner button is a close control.">
+    <span class="chip">Chip</span>
+    <span class="chip selected">Selected</span>
+    <span class="chip">Removable <button aria-label="Remove">×</button></span>
+  </template>
+  <template class="example" data-title="Badge" data-note="Opt-in class. Colour variants: secondary success warning error info outline.">
+    <span class="badge">New</span>
+    <span class="badge secondary">2nd</span>
+    <span class="badge success">OK</span>
+    <span class="badge warning">Warn</span>
+    <span class="badge error">Err</span>
+    <span class="badge info">Info</span>
+    <span class="badge outline">Outline</span>
+  </template>
+  <template class="example" data-title="Avatar" data-note="Opt-in class. Takes text or an img; add alt text for images.">
+    <span class="avatar sm">SM</span>
+    <span class="avatar">AB</span>
+    <span class="avatar lg">LG</span>
+  </template>
+  <template class="example" data-title="Chip sizes and avatar group" data-note=".chip.sm/.lg; .avatar-group overlaps avatars with a surface-coloured ring; .avatar[data-status=online|busy|away|offline] adds a status dot.">
+    <span class="chip sm">Small</span> <span class="chip">Default</span> <span class="chip lg">Large</span>
+    <p>
+      <span class="avatar-group"><span class="avatar">AB</span><span class="avatar">CD</span><span class="avatar">EF</span><span class="avatar">+3</span></span>
+      <span class="avatar" data-status="online">ON</span>
+      <span class="avatar" data-status="busy">BY</span>
+      <span class="avatar" data-status="away">AW</span>
+      <span class="avatar" data-status="offline">OF</span>
+    </p>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-skeleton" data-title="Skeleton" data-desc="Loading placeholders.">
+  <template class="example" data-title="Skeleton" data-note="Opt-in class. Set the height yourself; pair with aria-busy on the region.">
+    <div class="skeleton" style="height:1.5rem;width:60%;margin-bottom:.5rem"></div>
+    <div class="skeleton" style="height:4rem"></div>
+  </template>
+  <template class="example" data-title="Skeleton shapes" data-note=".circle (round, set width), .text (one line of text height), .rect (rounded block, set height).">
+    <div class="skeleton circle" style="width:3rem"></div>
+    <div class="skeleton text" style="width:60%"></div>
+    <div class="skeleton text" style="width:80%"></div>
+    <div class="skeleton rect" style="height:6rem"></div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-stepper" data-title="Stepper" data-desc="Progress through a multi-step flow.">
+  <template class="example" data-title="Stepper" data-note="Opt-in class. li.done for completed, aria-current=step for the active one.">
+    <ol class="stepper">
+      <li class="done">Account</li>
+      <li aria-current="step">Profile</li>
+      <li>Confirm</li>
+    </ol>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-pagination" data-title="Pagination" data-desc="Page links in a nav.">
+  <template class="example" data-title="Pagination" data-note="Opt-in class. nav.pagination > ul > li > a; aria-current=page marks the active page.">
+    <nav class="pagination" aria-label="Pages">
+      <ul>
+        <li><a href="#c-pagination" aria-label="Previous">‹</a></li>
+        <li><a href="#c-pagination">1</a></li>
+        <li><a href="#c-pagination" aria-current="page">2</a></li>
+        <li><a href="#c-pagination">3</a></li>
+        <li><a href="#c-pagination" aria-label="Next">›</a></li>
+      </ul>
+    </nav>
+  </template>
+  <template class="example" data-title="Generated pagination" data-note="data-ms-pages, data-ms-page, data-ms-window. Fires ms:page {page}. MS.paginate(nav, {total, current, window}).">
+    <nav class="pagination" aria-label="Pages" data-ms-pages="20" data-ms-page="3" data-ms-window="1"></nav>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-carousel" data-title="Carousel" data-desc="CSS scroll-snap carousel.">
+  <template class="example" data-title="Carousel" data-note="Opt-in class. Pure CSS scroll-snap; tabindex=0 makes it keyboard scrollable. Add .full for one slide per view.">
+    <div class="carousel" tabindex="0" aria-label="Slides">
+      <div class="demo-box">Slide 1</div><div class="demo-box">Slide 2</div><div class="demo-box">Slide 3</div><div class="demo-box">Slide 4</div>
+    </div>
+  </template>
+  <template class="example" data-title="Carousel with arrows and dots" data-note="data-ms-arrows, data-ms-dots, data-ms-autoplay=&quot;4000&quot; (pauses on hover/focus; off for reduced motion). Loops.">
+    <div class="carousel full" tabindex="0" aria-label="Slides" data-ms-arrows data-ms-dots>
+      <div class="demo-box">Slide 1</div><div class="demo-box">Slide 2</div><div class="demo-box">Slide 3</div><div class="demo-box">Slide 4</div>
+    </div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-rating" data-title="Rating" data-desc="Star rating from radio inputs, pure CSS.">
+  <template class="example" data-title="Rating" data-note="Opt-in class. fieldset.rating with radio + label pairs written 5 to 1; labels carry aria-label.">
+    <fieldset class="rating">
+      <input type="radio" name="stars" id="s5"><label for="s5" aria-label="5 stars">★</label>
+      <input type="radio" name="stars" id="s4" checked><label for="s4" aria-label="4 stars">★</label>
+      <input type="radio" name="stars" id="s3"><label for="s3" aria-label="3 stars">★</label>
+      <input type="radio" name="stars" id="s2"><label for="s2" aria-label="2 stars">★</label>
+      <input type="radio" name="stars" id="s1"><label for="s1" aria-label="1 star">★</label>
+    </fieldset>
+  </template>
+  <template class="example" data-title="Display (fractional)" data-note='Read-only: set --value (0-5, any fraction). Sizes .sm / .lg.'>
+    <span class="rating-display" style="--value:3.5" role="img" aria-label="3.5 of 5"></span>
+    <span class="rating-display lg" style="--value:4.2" role="img" aria-label="4.2 of 5"></span>
+  </template>
+  <template class="example" data-title="Interactive sizes and states" data-note='Radios written 5 to 1. .sm / .lg sizes; fieldset disabled or data-readonly stops hover and input. Half-star input is not supported (use the display for fractions).'>
+    <fieldset class="rating sm"><input type="radio" name="s5" id="s5-5"><label for="s5-5">★</label><input type="radio" name="s5" id="s5-4"><label for="s5-4">★</label><input type="radio" name="s5" id="s5-3" checked><label for="s5-3">★</label><input type="radio" name="s5" id="s5-2"><label for="s5-2">★</label><input type="radio" name="s5" id="s5-1"><label for="s5-1">★</label></fieldset>
+    <fieldset class="rating lg" disabled><input type="radio" name="d5" id="d5-5"><label for="d5-5">★</label><input type="radio" name="d5" id="d5-4"><label for="d5-4">★</label><input type="radio" name="d5" id="d5-3" checked><label for="d5-3">★</label><input type="radio" name="d5" id="d5-2"><label for="d5-2">★</label><input type="radio" name="d5" id="d5-1"><label for="d5-1">★</label></fieldset>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-dropzone" data-title="Dropzone" data-desc="A styled file input.">
+  <template class="example" data-title="Dropzone" data-note="Opt-in class. label.dropzone wrapping a file input keeps it keyboard accessible.">
+    <label class="dropzone"><input type="file" multiple>Drop files here or click to browse</label>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-layout" data-title="Grid / Layout" data-desc="Container, grid and row/col helpers.">
+  <template class="example" data-title="container, grid, row/col" data-note="Opt-in classes. .grid auto-fits columns; .row > .col wraps. .container centres content (.container-fluid is full width).">
+    <div class="grid">
+      <div class="demo-box">grid 1</div><div class="demo-box">grid 2</div><div class="demo-box">grid 3</div>
+    </div>
+    <div class="row">
+      <div class="col demo-box">col</div><div class="col demo-box">col</div>
+    </div>
+  </template>
+  <template class="example" data-title="Grid columns and alignment" data-note='.grid: style="--cols:3" fixes the column count, style="--min:12rem" auto-fits by minimum width. .column stacks with a gap. .row takes .justify-between|center|end and .align-start|center|end.'>
+    <div class="grid" style="--cols:3"><article>1</article><article>2</article><article>3</article></div>
+    <div class="grid" style="--min:12rem"><article>A</article><article>B</article><article>C</article><article>D</article></div>
+    <div class="row justify-between align-center"><strong>Title</strong><button class="sm">Action</button></div>
+    <div class="column"><span>One</span><span>Two</span></div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-charts" data-title="Charts" data-desc="Chart.js is loaded separately; multistyle themes it. Use canvas[data-ms-chart] inside .chart, or call MS.chart(). Height is --ms-chart-h (default 300px).">
+    <template class="example" data-title="bar" data-note="Declarative: data-ms-chart=&quot;bar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="bar" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Sales","data":[12,19,8,15]},{"label":"Costs","data":[7,11,5,9]}]}' aria-label="bar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="line" data-note="Declarative: data-ms-chart=&quot;line&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="line" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Visits","data":[5,9,7,12]}]}' aria-label="line chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="pie" data-note="Declarative: data-ms-chart=&quot;pie&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="pie" data-ms-chart-data='{"labels":["A","B","C"],"datasets":[{"data":[30,50,20]}]}' aria-label="pie chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="doughnut" data-note="Declarative: data-ms-chart=&quot;doughnut&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="doughnut" data-ms-chart-data='{"labels":["A","B","C"],"datasets":[{"data":[30,50,20]}]}' aria-label="doughnut chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="radar" data-note="Declarative: data-ms-chart=&quot;radar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="radar" data-ms-chart-data='{"labels":["Speed","Power","Range","Cost","Comfort"],"datasets":[{"label":"Model A","data":[8,6,7,4,9]},{"label":"Model B","data":[5,9,4,7,6]}]}' aria-label="radar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="polarArea" data-note="Declarative: data-ms-chart=&quot;polarArea&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="polarArea" data-ms-chart-data='{"labels":["A","B","C","D"],"datasets":[{"data":[11,16,7,14]}]}' aria-label="polarArea chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="scatter" data-note="Declarative: data-ms-chart=&quot;scatter&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="scatter" data-ms-chart-data='{"datasets":[{"label":"Points","data":[{"x":1,"y":2},{"x":2,"y":5},{"x":3,"y":3},{"x":4,"y":7}]}]}' aria-label="scatter chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="bubble" data-note="Declarative: data-ms-chart=&quot;bubble&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="bubble" data-ms-chart-data='{"datasets":[{"label":"Bubbles","data":[{"x":1,"y":2,"r":6},{"x":2,"y":5,"r":12},{"x":3,"y":3,"r":8},{"x":4,"y":7,"r":15}]}]}' aria-label="bubble chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="stacked-bar" data-note="Declarative: data-ms-chart=&quot;stacked-bar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="stacked-bar" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"A","data":[4,6,5,8]},{"label":"B","data":[3,2,6,4]}]}' aria-label="stacked-bar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="stacked-line" data-note="Declarative: data-ms-chart=&quot;stacked-line&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="stacked-line" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"A","data":[4,6,5,8]},{"label":"B","data":[3,2,6,4]}]}' aria-label="stacked-line chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="combo" data-note="Declarative: data-ms-chart=&quot;combo&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="combo" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Bars","data":[12,19,8,15]},{"label":"Line","data":[10,14,11,17]}]}' aria-label="combo chart" role="img"></canvas></div>
+    </template>
+  <template class="example" data-title="Programmatic: MS.chart()" data-note="MS.chart(canvasOrSelector, chartJsConfig) returns the Chart instance (or null if Chart.js is missing).">
+    <div class="chart" style="--ms-chart-h:220px"><canvas x-data x-init="MS.chart($el, {type:'bar', data:{labels:['A','B','C'], datasets:[{label:'Programmatic', data:[3,7,4]}]}})" aria-label="programmatic chart" role="img"></canvas></div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-mermaid" data-title="Mermaid" data-desc="Diagrams from text, themed to the active tokens and re-rendered on theme change." data-net="1">
+  <template class="example" data-preview="off" data-title="Add this script tag" data-note="Requires network (CDN). Load it after multistyle; all scripts can be defer. Then any pre.mermaid is rendered automatically.">
+    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.min.js"></script>
+  </template>
+  <template class="example" data-title="Flowchart" data-note="Markup API: pre.mermaid with the diagram source as text. MS.mermaid(el?) re-renders.">
+    <pre class="mermaid">
+graph TD
+  A[Start] --> B{Ready?}
+  B -->|Yes| C[Ship it]
+  B -->|No| D[Fix]
+  D --> B
+    </pre>
+  </template>
+  <template class="example" data-title="Sequence diagram" data-note="Same markup, different diagram type.">
+    <pre class="mermaid">
+sequenceDiagram
+  participant U as User
+  participant A as App
+  U->>A: Click save
+  A-->>U: Toast: Saved
+    </pre>
+  </template>
+  <template class="example" data-title="State diagram" data-note="Same markup.">
+    <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Idle
+  Idle --> Loading: fetch
+  Loading --> Done: ok
+  Loading --> Error: fail
+  Error --> Idle: retry
+  Done --> [*]
+    </pre>
+  </template>
+  <template class="example" data-title="Pie chart" data-note="Same markup.">
+    <pre class="mermaid">
+pie title Pets
+  "Dogs" : 40
+  "Cats" : 35
+  "Fish" : 25
+    </pre>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-editor" data-title="Text editor" data-desc="Rich text editing with Quill, themed to the active tokens." data-net="1">
+  <template class="example" data-preview="off" data-title="Add these tags" data-note="Requires network (CDN). Stylesheet in head, script after multistyle (defer).">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+  </template>
+  <template class="example" data-title="Basic editor" data-note="div[data-ms-editor] auto-initialises. MS.editor(el, quillOptions) returns the Quill instance (also el.msEditor). data-toolbar=minimal|full.">
+    <div data-ms-editor data-placeholder="Write something…"></div>
+  </template>
+  <template class="example" data-title="Minimal toolbar in a form" data-note="data-name syncs a hidden input, so the editor submits like any field. Submit shows its value in a toast.">
+    <form onsubmit="event.preventDefault(); MS.toast('body = ' + new FormData(this).get('body'), {type:'success'})">
+      <div data-ms-editor data-toolbar="minimal" data-name="body" data-placeholder="Write a note…"></div>
+      <button type="submit">Submit</button>
+    </form>
+  </template>
+  <template class="example" data-title="Alpine: read the content" data-note="Poll for el.msEditor (the CDN script loads async), then listen to Quill's text-change.">
+    <div x-data="{ html: '' }" x-init="const t = setInterval(() => { const q = $refs.ed.msEditor; if (q) { q.on('text-change', () => html = q.root.innerHTML); clearInterval(t); } }, 100)">
+      <div x-ref="ed" data-ms-editor data-placeholder="Type here…"></div>
+      <p>HTML: <code x-text="html"></code></p>
+    </div>
+  </template>
+</section>
+
+<section role="tabpanel" id="c-code" data-title="Code" data-desc="Prism syntax highlighting (CDN bridge) and a textarea code editor" data-net="1">
+  <template class="example" data-title="Load Prism from a CDN" data-note="multistyle-ui never bundles Prism. Load core + the autoloader (languages such as js, ts, html, css, json, bash, python, svelte are fetched on demand). No Prism theme CSS: tokens are themed by multistyle-ui.">
+  <pre><code class="language-html">&lt;script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/components/prism-core.min.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/npm/prismjs@1.30.0/plugins/autoloader/prism-autoloader.min.js"&gt;&lt;/script&gt;
+&lt;script src="multistyle.min.js"&gt;&lt;/script&gt;</code></pre>
+  </template>
+  <template class="example" data-title="Highlighted block" data-note="Read-only: pre &gt; code with a language-* class. Highlighted on load and for nodes added later.">
+  <pre><code class="language-javascript">// themed by the active style, theme and mode
+export function greet(name = "world") {
+  return `Hello, ${name}!`;
+}</code></pre>
+  <pre><code class="language-css">.card { color: var(--ms-c-primary); padding: 1rem; }</code></pre>
+  <pre><code class="language-bash">npm install multistyle-ui &amp;&amp; npm run build</code></pre>
+  </template>
+  <template class="example" data-title="Code editor" data-note="textarea[data-ms-code=lang]: still the form field (name, value). Tab inserts 2 spaces, Shift+Tab outdents, Esc then Tab moves focus away. Works without Prism (no colors).">
+  <textarea data-ms-code="javascript" name="snippet" rows="6">const total = items
+    .filter((i) => i.active)
+    .reduce((sum, i) => sum + i.price, 0);</textarea>
+  </template>
+  <template class="example" data-title="Line numbers" data-note="Add data-ms-lines.">
+  <textarea data-ms-code="json" data-ms-lines rows="6" spellcheck="false">{
+    "name": "multistyle-ui",
+    "styles": 12,
+    "themes": 30
+  }</textarea>
+  </template>
+  <template class="example" data-title="Read-only editor" data-note="The readonly attribute is honoured (Tab moves focus).">
+  <textarea data-ms-code="html" data-ms-lines readonly rows="4">&lt;button class="outline"&gt;Save&lt;/button&gt;</textarea>
+  </template>
+  <template class="example" data-title="In a form" data-note="The textarea posts as usual; reset restores the original text.">
+  <form onsubmit="event.preventDefault(); this.querySelector('output').textContent = new FormData(this).get('src');">
+    <label>Script
+      <textarea data-ms-code="python" name="src" rows="5">def add(a, b):
+      return a + b</textarea>
+    </label>
+    <div role="group"><button type="submit">Submit</button><button type="reset" class="secondary">Reset</button></div>
+    <pre><output>(submitted value appears here)</output></pre>
+  </form>
+  </template>
+  <template class="example" data-title="Manual init" data-note="MS.code(el, {language, lines}) returns {el, update(), destroy()}. Call update() after setting .value in script.">
+  <textarea id="code-manual" rows="4">SELECT * FROM users WHERE active = true;</textarea>
+  <button type="button" onclick="(window.__c ||= MS.code('#code-manual', { language: 'sql', lines: true })).update()">Init / refresh</button>
+  </template>
+</section>
+
+  </div>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

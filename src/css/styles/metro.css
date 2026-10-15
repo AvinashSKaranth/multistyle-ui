@@ -5,9 +5,9 @@
     --ms-transition: .12s linear;
     --ms-shadow-sm: none; --ms-shadow-md: none; --ms-shadow-lg: none;
   }
-  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev]), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { font-weight: 600; padding: .6rem 1.4rem; --_bd: transparent; }
-  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev]), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):hover { border-color: var(--ms-c-text); }
-  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev]), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):active { transform: scale(.97); }
+  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *, nav.pagination *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { font-weight: 600; padding: .6rem 1.4rem; --_bd: transparent; }
+  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *, nav.pagination *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):hover { border-color: var(--ms-c-text); }
+  :where(.style-metro) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *, nav.pagination *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):active { transform: scale(.97); }
   :where(.style-metro) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { --_bd: var(--ms-c-border); background-color: var(--ms-c-surface-3); }
   :where(.style-metro) :where(article) { border: 0; background: var(--ms-c-surface-3); }
   :where(.style-metro) :where(article > header, article > footer) { background: transparent; border: 0; font-weight: 600; }
@@ -19,4 +19,11 @@
   :where(.style-metro) :where([role=tab][aria-selected=true]) { --_fg: var(--ms-c-text); font-weight: 600; border-bottom-width: 0; }
   :where(.style-metro) :where(progress, meter) { height: .35rem; border-radius: 0; }
   :where(.style-metro) :where(progress)::-webkit-progress-value { border-radius: 0; }
+  :where(.style-metro) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--ms-c-border); background-color: var(--ms-c-surface-3); }
+  :where(.style-metro) :where(.ms-toast, dialog.command) { border-radius: 0; box-shadow: none; border: 2px solid var(--ms-c-text); }
+  :where(.style-metro) :where(.ms-toast) { border-inline-start-width: 6px; border-inline-start-color: var(--_c); }
+  :where(.style-metro) :where(nav.pagination :is(a, button)) { border-radius: 0; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-metro) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-metro) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
 }

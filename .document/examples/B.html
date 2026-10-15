@@ -1,0 +1,64 @@
+<!-- panel: c-inputs | Inputs | Text-like inputs, icons and affixes -->
+<template class="example" data-title="Icons and affixes" data-note='The label.field wrapper takes the input look (border, radius, focus ring); inner input is borderless. Slots: .ms-icon, .affix, button.ghost.icon.'>
+  <label class="field"><span class="ms-icon">search</span><input type="search" placeholder="Search" aria-label="Search"><button type="button" class="ghost icon" aria-label="Clear">×</button></label>
+  <label class="field"><span class="affix">https://</span><input placeholder="example" aria-label="Domain"><span class="affix">.com</span></label>
+</template>
+
+<!-- panel: c-floating | Floating label | Label floats up on focus or when filled (CSS only) -->
+<template class="example" data-title="Floating labels" data-note='label.floating > input|textarea|select + span. The input needs placeholder=" " (a single space). Select labels are always floated.'>
+  <label class="floating"><input type="email" placeholder=" "><span>Email</span></label>
+  <label class="floating"><textarea placeholder=" "></textarea><span>Message</span></label>
+  <label class="floating"><select><option>Free</option><option>Pro</option></select><span>Plan</span></label>
+</template>
+
+<!-- panel: c-textarea | Textarea | Autoresize and character counter -->
+<template class="example" data-title="Autoresize and counter" data-note='.autoresize uses field-sizing: content (Chromium/Safari 26); bound rows with style="--min-rows:2;--max-rows:8". data-ms-counter + maxlength appends small.counter (aria-live).'>
+  <textarea class="autoresize" style="--min-rows:2;--max-rows:8" maxlength="200" data-ms-counter placeholder="Type here, it grows"></textarea>
+</template>
+
+<!-- panel: c-select | Select | Native select with an opt-in custom dropdown -->
+<template class="example" data-title="Custom select" data-note='class="custom" opts in to appearance: base-select (Chromium 135+); other browsers keep the native select unchanged.'>
+  <select class="custom" aria-label="Fruit"><option>Apple</option><option>Banana</option><option>Cherry</option><option disabled>Durian (sold out)</option></select>
+</template>
+
+<!-- panel: c-multiselect | Multi-select | Chips, filter and listbox over a real select multiple -->
+<template class="example" data-title="Multi-select" data-note='select[multiple][data-ms-multiselect] stays in the form as the source of truth and fires change (works with Alpine x-model). Keys: Up/Down/Enter/Escape, Backspace removes the last chip. MS.multiselect(el) inits manually.'>
+  <label>Skills
+    <select name="skills" multiple data-ms-multiselect data-placeholder="Pick skills…">
+      <option value="js">JavaScript</option><option value="css" selected>CSS</option><option value="html">HTML</option><option value="py">Python</option>
+    </select>
+  </label>
+</template>
+
+<!-- panel: c-checkbox-radio | Checkbox and radio | Checkbox, radio, switch, sizes, indeterminate -->
+<template class="example" data-title="Sizes and indeterminate" data-note='.sm / .lg scale the control. Indeterminate is set from JS: el.indeterminate = true.'>
+  <label><input type="checkbox" class="sm"> Small</label>
+  <label><input type="checkbox" checked> Default</label>
+  <label><input type="checkbox" class="lg" checked> Large</label>
+  <label><input type="checkbox" id="ex-ind"> Indeterminate</label>
+  <label><input type="radio" name="ex-r" class="lg" checked> Radio</label>
+  <label><input type="checkbox" role="switch" checked> Switch</label>
+  <script>document.getElementById('ex-ind').indeterminate = true;</script>
+</template>
+
+<!-- panel: c-range | Range | Filled track and tick marks -->
+<template class="example" data-title="Range" data-note='The filled track follows the value (forms.js sets --_pct; Firefox uses ::-moz-range-progress). Tick marks: add list= + a datalist, rendered natively by the browser.'>
+  <input type="range" min="0" max="100" value="40" aria-label="Volume">
+  <input type="range" min="0" max="100" step="25" value="50" list="ex-ticks" aria-label="Steps">
+  <datalist id="ex-ticks"><option value="0"></option><option value="25"></option><option value="50"></option><option value="75"></option><option value="100"></option></datalist>
+</template>
+
+<!-- panel: c-rating | Rating | Interactive stars and fractional read-only display -->
+<template class="example" data-title="Display (fractional)" data-note='Read-only: set --value (0-5, any fraction). Sizes .sm / .lg.'>
+  <span class="rating-display" style="--value:3.5" role="img" aria-label="3.5 of 5"></span>
+  <span class="rating-display lg" style="--value:4.2" role="img" aria-label="4.2 of 5"></span>
+</template>
+<template class="example" data-title="Interactive sizes and states" data-note='Radios written 5 to 1. .sm / .lg sizes; fieldset disabled or data-readonly stops hover and input. Half-star input is not supported (use the display for fractions).'>
+  <fieldset class="rating sm"><input type="radio" name="s5" id="s5-5"><label for="s5-5">★</label><input type="radio" name="s5" id="s5-4"><label for="s5-4">★</label><input type="radio" name="s5" id="s5-3" checked><label for="s5-3">★</label><input type="radio" name="s5" id="s5-2"><label for="s5-2">★</label><input type="radio" name="s5" id="s5-1"><label for="s5-1">★</label></fieldset>
+  <fieldset class="rating lg" disabled><input type="radio" name="d5" id="d5-5"><label for="d5-5">★</label><input type="radio" name="d5" id="d5-4"><label for="d5-4">★</label><input type="radio" name="d5" id="d5-3" checked><label for="d5-3">★</label><input type="radio" name="d5" id="d5-2"><label for="d5-2">★</label><input type="radio" name="d5" id="d5-1"><label for="d5-1">★</label></fieldset>
+</template>
+
+<!-- panel: c-dropzone | Dropzone | Drag and drop file area -->
+<template class="example" data-title="Dropzone" data-note='.dragover is toggled while dragging; chosen file names appear in small.files after change. Add multiple for several files.'>
+  <label class="dropzone"><input type="file" multiple>Drop files here or click to browse</label>
+</template>

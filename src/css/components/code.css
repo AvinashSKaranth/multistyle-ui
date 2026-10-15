@@ -1,0 +1,50 @@
+/* Code: Prism token colors (no Prism theme CSS needed) + textarea[data-ms-code] overlay editor. */
+@layer ms.base {
+  :where(pre, .ms-code) {
+    --ms-tk-key: color-mix(in oklab, var(--ms-c-primary) 78%, var(--ms-c-text));
+    --ms-tk-fn: color-mix(in oklab, var(--ms-c-secondary) 78%, var(--ms-c-text));
+    --ms-tk-str: color-mix(in oklab, var(--ms-c-success) 70%, var(--ms-c-text));
+    --ms-tk-num: color-mix(in oklab, var(--ms-c-warning) 70%, var(--ms-c-text));
+    --ms-tk-var: color-mix(in oklab, var(--ms-c-error) 70%, var(--ms-c-text));
+    --ms-tk-dim: color-mix(in oklab, var(--ms-c-muted) 80%, var(--ms-c-surface));
+  }
+  :where(.token.comment, .token.prolog, .token.doctype, .token.cdata) { color: var(--ms-c-muted); font-style: italic; }
+  :where(.token.punctuation, .token.operator, .token.entity, .token.url) { color: var(--ms-tk-dim); }
+  :where(.token.keyword, .token.atrule, .token.selector, .token.important, .token.module) { color: var(--ms-tk-key); }
+  :where(.token.function, .token.class-name, .token.tag, .token.attr-name, .token.property, .token.maybe-class-name) { color: var(--ms-tk-fn); }
+  :where(.token.string, .token.char, .token.attr-value, .token.builtin, .token.inserted, .token.template-string) { color: var(--ms-tk-str); }
+  :where(.token.number, .token.boolean, .token.constant, .token.symbol, .token.unit) { color: var(--ms-tk-num); }
+  :where(.token.regex, .token.variable, .token.deleted, .token.parameter) { color: var(--ms-tk-var); }
+  :where(.token.important, .token.bold) { font-weight: 700; }
+  :where(.token.italic) { font-style: italic; }
+
+  /* editor: textarea (transparent text) laid exactly over a highlighted <pre>; all three layers share one grid cell */
+  :where(.ms-code) {
+    --ms-code-pad: .75rem; --ms-code-gut: 0px;
+    display: grid; position: relative; margin-bottom: var(--ms-space); overflow: hidden;
+    background: var(--ms-c-surface-2); border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-input);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .875rem; line-height: 1.55; tab-size: 2;
+    transition: border-color var(--ms-transition), box-shadow var(--ms-transition);
+  }
+  :where(.ms-code[data-lines]) { --ms-code-gut: 3.25rem; }
+  :where(.ms-code:focus-within) { border-color: var(--ms-c-primary); box-shadow: 0 0 0 3px var(--ms-c-focus); }
+  .ms-code > :is(pre, textarea) {
+    grid-area: 1 / 1; margin: 0; min-width: 0; box-sizing: border-box; border: 0; border-radius: 0; box-shadow: none; outline: 0;
+    font: inherit; letter-spacing: 0; tab-size: inherit; white-space: pre; overflow-wrap: normal; word-break: normal;
+    padding: var(--ms-code-pad) calc(var(--ms-code-pad) + 1.5rem) calc(var(--ms-code-pad) + 1.5rem) calc(var(--ms-code-pad) + var(--ms-code-gut));
+  }
+  .ms-code > pre { overflow: hidden; background: none; color: var(--ms-c-text); pointer-events: none; }
+  .ms-code > pre code { padding: 0; background: none; font: inherit; color: inherit; display: block; }
+  .ms-code > textarea {
+    width: 100%; height: auto; min-height: 8rem; resize: vertical; overflow: auto; background: transparent; color: transparent;
+    caret-color: var(--ms-c-text); z-index: 1; transition: none;
+  }
+  .ms-code > textarea::selection { background: var(--ms-c-focus); color: transparent; }
+  .ms-code > textarea::placeholder { color: var(--ms-c-muted); }
+  .ms-code > textarea:disabled { opacity: .6; }
+  .ms-code > .ms-code-gutter {
+    justify-self: start; width: var(--ms-code-gut); text-align: right; color: var(--ms-c-muted); user-select: none;
+    border-right: var(--ms-c-border-w) solid var(--ms-c-border); background: var(--ms-c-surface-3);
+    padding: var(--ms-code-pad) .6rem calc(var(--ms-code-pad) + 1.5rem) 0;
+  }
+}

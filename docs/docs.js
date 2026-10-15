@@ -16,27 +16,75 @@
     }
   }
 
-  // innerHTML serialises JSON attrs as &quot; - turn them back into readable '...' attrs
-  const pretty = (h) => h.replace(/(\s[\w:@.-]+)="([^"]*&quot;[^"]*)"/g, (m, a, v) => `${a}='${v.replaceAll('&quot;', '"')}'`).replaceAll('=""', '');
+  // innerHTML serialises JSON attrs as &quot; - turn them back into readable '...' attrs; text nodes escape > (e.g. mermaid -->)
+  const pretty = (h) => h.replace(/(\s[\w:@.-]+)="([^"]*&quot;[^"]*)"/g, (m, a, v) => `${a}='${v.replaceAll('&quot;', '"')}'`).replaceAll('=""', '').replaceAll('&gt;', '>');
   function dedent(s) {
     const lines = s.replace(/^\s*\n/, '').replace(/\s+$/, '').split('\n');
     const ind = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^\s*/)[0].length));
     return lines.map((l) => l.slice(ind)).join('\n');
   }
 
+  // One template -> Preview/Code toggle (nested tablist, ids generated) + note. preview=off -> code only.
+  let n = 0;
   function render(t) {
     const { title = '', note = '', preview = 'on' } = t.dataset;
     const ex = document.createElement('div');
     ex.className = 'ex';
     const code = t.dataset.code || dedent(pretty(t.innerHTML));
-    ex.innerHTML = `<div class="ex-head"><strong></strong><button type="button" class="sm outline secondary" data-copy>Copy</button></div>` +
-      (preview === 'off' ? '' : '<div class="ex-preview"></div>') + '<pre><code></code></pre>' + (note ? '<p class="ex-note"><small></small></p>' : '');
+    const id = 'ex' + ++n;
+    const copyBtn = '<button type="button" class="sm outline secondary" data-copy>Copy</button>';
+    ex.innerHTML = '<div class="ex-head"><strong></strong>' + (preview === 'off' ? copyBtn : '') + '</div>' +
+      (preview === 'off'
+        ? '<pre><code></code></pre>'
+        : `<div role="tablist" aria-label="View"><button type="button" role="tab" aria-controls="${id}-p" aria-selected="true">Preview</button><button type="button" role="tab" aria-controls="${id}-c">Code</button></div>` +
+          `<div role="tabpanel" id="${id}-p" class="ex-preview"></div><div role="tabpanel" id="${id}-c" class="ex-code" hidden>${copyBtn}<pre><code></code></pre></div>`) +
+      (note ? '<p class="ex-note"><small></small></p>' : '');
     $('strong', ex).textContent = title;
     $('code', ex).textContent = code;
     if (note) $('small', ex).textContent = note;
     ex._code = code;
     if (preview !== 'off') $('.ex-preview', ex).append(t.content.cloneNode(true));
     t.replaceWith(ex);
+  }
+
+  // Component explorer: one tab per [role=tabpanel] child of #explorer
+  const ex = $('#explorer');
+  if (ex) {
+    const panels = $$(':scope > section[role=tabpanel]', ex);
+    const list = document.createElement('div');
+    list.setAttribute('role', 'tablist'); list.setAttribute('aria-orientation', 'vertical'); list.setAttribute('aria-label', 'Components');
+    list.className = 'explorer-tabs';
+    const wrap = document.createElement('div');
+    wrap.className = 'explorer-panels';
+    panels.forEach((p, i) => {
+      const { title, desc, net } = p.dataset;
+      const tab = document.createElement('button');
+      tab.type = 'button'; tab.setAttribute('role', 'tab'); tab.setAttribute('aria-controls', p.id);
+      tab.setAttribute('aria-selected', i === 0); tab.tabIndex = i ? -1 : 0;
+      tab.textContent = title + (net ? ' (CDN)' : '');
+      list.append(tab);
+      p.hidden = i > 0;
+      p.insertAdjacentHTML('afterbegin', '<h3></h3><p class="desc"></p>' + (net ? '<p role="alert" data-type="warning" class="net">Requires network (CDN). The rest of this page works offline.</p>' : ''));
+      $('h3', p).textContent = title; $('.desc', p).textContent = desc;
+      wrap.append(p);
+    });
+    ex.append(list, wrap);
+
+    const show = (p) => {
+      if (location.hash !== '#' + p.id) history.replaceState(null, '', '#' + p.id);
+      // hidden panels measure 0: re-fit charts, render diagrams that missed layout
+      $$('canvas', p).forEach((c) => window.Chart?.getChart(c)?.resize());
+      if (window.MS?.mermaid) $$('pre.mermaid', p).forEach((m) => m.querySelector('svg') || MS.mermaid(m));
+    };
+    new MutationObserver((ms) => ms.forEach((m) => panels.includes(m.target) && !m.target.hidden && show(m.target)))
+      .observe(wrap, { attributes: true, attributeFilter: ['hidden'], subtree: true });
+    const fromHash = () => {
+      const tab = $(`[role=tab][aria-controls="${decodeURIComponent(location.hash.slice(1))}"]`, list);
+      if (tab) { tab.click(); return true; }
+    };
+    addEventListener('hashchange', fromHash);
+    // MS wires tabs on DOMContentLoaded (registered before this one), so click works here
+    document.addEventListener('DOMContentLoaded', () => fromHash() && $('#components')?.scrollIntoView());
   }
   $$('template.example').forEach(render);
 
@@ -104,6 +152,12 @@ document.addEventListener('alpine:init', () => {
       let t = `<body class=${q}style-${m.style} theme-${m.theme} mode-${m.mode}${q}`;
       if (m.theme === 'custom') t += `\n      style=${q}--ms-primary:${this.p}; --ms-secondary:${this.s}; --ms-surface:${this.f}${q}`;
       return t + '>';
+    },
+    customTag() {
+      this.tick;
+      const m = Alpine.store('ms');
+      return `<body class="style-${m.style} theme-custom mode-${m.mode}"
+      style="--ms-primary:${this.p}; --ms-secondary:${this.s}; --ms-surface:${this.f}">`;
     },
   }));
 });

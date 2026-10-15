@@ -7,4 +7,20 @@
   :where(.carousel.full > *) { flex-basis: 100%; }
   :where(.carousel > img) { height: 100%; object-fit: cover; }
   :where(.carousel:focus-visible) { outline: 3px solid var(--ms-c-focus); outline-offset: 2px; }
+
+  :where(.carousel-wrap) { position: relative; margin-bottom: var(--ms-space); }
+  :where(.carousel-wrap > .carousel) { margin-bottom: 0; }
+  :where(.carousel-prev, .carousel-next) {
+    position: absolute; top: calc(50% - 1.25rem); z-index: 1; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; margin: 0; padding: 0; border-radius: 50%;
+    border: var(--ms-c-border-w) solid var(--ms-c-border); background: var(--ms-c-surface); color: var(--ms-c-text); box-shadow: var(--ms-shadow-md); font-size: 1.4rem; line-height: 1; cursor: pointer; opacity: .9;
+  }
+  :where(.carousel-prev:hover, .carousel-next:hover) { background: var(--ms-c-surface-3); opacity: 1; }
+  :where(.carousel-prev) { inset-inline-start: .5rem; }
+  :where(.carousel-next) { inset-inline-end: .5rem; }
+  :where(.carousel-dots) { display: flex; justify-content: center; gap: .5rem; margin-top: .5rem; }
+  :where(.carousel-dots > button) {
+    width: .65rem; height: .65rem; min-width: 0; margin: 0; padding: 0; border: 0; border-radius: 50%; background: var(--ms-c-border); box-shadow: none; cursor: pointer; transition: transform var(--ms-transition), background var(--ms-transition);
+  }
+  :where(.carousel-dots > button:hover) { background: var(--ms-c-muted); }
+  :where(.carousel-dots > button[aria-current]) { background: var(--ms-c-primary); transform: scale(1.3); }
 }

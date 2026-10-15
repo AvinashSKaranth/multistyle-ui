@@ -7,4 +7,7 @@
   :where(.skeleton > *) { visibility: hidden; }
   :where(.skeleton.avatar) { border-radius: 50%; }
   @keyframes ms-shimmer { to { background-position: -200% 0; } }
+  :where(.skeleton.circle) { aspect-ratio: 1; border-radius: 50%; }
+  :where(.skeleton.text) { height: 1em; min-height: 0; margin-block: .35em; }
+  :where(.skeleton.rect) { border-radius: var(--ms-c-radius-card); }
 }

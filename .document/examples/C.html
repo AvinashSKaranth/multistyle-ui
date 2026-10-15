@@ -1,0 +1,77 @@
+<!-- panel: c-command | Command palette | Ctrl/Cmd+K palette with grouped, filterable options. -->
+<template class="example" data-title="Command palette" data-note="dialog.command; press Ctrl/Cmd+K or call MS.command('#cmd'). Options: data-group, data-keywords, data-shortcut, data-href. Listen for ms:command.">
+  <button onclick="MS.command('#cmd')">Open palette <kbd>Ctrl K</kbd></button>
+  <dialog class="command" id="cmd">
+    <input type="search" placeholder="Type a command…" aria-label="Command">
+    <ul role="listbox">
+      <li role="option" data-group="Navigation" data-keywords="home start" data-shortcut="G H">Go home</li>
+      <li role="option" data-group="Navigation" data-keywords="preferences" data-shortcut="G S">Settings</li>
+      <li role="option" data-group="Actions" data-keywords="new add" data-shortcut="N">New document</li>
+      <li role="option" data-group="Actions" data-keywords="dark light mode">Toggle theme</li>
+    </ul>
+  </dialog>
+</template>
+
+<!-- panel: c-sortable | Sortable list | Drag, touch or keyboard reorder. -->
+<template class="example" data-title="Sortable list" data-note="Drag, or focus an item: Space grabs, arrows move, Space/Enter drops, Escape cancels. Fires ms:sort {from, to, order}. data-ms-sortable=&quot;horizontal&quot; for rows.">
+  <ul data-ms-sortable>
+    <li id="a">Alpha</li><li id="b">Bravo</li><li id="c">Charlie</li><li id="d">Delta</li>
+  </ul>
+</template>
+<template class="example" data-title="With drag handle" data-note="Add [data-ms-handle]; only the handle starts a drag (and takes focus for keyboard).">
+  <ol data-ms-sortable>
+    <li><span data-ms-handle aria-label="Reorder">⠿</span> Write docs</li>
+    <li><span data-ms-handle aria-label="Reorder">⠿</span> Ship it</li>
+    <li><span data-ms-handle aria-label="Reorder">⠿</span> Celebrate</li>
+  </ol>
+</template>
+
+<!-- panel: c-carousel | Carousel | Scroll-snap carousel with arrows, dots, autoplay. -->
+<template class="example" data-title="Carousel with arrows and dots" data-note="data-ms-arrows, data-ms-dots, data-ms-autoplay=&quot;4000&quot; (pauses on hover/focus; off for reduced motion). Loops.">
+  <div class="carousel full" tabindex="0" aria-label="Slides" data-ms-arrows data-ms-dots>
+    <div class="demo-box">Slide 1</div><div class="demo-box">Slide 2</div><div class="demo-box">Slide 3</div><div class="demo-box">Slide 4</div>
+  </div>
+</template>
+
+<!-- panel: c-pagination | Pagination | Generated pager with ellipsis. -->
+<template class="example" data-title="Generated pagination" data-note="data-ms-pages, data-ms-page, data-ms-window. Fires ms:page {page}. MS.paginate(nav, {total, current, window}).">
+  <nav class="pagination" aria-label="Pages" data-ms-pages="20" data-ms-page="3" data-ms-window="1"></nav>
+</template>
+
+<!-- panel: c-group | Button group | Joined buttons with single/multi select. -->
+<template class="example" data-title="Single select" data-note="role=group + data-ms-select=single|multi toggles aria-pressed; fires ms:select {values}.">
+  <div role="group" data-ms-select="single" aria-label="View">
+    <button class="outline" aria-pressed="true">Day</button><button class="outline">Week</button><button class="outline">Month</button>
+  </div>
+</template>
+<template class="example" data-title="Multi select, vertical" data-note="aria-orientation=vertical stacks the group.">
+  <div role="group" data-ms-select="multi" aria-orientation="vertical" aria-label="Format">
+    <button class="outline">Bold</button><button class="outline">Italic</button><button class="outline">Underline</button>
+  </div>
+</template>
+
+<!-- panel: c-dropdown | Dropdown & popover | Anchored menus and popovers with placement. -->
+<template class="example" data-title="Dropdown menu" data-note="menu[popover] opened by popovertarget; arrow keys, Home/End move focus; closes on item click.">
+  <button popovertarget="m1">Actions ▾</button>
+  <menu popover id="m1">
+    <li><button>Edit <kbd>E</kbd></button></li>
+    <li><button>Duplicate <kbd>D</kbd></button></li>
+    <li><hr></li>
+    <li><button class="active">Archive</button></li>
+    <li><button data-danger>Delete</button></li>
+  </menu>
+</template>
+<template class="example" data-title="Popover placement" data-note="data-placement: top|bottom|left|right + -start/-end (CSS anchor positioning; flips when out of space).">
+  <button popovertarget="p1">Right-start</button>
+  <div popover id="p1" data-placement="right-start">Placed beside the trigger.</div>
+</template>
+<template class="example" data-title="Hover popover" data-note="data-ms-hover-popover=&quot;#id&quot; shows on hover/focus, hides 100ms after leaving.">
+  <button class="outline" data-ms-hover-popover="#p2">Hover me</button>
+  <div popover="manual" id="p2" data-placement="top">Hover content</div>
+</template>
+
+<!-- panel: c-alert | Dismissable alert | data-ms-dismiss removes its alert/chip/toast. -->
+<template class="example" data-title="Dismiss" data-note="Any [data-ms-dismiss] click removes the closest [role=alert], .chip, .ms-toast or [data-ms-dismissable]; fires ms:dismiss first.">
+  <div role="alert" data-type="info">Heads up, this can be dismissed. <button class="ghost sm" data-ms-dismiss aria-label="Dismiss">×</button></div>
+  <span class="chip">Tag <button data-ms-dismiss aria-label="Remove"></button></span>
+</template>

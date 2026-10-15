@@ -1,0 +1,104 @@
+/* Material text fields for label.floating (see field.css for the generic floating label other styles keep).
+   filled   = MDC / M2 (default + style-material)      outlined = M3 (style-material3)
+   Forced in any style with label.floating.filled / .outlined.
+   Lives in ms.utils (last layer) so it also beats style-layer input rules when forced; zero specificity otherwise. */
+@layer ms.utils {
+  /* ---- shared structure: any floating label that is filled/outlined (explicit or by style) ---- */
+  :where(label.floating:where(.filled, .outlined, :not(:where([class^="style-"], [class*=" style-"]):not(.style-material, .style-material3) *))) {
+    --_ln: var(--ms-c-muted); --_lc: var(--ms-c-muted); --_ac: var(--ms-c-primary);
+    --_tx: 16px; --_tex: 16px; --_np: 0px; --_bw: 0px; --_top-f: 8px; --_nb: transparent;
+    --_ease: 180ms cubic-bezier(.4, 0, .2, 1);
+    position: relative; display: block; margin-bottom: var(--ms-space); font-weight: 400;
+
+    :where(& > :is(input, select, textarea)) {
+      display: block; width: 100%; height: 56px; margin: 0; box-sizing: border-box;
+      padding: 20px calc(var(--_tex) - var(--_bw)) 6px calc(var(--_tx) - var(--_bw));
+      font: inherit; font-size: 16px; line-height: 24px; color: var(--ms-c-text); caret-color: var(--ms-c-primary);
+      box-shadow: none; outline: 0; cursor: text;
+      transition: border-color var(--_ease), background-color var(--_ease);
+    }
+    /* arrow in an explicit colour: currentColor goes transparent for the empty choice below */
+    :where(& > select) {
+      cursor: pointer; --_tex: 40px; --_arrow: var(--ms-c-muted);
+      background-image: linear-gradient(45deg, transparent 50%, var(--_arrow) 50%), linear-gradient(135deg, var(--_arrow) 50%, transparent 50%);
+    }
+    :where(& > select:focus) { --_arrow: var(--ms-c-primary); }
+    :where(& > textarea) { height: auto; min-height: 5rem; padding-top: 28px; padding-bottom: 8px; resize: vertical; }
+    :where(& > :is(input, textarea)::placeholder) { color: transparent; }
+    :where(& > :is(input, textarea):focus::placeholder) { color: var(--ms-c-muted); }
+    :where(& > select:not(:focus):has(> option[value=""]:checked)) { color: transparent; } /* empty choice: show only the label */
+
+    /* label */
+    :where(& > span:not(.ms-icon)) {
+      position: absolute; inset-inline: calc(var(--_tx) - var(--_np)) auto; top: 16px; box-sizing: border-box;
+      max-width: calc(100% - var(--_tx) - var(--_tex) + 2 * var(--_np)); padding-inline: var(--_np); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+      font-size: 16px; line-height: 24px; color: var(--_lc); background: transparent; transform: none; pointer-events: none;
+      transition: top var(--_ease), font-size var(--_ease), line-height var(--_ease), color var(--_ease);
+    }
+    :where(& > :is(input, textarea):is(:focus, :not(:placeholder-shown)) + span,
+           & > select:is(:focus, :not(:has(> option[value=""]:checked))) + span,
+           & > input:is([type=date], [type=time], [type=month], [type=week], [type=datetime-local], [type=color], [type=file]) + span) {
+      top: var(--_top-f); font-size: 12px; line-height: 16px; background: var(--_nb);
+    }
+
+    /* icons: leading = first child, trailing = after the label span */
+    :where(&:has(> :is(.ms-icon, button, [role=button]):first-child)) { --_tx: 52px; }
+    :where(&:has(> span:not(.ms-icon) ~ :is(.ms-icon, button, [role=button]))) { --_tex: 52px; }
+    :where(& > .ms-icon) { position: absolute; top: 16px; margin: 0; font-size: 24px; vertical-align: top; color: var(--ms-c-muted); pointer-events: none; }
+    :where(& > .ms-icon:first-child) { inset-inline-start: 12px; }
+    :where(& > span:not(.ms-icon) ~ .ms-icon) { inset-inline-end: 12px; }
+    :where(& > :is(button, [role=button])) { position: absolute; top: 8px; margin: 0; }
+    :where(& > :is(button, [role=button]):first-child) { inset-inline-start: 4px; }
+    :where(& > span:not(.ms-icon) ~ :is(button, [role=button])) { inset-inline-end: 4px; }
+
+    /* states (order matters: hover < focus < invalid < disabled) */
+    :where(&:hover) { --_ln: var(--ms-c-text); }
+    :where(&:focus-within) { --_lc: var(--ms-c-primary); }
+    :where(&:has(> :is(input, select, textarea):is(:user-invalid, [aria-invalid=true]))) { --_ln: var(--ms-c-error); --_lc: var(--ms-c-error); --_ac: var(--ms-c-error); }
+    :where(&:has(> :is(input, select, textarea):disabled)) { opacity: .38; }
+    :where(& > :is(input, select, textarea):disabled) { cursor: not-allowed; color: inherit; }
+
+    /* helper text after the label; counter (forms.js) sits right before/after it on the same line */
+    :where(& + small) {
+      display: block; margin: calc(4px - var(--ms-space)) 0 var(--ms-space); padding-inline: 16px; font-size: 12px; line-height: 16px; color: var(--ms-c-muted);
+    }
+    :where(& + small.counter) { text-align: end; font-variant-numeric: tabular-nums; }
+    :where(& + small.counter:has(+ small:not(.counter))) { float: inline-end; margin-top: 4px; margin-bottom: 0; } /* float sits at the label's bottom edge: margins don't collapse */
+    :where(& + small.counter.full) { color: var(--ms-c-error); }
+    :where(&:has(> :is(input, select, textarea):is(:user-invalid, [aria-invalid=true])) + small:not(.counter),
+           &:has(> :is(input, select, textarea):is(:user-invalid, [aria-invalid=true])) + small.counter + small) { color: var(--ms-c-error); }
+  }
+
+  /* ---- filled (M2): default, style-material, or .filled ---- */
+  :where(label.floating:where(.filled, :not(.outlined, :where([class^="style-"], [class*=" style-"]):not(.style-material) *))) {
+    :where(& > :is(input, select, textarea)) {
+      border: 0; border-bottom: 1px solid var(--_ln); border-radius: 4px 4px 0 0;
+      background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 4%);
+    }
+    :where(&:hover > :is(input, select, textarea):not(:disabled)) { background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 8%); }
+    :where(& > :is(input, select, textarea):disabled) { border-bottom-style: dotted; background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 4%); }
+    /* activation indicator: 2px line growing from the centre */
+    &::after {
+      content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 2px; background: var(--_ac); pointer-events: none;
+      transform: scaleX(0); transition: transform var(--_ease);
+    }
+    :where(&:focus-within)::after { transform: scaleX(1); }
+  }
+
+  /* ---- outlined (M3): style-material3, or .outlined ---- */
+  :where(label.floating:where(.outlined, :not(.filled):where(.style-material3 *))) {
+    --_bw: 1px; --_np: 4px; --_top-f: -8px; --_nb: var(--ms-field-bg, var(--ms-c-surface));
+    :where(& > :is(input, select, textarea)) {
+      padding-block: 0; border: var(--_bw) solid var(--_ln); border-radius: 4px; background-color: transparent;
+      transition: border-color var(--_ease);
+    }
+    :where(& > textarea) { padding-block: 16px; }
+    :where(&:focus-within) { --_bw: 2px; --_ln: var(--_ac); }
+    :where(&:has(> :is(input, select, textarea):disabled)) { --_ln: var(--ms-c-border); }
+    :where(& > :is(input, select, textarea):disabled) { background-color: transparent; }
+  }
+
+  /* notch background follows the container the field sits on */
+  :where(article, [popover]) { --ms-field-bg: var(--ms-c-card); }
+  :where(article article) { --ms-field-bg: var(--ms-c-surface); }
+}

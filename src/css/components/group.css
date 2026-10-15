@@ -9,4 +9,10 @@
   :where([role="group"] > :is(:hover, :focus, :focus-visible)) { position: relative; z-index: 1; }
   :where([role="group"] > :is(button, [role="button"])) { box-shadow: none; }
   :where([role="group"] > :is(button, [role="button"]):focus-visible) { outline-offset: -3px; }
+  [role="group"] > :is(button, [role="button"])[aria-pressed="true"] { --_bg: var(--_c); --_hbg: var(--ms-c-primary-600); --_fg: var(--_on); --_bd: var(--_c); }
+  :where([role="group"][aria-orientation="vertical"]) { flex-direction: column; }
+  :where([role="group"][aria-orientation="vertical"] > *) { margin-inline-start: 0; border-radius: 0; }
+  :where([role="group"][aria-orientation="vertical"] > :not(:first-child)) { margin-block-start: calc(var(--ms-c-border-w) * -1); }
+  :where([role="group"][aria-orientation="vertical"] > :first-child) { border-start-start-radius: var(--ms-c-radius-btn); border-start-end-radius: var(--ms-c-radius-btn); }
+  :where([role="group"][aria-orientation="vertical"] > :last-child) { border-end-start-radius: var(--ms-c-radius-btn); border-end-end-radius: var(--ms-c-radius-btn); }
 }

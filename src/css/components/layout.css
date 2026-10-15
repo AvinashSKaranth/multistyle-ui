@@ -5,8 +5,24 @@
   @media (min-width: 1024px) { :where(.container) { max-width: 960px; } }
   @media (min-width: 1280px) { :where(.container) { max-width: 1200px; } }
   :where(.grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--ms-space); margin-bottom: var(--ms-space); }
+  :where(.grid[style*="--cols"]) { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); }
+  :where(.grid[style*="--min"]) { grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--min)), 1fr)); }
   :where(.grid > *) { min-width: 0; }
   :where(.grid > :is(article, form, label)) { margin-bottom: 0; }
   :where(.row) { display: flex; flex-wrap: wrap; gap: var(--ms-space); margin-bottom: var(--ms-space); }
   :where(.col) { flex: 1 1 min(100%, 14rem); min-width: 0; }
+  :where(.column) { display: flex; flex-direction: column; gap: var(--ms-space); }
+  :where(.justify-between) { justify-content: space-between; }
+  :where(.justify-center) { justify-content: center; }
+  :where(.justify-end) { justify-content: flex-end; }
+  :where(.align-start) { align-items: flex-start; }
+  :where(.align-center) { align-items: center; }
+  :where(.align-end) { align-items: flex-end; }
+  /* labelled divider: <div class="divider">OR</div>; vertical: .divider.vertical or <span class="vr"> inside a flex row */
+  :where(.divider) { display: flex; align-items: center; gap: .75rem; margin-block: var(--ms-space); color: var(--ms-c-muted); font-size: .875rem; text-transform: uppercase; letter-spacing: .05em; }
+  :where(.divider)::before, :where(.divider)::after { content: ""; flex: 1; border-top: var(--ms-c-border-w) solid var(--ms-c-border); }
+  :where(.divider:empty)::after { content: none; }
+  :where(.divider.vertical) { align-self: stretch; flex-direction: column; min-height: 1.5rem; margin-block: 0; margin-inline: .5rem; }
+  :where(.divider.vertical)::before, :where(.divider.vertical)::after { border-top: 0; border-inline-start: var(--ms-c-border-w) solid var(--ms-c-border); }
+  :where(.vr) { align-self: stretch; display: inline-block; width: 0; min-height: 1.5rem; margin-inline: .5rem; border-inline-start: var(--ms-c-border-w) solid var(--ms-c-border); }
 }

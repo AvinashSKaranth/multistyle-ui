@@ -1,0 +1,21 @@
+@layer ms.base {
+  :where(dialog.command) {
+    width: min(100% - var(--ms-space) * 2, 40rem); margin: 15vh auto auto; padding: 0; overflow: hidden;
+    border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-card); background: var(--ms-c-surface); color: var(--ms-c-text); box-shadow: var(--ms-shadow-lg);
+  }
+  :where(dialog.command > input) {
+    display: block; width: 100%; margin: 0; padding: 1rem 1.25rem; border: 0; border-bottom: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: 0; background: transparent; box-shadow: none; font-size: 1.05rem;
+  }
+  :where(dialog.command > input:focus) { outline: none; box-shadow: none; }
+  :where(dialog.command > [role="listbox"]) { max-height: min(24rem, 60dvh); margin: 0; padding: .35rem; overflow-y: auto; list-style: none; }
+  :where(dialog.command li) { margin: 0; padding: 0; list-style: none; }
+  :where(dialog.command [role="option"]) {
+    display: flex; align-items: center; gap: .6rem; padding: .55rem .75rem; border-radius: var(--ms-c-radius-input); cursor: pointer;
+  }
+  :where(dialog.command [role="option"][hidden]) { display: none; }
+  :where(dialog.command [role="option"][aria-selected="true"]) { background: var(--ms-c-primary); color: var(--ms-c-on-primary); }
+  :where(dialog.command [role="option"] kbd) { margin-inline-start: auto; font-size: .75rem; opacity: .85; }
+  :where(dialog.command [role="option"][aria-selected="true"] kbd) { background: color-mix(in oklch, var(--ms-c-on-primary) 18%, transparent); color: inherit; border-color: transparent; box-shadow: none; }
+  :where(dialog.command .group) { padding: .6rem .75rem .25rem; color: var(--ms-c-muted); font-size: .75rem; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  :where(dialog.command .empty) { padding: 1.5rem; color: var(--ms-c-muted); text-align: center; }
+}

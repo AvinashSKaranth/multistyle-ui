@@ -1,0 +1,124 @@
+<!-- Agent A examples. Merge into docs/components.html: each "panel:" comment = <section role="tabpanel" id data-title data-desc>. -->
+
+<!-- panel: c-buttons | Buttons | button, input[type=submit] and [role=button] share one look; classes add variants and sizes. -->
+<template class="example" data-title="Tonal and info buttons" data-note="Opt-in .tonal (soft fill) and .info status colour; both combine with .secondary, .success, .warning, .error, .sm, .lg.">
+  <button class="tonal">Tonal</button>
+  <button class="tonal secondary">Tonal secondary</button>
+  <button class="tonal error">Tonal error</button>
+  <button class="info">Info</button>
+  <button class="tonal info">Tonal info</button>
+  <button class="tonal sm" disabled>Disabled</button>
+</template>
+
+<!-- panel: c-icons | Icons | Material Symbols Outlined ligature icons, loaded on demand. -->
+<template class="example" data-title="Icons" data-note='span.ms-icon with the ligature name. The font loads from Google Fonts only when a .ms-icon exists; ligature text is hidden until ready. Opt out / self-host: body data-ms-icons="off". Add .filled for the solid style. Without the font (offline) icons stay blank, so keep aria-hidden and a text label or aria-label.'>
+  <button><span class="ms-icon" aria-hidden="true">star</span> Favourite</button>
+  <button class="tonal"><span class="ms-icon filled" aria-hidden="true">favorite</span> Like</button>
+  <button class="icon outline" aria-label="Settings"><span class="ms-icon" aria-hidden="true">settings</span></button>
+  <button class="fab" aria-label="Add"><span class="ms-icon" aria-hidden="true">add</span></button>
+  <span class="chip"><span class="ms-icon" aria-hidden="true">sell</span> Tag</span>
+  <span class="badge"><span class="ms-icon" aria-hidden="true">bolt</span> New</span>
+</template>
+<template class="example" data-title="Icon in an input" data-note="Put the icon before the input inside its label.">
+  <label>Search <span class="ms-icon" aria-hidden="true">search</span><input type="search" placeholder="Search"></label>
+</template>
+
+<!-- panel: c-modal | Modal | A native dialog with focus trap and Esc built in. -->
+<template class="example" data-title="Modal sizes" data-note="data-size=sm|md|lg|full on the dialog (md is the default).">
+  <button class="sm" data-ms-open="#dlg-sm">Small</button>
+  <button class="sm" data-ms-open="#dlg-lg">Large</button>
+  <button class="sm" data-ms-open="#dlg-full">Full screen</button>
+  <dialog id="dlg-sm" data-size="sm"><article><header><button rel="prev" aria-label="Close"></button><h3>Small</h3></header><p>Narrow dialog.</p></article></dialog>
+  <dialog id="dlg-lg" data-size="lg"><article><header><button rel="prev" aria-label="Close"></button><h3>Large</h3></header><p>Wide dialog for tables and forms.</p></article></dialog>
+  <dialog id="dlg-full" data-size="full"><article><header><button rel="prev" aria-label="Close"></button><h3>Full screen</h3></header><p>Fills the viewport.</p></article></dialog>
+</template>
+
+<!-- panel: c-drawer | Drawer | dialog.drawer slides in from a side. -->
+<template class="example" data-title="Top and bottom drawers" data-note="data-side=top|bottom gives a full-width sheet that slides vertically; left/right as before.">
+  <button data-ms-open="#drw-top">Top</button>
+  <button class="secondary" data-ms-open="#drw-bottom">Bottom sheet</button>
+  <dialog class="drawer" data-side="top" id="drw-top"><article><header><button rel="prev" aria-label="Close"></button><h3>Top drawer</h3></header><p>Slides down from the top.</p></article></dialog>
+  <dialog class="drawer" data-side="bottom" id="drw-bottom"><article><header><button rel="prev" aria-label="Close"></button><h3>Bottom sheet</h3></header><p>Slides up from the bottom.</p></article></dialog>
+</template>
+
+<!-- panel: c-alert | Alert | Inline status messages. -->
+<template class="example" data-title="Alert icons, title and dismiss" data-note='Each data-type gets a default icon (data-icon="none" removes it). A leading strong is the title. A .close button with data-ms-dismiss removes the alert.'>
+  <div role="alert" data-type="success"><strong>Saved</strong>Your changes were stored.<button class="close" aria-label="Close" data-ms-dismiss></button></div>
+  <div role="alert" data-type="warning">Disk space is low.</div>
+  <div role="alert" data-type="error"><strong>Failed</strong>Could not reach the server.</div>
+  <div role="alert" data-icon="none">Plain info alert without an icon.</div>
+</template>
+
+<!-- panel: c-toast | Toast | Transient messages, declarative or from JS. -->
+<template class="example" data-title="Toast positions and titles" data-note="MS.toast(msg, {type, timeout, dismissible, title, position, icon}). position: top|bottom + left|center|right (default bottom-right). icon is a Material Symbols name; omit for the per-type default. Declarative: data-ms-toast-position, data-ms-toast-title.">
+  <button onclick="MS.toast('Profile updated', {type:'success', title:'Saved', position:'top-right'})">Top right</button>
+  <button class="secondary" onclick="MS.toast('Connection lost', {type:'error', position:'bottom-center', icon:'wifi_off'})">Bottom center + icon</button>
+  <button class="outline" data-ms-toast="Hello" data-ms-toast-title="Heads up" data-ms-toast-position="top-left">Declarative top left</button>
+</template>
+
+<!-- panel: c-divider | Divider | Plain and labelled separators. -->
+<template class="example" data-title="Divider" data-note="hr stays plain. Use .divider for a label; .vr or .divider.vertical inside a flex row for a vertical rule.">
+  <hr>
+  <div class="divider">OR</div>
+  <div class="row align-center"><span>Left</span><span class="vr"></span><span>Middle</span><span class="vr"></span><span>Right</span></div>
+</template>
+
+<!-- panel: c-card | Card | article is a card; modifiers change elevation and padding. -->
+<template class="example" data-title="Card variants" data-note=".flat (border only), .elevated (strong shadow), .compact / .spacious padding, .p-0 for edge-to-edge content.">
+  <div class="grid" style="--cols:2">
+    <article class="flat">.flat</article>
+    <article class="elevated">.elevated</article>
+    <article class="compact">.compact</article>
+    <article class="spacious">.spacious</article>
+  </div>
+</template>
+
+<!-- panel: c-layout | Layout | Container, grid and row helpers. -->
+<template class="example" data-title="Grid columns and alignment" data-note='.grid: style="--cols:3" fixes the column count, style="--min:12rem" auto-fits by minimum width. .column stacks with a gap. .row takes .justify-between|center|end and .align-start|center|end.'>
+  <div class="grid" style="--cols:3"><article>1</article><article>2</article><article>3</article></div>
+  <div class="grid" style="--min:12rem"><article>A</article><article>B</article><article>C</article><article>D</article></div>
+  <div class="row justify-between align-center"><strong>Title</strong><button class="sm">Action</button></div>
+  <div class="column"><span>One</span><span>Two</span></div>
+</template>
+
+<!-- panel: c-progress | Progress | Progress bars. -->
+<template class="example" data-title="Progress sizes and stripes" data-note=".sm / .lg height; .striped adds stripes, .animated moves them. A label can wrap the progress.">
+  <label>Upload <progress value="40" max="100"></progress></label>
+  <progress class="sm" value="25" max="100"></progress>
+  <progress class="lg striped" value="60" max="100"></progress>
+  <progress class="lg striped animated" value="80" max="100"></progress>
+</template>
+
+<!-- panel: c-skeleton | Skeleton | Loading placeholders. -->
+<template class="example" data-title="Skeleton shapes" data-note=".circle (round, set width), .text (one line of text height), .rect (rounded block, set height).">
+  <div class="skeleton circle" style="width:3rem"></div>
+  <div class="skeleton text" style="width:60%"></div>
+  <div class="skeleton text" style="width:80%"></div>
+  <div class="skeleton rect" style="height:6rem"></div>
+</template>
+
+<!-- panel: c-chip | Chip, Badge & Avatar | Compact labels and user avatars. -->
+<template class="example" data-title="Chip sizes and avatar group" data-note=".chip.sm/.lg; .avatar-group overlaps avatars with a surface-coloured ring; .avatar[data-status=online|busy|away|offline] adds a status dot.">
+  <span class="chip sm">Small</span> <span class="chip">Default</span> <span class="chip lg">Large</span>
+  <p>
+    <span class="avatar-group"><span class="avatar">AB</span><span class="avatar">CD</span><span class="avatar">EF</span><span class="avatar">+3</span></span>
+    <span class="avatar" data-status="online">ON</span>
+    <span class="avatar" data-status="busy">BY</span>
+    <span class="avatar" data-status="away">AW</span>
+    <span class="avatar" data-status="offline">OF</span>
+  </p>
+</template>
+
+<!-- panel: c-table | Table | Classless tables. -->
+<template class="example" data-title="Sticky header, compact, hover" data-note="Wrap in .table-wrap (scrolls, height via --ms-table-h, default 22rem) and add .sticky to pin the header. .compact tightens cells, .hover highlights rows.">
+  <div class="table-wrap" style="--ms-table-h:10rem">
+    <table class="sticky compact hover">
+      <thead><tr><th>#</th><th>Name</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Ada</td><td>Admin</td></tr><tr><td>2</td><td>Linus</td><td>Dev</td></tr>
+        <tr><td>3</td><td>Grace</td><td>Dev</td></tr><tr><td>4</td><td>Alan</td><td>QA</td></tr>
+        <tr><td>5</td><td>Edsger</td><td>Dev</td></tr><tr><td>6</td><td>Barbara</td><td>PM</td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>

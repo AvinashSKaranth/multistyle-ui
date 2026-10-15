@@ -12,4 +12,13 @@
   :where(article > :last-child:not(footer)) { margin-bottom: 0; }
   :where(article > img:first-child) { width: calc(100% + var(--ms-space) * 2); max-width: none; margin: calc(var(--ms-space) * -1) calc(var(--ms-space) * -1) var(--ms-space); border-radius: var(--ms-c-radius-card) var(--ms-c-radius-card) 0 0; }
   :where(article article) { box-shadow: none; background: var(--ms-c-surface); }
+  :where(article.flat) { box-shadow: none; }
+  :where(article.elevated) { border-color: transparent; box-shadow: var(--ms-shadow-lg); }
+  :where(article.compact) { --ms-space: .75rem; padding: .75rem; }
+  :where(article.spacious) { padding: calc(var(--ms-space) * 2); }
+  :where(article.spacious > header) { margin: calc(var(--ms-space) * -2) calc(var(--ms-space) * -2) var(--ms-space); padding-inline: calc(var(--ms-space) * 2); }
+  :where(article.spacious > footer) { margin: var(--ms-space) calc(var(--ms-space) * -2) calc(var(--ms-space) * -2); padding-inline: calc(var(--ms-space) * 2); }
+  :where(article.p-0) { padding: 0; overflow: hidden; }
+  :where(article.p-0 > header, article.p-0 > footer) { margin: 0; }
+  :where(article.p-0 > img:first-child) { width: 100%; margin: 0; }
 }

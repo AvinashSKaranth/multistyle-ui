@@ -13,4 +13,8 @@
   :where(.style-bootstrap) :where(.badge) { border-radius: .375rem; }
   :where(.style-bootstrap) :where([role="tab"]) { border-width: 1px; border-radius: 6px 6px 0 0; }
   :where(.style-bootstrap) :where([role="tab"][aria-selected=true]) { --_bd: var(--ms-c-border); background: var(--ms-c-surface); border-bottom-color: var(--ms-c-surface); }
+  :where(.style-bootstrap) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: 0 0 0 .25rem var(--ms-c-focus); }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-bootstrap) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-bootstrap) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
 }

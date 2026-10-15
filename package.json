@@ -18,6 +18,9 @@
     "@playwright/test": "^1.64.1",
     "alpinejs": "^3.17.4",
     "chart.js": "^4.5.1",
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "mermaid": "11.4.1",
+    "prismjs": "1.30.0",
+    "quill": "2.0.3"
   }
 }

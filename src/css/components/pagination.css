@@ -8,4 +8,5 @@
   :where(nav.pagination :is(a, button):not([role="button"]):hover) { background: var(--ms-c-surface-3); color: var(--ms-c-text); }
   :where(nav.pagination :is(a, button)[aria-current]:not([aria-current=false])) { background: var(--ms-c-primary); border-color: var(--ms-c-primary); color: var(--ms-c-on-primary); box-shadow: var(--ms-shadow-sm); }
   :where(nav.pagination :is(a, button)[aria-disabled=true], nav.pagination button:disabled) { color: var(--ms-c-disabled); pointer-events: none; background: transparent; box-shadow: none; }
+  :where(nav.pagination li.ellipsis) { display: inline-flex; align-items: center; padding: 0 .25rem; color: var(--ms-c-muted); user-select: none; }
 }

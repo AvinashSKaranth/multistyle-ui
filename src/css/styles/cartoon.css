@@ -8,11 +8,20 @@
     --ms-shadow-lg: 7px 7px 0 var(--ms-c-primary);
     font-weight: 600;
   }
-  :where(.style-cartoon) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset])) { --_bd: var(--ms-c-text); --_hbg: var(--_c); font-weight: 800; }
-  :where(.style-cartoon) :where(button, [role="button"]):hover { transform: translate(-2px, -3px) rotate(-1deg) scale(1.04); transition-timing-function: cubic-bezier(.34, 1.56, .64, 1); }
+  :where(.style-cartoon) :where(button:not(.ms-toast-close, .carousel-dots > *, [popover] *), [role="button"], input:is([type=submit], [type=button], [type=reset])) { --_bd: var(--ms-c-text); --_hbg: var(--_c); font-weight: 800; }
+  :where(.style-cartoon) :where(button:not(.ms-toast-close, .carousel-dots > *, [popover] *), [role="button"]):hover { transform: translate(-2px, -3px) rotate(-1deg) scale(1.04); transition-timing-function: cubic-bezier(.34, 1.56, .64, 1); }
   :where(.style-cartoon) :where(button, [role="button"]):active { transform: translate(2px, 2px); }
   :where(.style-cartoon) :where(h1, h2, h3, h4) { font-weight: 800; }
   :where(.style-cartoon) :where(input, select, textarea):not([type=checkbox], [type=radio]) { --_bd: var(--ms-c-text); }
   :where(.style-cartoon) :where(.chip, .badge) { border: 2px solid var(--ms-c-text); font-weight: 800; }
   :where(.style-cartoon) :where([role="tab"][aria-selected=true]) { border-bottom-width: 4px; }
+  :where(.style-cartoon) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--ms-c-text); }
+  :where(.style-cartoon) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: 3px 3px 0 var(--ms-c-primary); }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-cartoon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-cartoon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+  :where(.style-cartoon) :where(.rating-display) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  :where(.style-cartoon) :where(.rating label) { color: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  :where(.style-cartoon) :where(nav.pagination :is(a, button):not([aria-current])) { box-shadow: none; }
+  :where(.style-cartoon) :where(.carousel-dots > button:not([aria-current])) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
 }
