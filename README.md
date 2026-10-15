@@ -2,7 +2,7 @@
 
 Framework-free, classless CSS UI library with **12 styles**, **30 themes** and light/dark mode. Write semantic HTML and it looks good; a few short classes opt in to extra components. One CSS file, one small JS file, no build step needed to use it.
 
-**Docs and live gallery:** open [`docs/index.html`](docs/index.html) (works from `file://`, or serve `/docs` on GitHub Pages). The guide is `docs/index.html`; the component explorer is on its own page, [`docs/components.html`](docs/components.html) (one tab per component, Preview/Code toggle, deep links like `docs/components.html#c-modal`); the Mermaid, Text editor, Code and Icons tabs load their libraries from a CDN and need network.
+**Live demo:** <https://avinashskaranth.github.io/multistyle-ui> (guide) and [components](https://avinashskaranth.github.io/multistyle-ui/components.html) (explorer). Offline: open [`docs/index.html`](docs/index.html) (works from `file://`). The guide is `docs/index.html`; the component explorer is on its own page, [`docs/components.html`](docs/components.html) (one tab per component, Preview/Code toggle, deep links like `docs/components.html#c-modal`); the Mermaid, Text editor, Code and Icons tabs load their libraries from a CDN and need network.
 
 ## Usage (CDN)
 
