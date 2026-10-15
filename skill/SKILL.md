@@ -20,8 +20,8 @@ Semantic HTML is styled with no classes; a few short classes opt in to extras. O
 
 ## 1. CDN setup (order matters)
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AvinashSKaranth/multistyle-ui@HEAD/dist/multistyle.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/AvinashSKaranth/multistyle-ui@HEAD/dist/multistyle.min.js"></script>
 <!-- optional, AFTER multistyle -->
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 ```

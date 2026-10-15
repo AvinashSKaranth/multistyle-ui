@@ -6,9 +6,11 @@ Framework-free, classless CSS UI library with **12 styles**, **30 themes** and l
 
 ## Usage (CDN)
 
+Served by jsDelivr straight from this repo. `@HEAD` is the latest `master` (jsDelivr caches branches for up to 12 hours); for production pin a commit, e.g. `@5d573ca`.
+
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AvinashSKaranth/multistyle-ui@HEAD/dist/multistyle.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/AvinashSKaranth/multistyle-ui@HEAD/dist/multistyle.min.js"></script>
 
 <!-- optional: Alpine ($store.ms, $ms). Load AFTER multistyle -->
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
