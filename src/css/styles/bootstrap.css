@@ -1,0 +1,16 @@
+@layer ms.style {
+  :where(.style-bootstrap) {
+    --ms-c-radius-btn: 6px; --ms-c-radius-card: 6px; --ms-c-radius-input: 6px; --ms-c-border-w: 1px;
+    --ms-font: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --ms-shadow-sm: 0 1px 2px rgba(0,0,0,.08);
+    --ms-shadow-md: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --ms-shadow-lg: 0 .5rem 1rem rgba(0,0,0,.15);
+  }
+  :where(.style-bootstrap) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset])) { --_sh: none; --_shh: none; }
+  :where(.style-bootstrap) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset])):focus-visible { outline: 0; box-shadow: 0 0 0 .25rem var(--ms-c-focus); }
+  :where(.style-bootstrap) :where(article) { box-shadow: none; background: var(--ms-c-surface); }
+  :where(.style-bootstrap) :where(article > header, article > footer) { background: color-mix(in oklab, var(--ms-c-text) 3%, var(--ms-c-surface)); }
+  :where(.style-bootstrap) :where(.badge) { border-radius: .375rem; }
+  :where(.style-bootstrap) :where([role="tab"]) { border-width: 1px; border-radius: 6px 6px 0 0; }
+  :where(.style-bootstrap) :where([role="tab"][aria-selected=true]) { --_bd: var(--ms-c-border); background: var(--ms-c-surface); border-bottom-color: var(--ms-c-surface); }
+}

@@ -1,0 +1,5 @@
+@layer ms.base {
+  /* host needs position:relative + overflow:hidden (set in button.css) */
+  :where(.ms-ripple) { position: absolute; border-radius: 50%; background: currentColor; opacity: .3; pointer-events: none; transform: scale(0); animation: ms-ripple .6s ease-out forwards; }
+  @keyframes ms-ripple { to { transform: scale(4); opacity: 0; } }
+}

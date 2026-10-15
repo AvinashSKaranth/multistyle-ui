@@ -1,0 +1,15 @@
+@layer ms.base {
+  :where(article) {
+    margin-block: 0 var(--ms-space); padding: var(--ms-space); border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-card);
+    background: var(--ms-c-card); box-shadow: var(--ms-shadow-md);
+  }
+  :where(article > header, article > footer) {
+    margin: calc(var(--ms-space) * -1) calc(var(--ms-space) * -1) var(--ms-space); padding: calc(var(--ms-space) * .75) var(--ms-space);
+    background: var(--ms-c-surface-3); border-bottom: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-card) var(--ms-c-radius-card) 0 0;
+  }
+  :where(article > footer) { margin: var(--ms-space) calc(var(--ms-space) * -1) calc(var(--ms-space) * -1); border-bottom: 0; border-top: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: 0 0 var(--ms-c-radius-card) var(--ms-c-radius-card); }
+  :where(article > header > :last-child) { margin-bottom: 0; }
+  :where(article > :last-child:not(footer)) { margin-bottom: 0; }
+  :where(article > img:first-child) { width: calc(100% + var(--ms-space) * 2); max-width: none; margin: calc(var(--ms-space) * -1) calc(var(--ms-space) * -1) var(--ms-space); border-radius: var(--ms-c-radius-card) var(--ms-c-radius-card) 0 0; }
+  :where(article article) { box-shadow: none; background: var(--ms-c-surface); }
+}

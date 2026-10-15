@@ -1,0 +1,23 @@
+{
+  "name": "multistyle-ui",
+  "version": "0.1.0",
+  "description": "Framework-free, classless CSS UI library with 12 styles, 30 themes and light/dark mode.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "style": "dist/multistyle.min.css",
+  "main": "dist/multistyle.min.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js --watch",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "alpinejs": "^3.17.4",
+    "chart.js": "^4.5.1",
+    "esbuild": "^0.28.2"
+  }
+}

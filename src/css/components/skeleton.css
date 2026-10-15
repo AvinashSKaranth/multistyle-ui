@@ -1,0 +1,10 @@
+@layer ms.base {
+  :where(.skeleton) {
+    display: block; min-height: 1em; border-color: transparent; border-radius: var(--ms-c-radius-input); color: transparent; pointer-events: none; user-select: none;
+    background: linear-gradient(90deg, var(--ms-c-surface-3) 25%, var(--ms-c-surface-2) 50%, var(--ms-c-surface-3) 75%) 0 0 / 200% 100%;
+    animation: ms-shimmer 1.4s linear infinite;
+  }
+  :where(.skeleton > *) { visibility: hidden; }
+  :where(.skeleton.avatar) { border-radius: 50%; }
+  @keyframes ms-shimmer { to { background-position: -200% 0; } }
+}

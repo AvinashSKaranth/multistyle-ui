@@ -1,0 +1,8 @@
+@layer ms.base {
+  :where([aria-busy=true]:not(input, select, textarea, html, form, progress))::before {
+    content: ""; display: inline-block; width: 1em; height: 1em; margin-inline-end: .5em; vertical-align: -.125em;
+    border: .15em solid currentColor; border-inline-end-color: transparent; border-radius: 50%;
+    animation: ms-spin .7s linear infinite;
+  }
+  @keyframes ms-spin { to { transform: rotate(360deg); } }
+}

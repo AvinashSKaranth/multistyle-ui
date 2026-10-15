@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>multistyle-ui docs</title>
+  <link rel="stylesheet" href="./multistyle.min.css">
+  <link rel="stylesheet" href="./docs.css">
+  <script defer src="./multistyle.min.js"></script>
+  <script defer src="./docs.js"></script>
+  <script defer src="./vendor/alpine.min.js"></script>
+  <script defer src="./vendor/chart.umd.min.js"></script>
+</head>
+<body data-ms-persist>
+<div id="app" x-data="app" @ms:change.document="tick++">
+
+<header class="topbar">
+  <div class="topbar-row">
+    <span class="brand">multistyle-ui</span>
+    <button type="button" class="menu-btn sm outline secondary" @click="nav = !nav" :aria-expanded="nav">Menu</button>
+    <label>Style <select data-ms="style" aria-label="Style"></select></label>
+    <label>Theme
+      <select data-ms="theme" aria-label="Theme" @change="$event.target.value === 'custom' && apply()"></select>
+    </label>
+    <label>Mode <select data-ms="mode" aria-label="Mode"></select></label>
+    <button type="button" class="sm outline" data-ms-mode-toggle>Toggle mode</button>
+    <template x-if="$store.ms.theme === 'custom'">
+      <span class="topbar-row" style="gap:.35rem">
+        <label>Primary <input type="color" aria-label="Primary" :value="p" @input="p = $event.target.value; apply()"></label>
+        <label>Secondary <input type="color" aria-label="Secondary" :value="s" @input="s = $event.target.value; apply()"></label>
+        <label>Surface <input type="color" aria-label="Surface" :value="f" @input="f = $event.target.value; apply()"></label>
+      </span>
+    </template>
+  </div>
+  <div class="bodystr">
+    <code id="bodystr" x-text="bodyTag()"></code>
+    <button type="button" class="sm" data-copy="#bodystr">Copy</button>
+  </div>
+</header>
+
+<div class="layout">
+<nav id="sidenav" aria-label="Sections" :class="{ open: nav }" @click="nav = false">
+  <ul>
+    <li><a href="#getting-started">1. Getting started</a></li>
+    <li><a href="#styles">2. Styles</a></li>
+    <li><a href="#themes">3. Themes</a></li>
+    <li><a href="#custom-theme">4. Custom theme</a></li>
+    <li><a href="#elements">5. Elements (classless)</a></li>
+    <li><a href="#components">6. Components (opt-in)</a></li>
+    <li><a href="#charts">7. Charts</a></li>
+    <li><a href="#js-api">8. JS API</a></li>
+    <li><a href="#alpine">9. Alpine recipes</a></li>
+  </ul>
+</nav>
+
+<main>
+<h1>multistyle-ui</h1>
+<p>Framework-free, classless CSS UI with 12 styles, 30 themes and light/dark mode. This page is built with the library itself: every example below is written once and rendered live plus as copyable source.</p>
+
+<section id="getting-started">
+  <h2>1. Getting started</h2>
+  <template class="example" data-preview="off" data-title="Drop it in with two CDN tags" data-note="Order matters: multistyle before Alpine. Alpine and Chart.js are optional.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.js"></script>
+    <!-- optional, AFTER multistyle -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- optional, only for charts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.x.x/dist/chart.umd.min.js"></script>
+  </template>
+  <template class="example" data-preview="off" data-code='<body class="style-brutalist theme-ocean mode-dark">' data-title="Three body classes" data-note="All optional. Defaults with no classes: style-material, theme-blue, mode-system (follows the OS).">
+  </template>
+  <p>Then write plain HTML. Classless elements are styled automatically; a handful of short classes opt in to extra components.</p>
+</section>
+
+<section id="styles">
+  <h2>2. Styles</h2>
+  <p>Twelve looks. Each card is scoped with its own <code>style-*</code> class, so they coexist on one page. Press a button to apply a style to the whole page.</p>
+  <div class="pick-grid" id="style-grid"></div>
+</section>
+
+<section id="themes">
+  <h2>3. Themes</h2>
+  <p>Thirty themes (19 colour themes, 10 named themes and <code>custom</code>). Swatches show the primary and secondary shades 50 to 950.</p>
+  <div class="pick-grid" id="theme-grid"></div>
+</section>
+
+<section id="custom-theme">
+  <h2>4. Custom theme</h2>
+  <p>Pick any three colours. The surface should be a light colour; dark mode derives its own surface.</p>
+  <div class="cols">
+    <label>Primary <input type="color" :value="p" @input="p = $event.target.value; apply()"></label>
+    <label>Secondary <input type="color" :value="s" @input="s = $event.target.value; apply()"></label>
+    <label>Surface <input type="color" :value="f" @input="f = $event.target.value; apply()"></label>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><strong>Generated snippet</strong><button type="button" class="sm outline secondary" data-copy="#custom-snippet">Copy</button></div>
+    <pre><code id="custom-snippet" x-text="bodyTag()"></code></pre>
+    <p class="ex-note"><small>Same thing from JS: <code>MS.set({primary:'#ff6600', secondary:'#0066ff', surface:'#fffaf5'})</code>.</small></p>
+  </div>
+</section>
+
+<section id="elements">
+  <h2>5. Elements (classless)</h2>
+  <p>No classes needed. Write semantic HTML.</p>
+
+  <template class="example" data-title="Typography" data-note="Classless.">
+    <h1>Heading 1</h1><h2>Heading 2</h2><h3>Heading 3</h3>
+    <p>Paragraph with <a href="#elements">a link</a>, <strong>strong</strong>, <em>em</em>, <mark>mark</mark>, <kbd>Ctrl</kbd>, <code>code</code> and <small>small text</small>.</p>
+    <blockquote>A blockquote.<footer><cite>Someone</cite></footer></blockquote>
+    <hr>
+  </template>
+
+  <template class="example" data-title="Buttons" data-note="Classless. button, input[type=submit] and [role=button] all match. aria-busy shows a spinner.">
+    <button>Button</button>
+    <button disabled>Disabled</button>
+    <input type="submit" value="Submit">
+    <a href="#elements" role="button">Link button</a>
+    <button aria-busy="true">Loading</button>
+  </template>
+
+  <template class="example" data-title="Inputs" data-note="Classless. Wrap in label; use small for helper text.">
+    <div class="cols">
+      <label>Text <input type="text" placeholder="Text"></label>
+      <label>Email <input type="email" placeholder="you@x.com"></label>
+      <label>Password <input type="password" value="secret"></label>
+      <label>Number <input type="number" value="3"></label>
+      <label>Search <input type="search" placeholder="Search"></label>
+      <label>URL <input type="url" placeholder="https://"></label>
+      <label>Tel <input type="tel" placeholder="+1 555"></label>
+      <label>Date <input type="date"></label>
+      <label>Time <input type="time"></label>
+      <label>Datetime <input type="datetime-local"></label>
+      <label>Month <input type="month"></label>
+      <label>Colour <input type="color" value="#2060df"></label>
+      <label>File <input type="file"></label>
+    </div>
+  </template>
+
+  <template class="example" data-title="Checkbox, radio, switch" data-note="Classless. Switch is a checkbox with role=switch.">
+    <fieldset>
+      <label><input type="checkbox" checked> Checkbox</label>
+      <label><input type="radio" name="r1" checked> Radio A</label>
+      <label><input type="radio" name="r1"> Radio B</label>
+      <label><input type="checkbox" role="switch" checked> Switch</label>
+    </fieldset>
+  </template>
+
+  <template class="example" data-title="Range, select, textarea" data-note="Classless.">
+    <label>Range <input type="range" min="0" max="100" value="40"></label>
+    <label>Select
+      <select><option>One</option><option>Two</option><option>Three</option></select>
+    </label>
+    <label>Multiple <select multiple><option>One</option><option selected>Two</option><option>Three</option></select></label>
+    <label>Textarea <textarea rows="3" placeholder="Write something"></textarea></label>
+  </template>
+
+  <template class="example" data-title="Fieldset and groups" data-note="Classless. role=group joins buttons, or an input and a button.">
+    <fieldset>
+      <legend>Plan</legend>
+      <label><input type="radio" name="plan" checked> Free</label>
+      <label><input type="radio" name="plan"> Pro</label>
+    </fieldset>
+    <div role="group"><button>One</button><button>Two</button><button>Three</button></div>
+    <form role="group" onsubmit="return false"><input type="email" placeholder="Email" aria-label="Email"><input type="submit" value="Subscribe"></form>
+  </template>
+
+  <template class="example" data-title="Validation" data-note="Use aria-invalid=true/false plus a small element for the message.">
+    <label>Valid <input value="ok@x.com" aria-invalid="false"><small>Looks good.</small></label>
+    <label>Invalid <input value="nope" aria-invalid="true"><small>Enter a valid email.</small></label>
+    <label>Required <input type="email" required placeholder="Type then clear"></label>
+  </template>
+
+  <template class="example" data-title="Table" data-note="Classless. Add class=striped for zebra rows. Wrap in an overflow-x:auto div on small screens.">
+    <div class="table-wrap">
+    <table class="striped">
+      <thead><tr><th>Name</th><th>Role</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr><td>Ada</td><td>Engineer</td><td>98</td></tr>
+        <tr><td>Linus</td><td>Maintainer</td><td>91</td></tr>
+        <tr><td>Grace</td><td>Admiral</td><td>99</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </template>
+
+  <template class="example" data-title="Accordion (details)" data-note="Classless. The same name attribute makes the group exclusive, natively.">
+    <details name="acc" open><summary>First</summary><p>Opens by default.</p></details>
+    <details name="acc"><summary>Second</summary><p>Opening this closes the first.</p></details>
+    <details name="acc"><summary>Third</summary><p>No JavaScript.</p></details>
+  </template>
+
+  <template class="example" data-title="Dialog (modal)" data-note="Classless dialog > article. Open with data-ms-open, close with data-ms-close or an empty button rel=prev. Native alternative: commandfor/command.">
+    <button data-ms-open="#dlg1">Open modal</button>
+    <dialog id="dlg1">
+      <article>
+        <header><button rel="prev" aria-label="Close"></button><h3>Confirm</h3></header>
+        <p>Dialogs use the native element: focus trap and Esc come free.</p>
+        <footer><button class="secondary" data-ms-close>Cancel</button><button data-ms-close>OK</button></footer>
+      </article>
+    </dialog>
+  </template>
+
+  <template class="example" data-title="Article (card)" data-note="Classless. header and footer inside are styled.">
+    <article>
+      <header><strong>Card title</strong></header>
+      <p>Cards are plain article elements.</p>
+      <footer><button class="sm">Action</button></footer>
+    </article>
+  </template>
+
+  <template class="example" data-title="Nav and breadcrumb" data-note="Classless. aria-current marks the active item; nav[aria-label=breadcrumb] switches to breadcrumb.">
+    <nav>
+      <ul><li><strong>Brand</strong></li></ul>
+      <ul><li><a href="#elements" aria-current="page">Home</a></li><li><a href="#elements">Docs</a></li><li><a href="#elements">About</a></li></ul>
+    </nav>
+    <nav aria-label="breadcrumb">
+      <ul><li><a href="#elements">Home</a></li><li><a href="#elements">Library</a></li><li>Data</li></ul>
+    </nav>
+  </template>
+
+  <template class="example" data-title="Progress and meter" data-note="Classless. Omit value on progress for an indeterminate bar.">
+    <progress value="60" max="100"></progress>
+    <progress></progress>
+    <meter value="0.7" min="0" max="1"></meter>
+  </template>
+
+  <template class="example" data-title="Tooltip and busy" data-note="data-tooltip is CSS only; data-placement=top|bottom|left|right. aria-busy=true shows a spinner on any element.">
+    <button data-tooltip="Saves your work">Hover me</button>
+    <button data-tooltip="Below" data-placement="bottom" class="secondary">Bottom</button>
+    <span aria-busy="true">Loading</span>
+  </template>
+</section>
+
+<section id="components">
+  <h2>6. Components (opt-in classes)</h2>
+
+  <template class="example" data-title="Button variants and sizes" data-note='Variants combine: class="outline secondary". Sizes: sm, lg, icon, fab.'>
+    <button>Primary</button>
+    <button class="secondary">Secondary</button>
+    <button class="outline">Outline</button>
+    <button class="ghost">Ghost</button>
+    <button class="contrast">Contrast</button>
+    <button class="success">Success</button>
+    <button class="warning">Warning</button>
+    <button class="error">Error</button>
+    <button class="outline secondary">Outline secondary</button>
+    <hr>
+    <button class="sm">Small</button>
+    <button>Medium</button>
+    <button class="lg">Large</button>
+    <button class="icon" aria-label="Add">+</button>
+    <button class="fab" aria-label="Add">+</button>
+  </template>
+
+  <template class="example" data-title="Chip, badge, avatar" data-note="Chip: .selected or aria-pressed=true; an inner button is a close control. Avatar takes text or an img.">
+    <span class="chip">Chip</span>
+    <span class="chip selected">Selected</span>
+    <span class="chip">Removable <button aria-label="Remove">×</button></span>
+    <span class="badge">New</span>
+    <span class="badge secondary">2nd</span>
+    <span class="badge success">OK</span>
+    <span class="badge warning">Warn</span>
+    <span class="badge error">Err</span>
+    <span class="badge info">Info</span>
+    <span class="badge outline">Outline</span>
+    <span class="avatar sm">SM</span>
+    <span class="avatar">AB</span>
+    <span class="avatar lg">LG</span>
+  </template>
+
+  <template class="example" data-title="Alert" data-note="Classless role=alert; data-type picks the colour.">
+    <div role="alert"><strong>Heads up.</strong> Default alert.</div>
+    <div role="alert" data-type="success">Saved successfully.</div>
+    <div role="alert" data-type="warning">Careful, this is risky.</div>
+    <div role="alert" data-type="error">Something failed.</div>
+    <div role="alert" data-type="info">FYI.</div>
+  </template>
+
+  <template class="example" data-title="Tabs" data-note="role=tablist > role=tab[aria-controls] and role=tabpanel[id]. Click and Arrow/Home/End keys are wired automatically.">
+    <div role="tablist" aria-label="Demo tabs">
+      <button role="tab" aria-controls="tp1" aria-selected="true">Overview</button>
+      <button role="tab" aria-controls="tp2">Details</button>
+      <button role="tab" aria-controls="tp3">Reviews</button>
+    </div>
+    <div role="tabpanel" id="tp1"><p>Overview panel.</p></div>
+    <div role="tabpanel" id="tp2"><p>Details panel.</p></div>
+    <div role="tabpanel" id="tp3"><p>Reviews panel.</p></div>
+  </template>
+
+  <template class="example" data-title="Dropdown (popover)" data-note="Native popover attribute with popovertarget; menu[popover] is anchored below the trigger. Esc and outside click close it.">
+    <button popovertarget="menu1">Menu</button>
+    <menu popover id="menu1">
+      <li><button>Profile</button></li>
+      <li><button>Settings</button></li>
+      <hr>
+      <li><button class="error">Sign out</button></li>
+    </menu>
+  </template>
+
+  <template class="example" data-title="Drawer" data-note="dialog.drawer; data-side=right flips it (default left).">
+    <button data-ms-open="#drw1">Open drawer</button>
+    <dialog class="drawer" data-side="right" id="drw1">
+      <article>
+        <header><button rel="prev" aria-label="Close"></button><h3>Drawer</h3></header>
+        <p>Slides in from the right.</p>
+      </article>
+    </dialog>
+  </template>
+
+  <template class="example" data-title="Toast" data-note="Declarative: data-ms-toast + data-ms-toast-type. Programmatic: MS.toast(msg, {type, timeout}).">
+    <button data-ms-toast="Hello from a toast" data-ms-toast-type="success">Declarative toast</button>
+    <button class="secondary" onclick="MS.toast('Careful!', {type:'warning', timeout:6000})">MS.toast()</button>
+  </template>
+
+  <template class="example" data-title="Skeleton" data-note="Set the height yourself.">
+    <div class="skeleton" style="height:1.5rem;width:60%;margin-bottom:.5rem"></div>
+    <div class="skeleton" style="height:4rem"></div>
+  </template>
+
+  <template class="example" data-title="Stepper" data-note="ol.stepper; li.done for completed, aria-current=step for the active one.">
+    <ol class="stepper">
+      <li class="done">Account</li>
+      <li aria-current="step">Profile</li>
+      <li>Confirm</li>
+    </ol>
+  </template>
+
+  <template class="example" data-title="Pagination" data-note="nav.pagination > ul > li > a; aria-current=page marks the active page.">
+    <nav class="pagination" aria-label="Pages">
+      <ul>
+        <li><a href="#components">‹</a></li>
+        <li><a href="#components">1</a></li>
+        <li><a href="#components" aria-current="page">2</a></li>
+        <li><a href="#components">3</a></li>
+        <li><a href="#components">›</a></li>
+      </ul>
+    </nav>
+  </template>
+
+  <template class="example" data-title="Carousel" data-note="CSS scroll-snap only. Add .full for one slide per view.">
+    <div class="carousel" tabindex="0" aria-label="Slides">
+      <div class="demo-box">Slide 1</div><div class="demo-box">Slide 2</div><div class="demo-box">Slide 3</div><div class="demo-box">Slide 4</div>
+    </div>
+  </template>
+
+  <template class="example" data-title="Rating" data-note="fieldset.rating with radio + label pairs written 5 to 1. Pure CSS.">
+    <fieldset class="rating">
+      <input type="radio" name="stars" id="s5"><label for="s5" aria-label="5 stars">★</label>
+      <input type="radio" name="stars" id="s4" checked><label for="s4" aria-label="4 stars">★</label>
+      <input type="radio" name="stars" id="s3"><label for="s3" aria-label="3 stars">★</label>
+      <input type="radio" name="stars" id="s2"><label for="s2" aria-label="2 stars">★</label>
+      <input type="radio" name="stars" id="s1"><label for="s1" aria-label="1 star">★</label>
+    </fieldset>
+  </template>
+
+  <template class="example" data-title="Dropzone" data-note="label.dropzone wrapping a file input.">
+    <label class="dropzone"><input type="file" multiple>Drop files here or click to browse</label>
+  </template>
+
+  <template class="example" data-title="Layout: container, grid, row/col" data-note=".grid auto-fits columns; .row > .col wraps. .container centres content (.container-fluid is full width).">
+    <div class="grid">
+      <div class="demo-box">grid 1</div><div class="demo-box">grid 2</div><div class="demo-box">grid 3</div>
+    </div>
+    <div class="row">
+      <div class="col demo-box">col</div><div class="col demo-box">col</div>
+    </div>
+  </template>
+</section>
+
+<section id="charts">
+  <h2>7. Charts</h2>
+  <p>Chart.js is loaded separately; multistyle themes it. Use a <code>canvas[data-ms-chart]</code> inside <code>.chart</code>, or call <code>MS.chart()</code>. Height is <code>--ms-chart-h</code> (default 300px).</p>
+    <template class="example" data-title="bar" data-note="Declarative: data-ms-chart=&quot;bar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="bar" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Sales","data":[12,19,8,15]},{"label":"Costs","data":[7,11,5,9]}]}' aria-label="bar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="line" data-note="Declarative: data-ms-chart=&quot;line&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="line" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Visits","data":[5,9,7,12]}]}' aria-label="line chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="pie" data-note="Declarative: data-ms-chart=&quot;pie&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="pie" data-ms-chart-data='{"labels":["A","B","C"],"datasets":[{"data":[30,50,20]}]}' aria-label="pie chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="doughnut" data-note="Declarative: data-ms-chart=&quot;doughnut&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="doughnut" data-ms-chart-data='{"labels":["A","B","C"],"datasets":[{"data":[30,50,20]}]}' aria-label="doughnut chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="radar" data-note="Declarative: data-ms-chart=&quot;radar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="radar" data-ms-chart-data='{"labels":["Speed","Power","Range","Cost","Comfort"],"datasets":[{"label":"Model A","data":[8,6,7,4,9]},{"label":"Model B","data":[5,9,4,7,6]}]}' aria-label="radar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="polarArea" data-note="Declarative: data-ms-chart=&quot;polarArea&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="polarArea" data-ms-chart-data='{"labels":["A","B","C","D"],"datasets":[{"data":[11,16,7,14]}]}' aria-label="polarArea chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="scatter" data-note="Declarative: data-ms-chart=&quot;scatter&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="scatter" data-ms-chart-data='{"datasets":[{"label":"Points","data":[{"x":1,"y":2},{"x":2,"y":5},{"x":3,"y":3},{"x":4,"y":7}]}]}' aria-label="scatter chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="bubble" data-note="Declarative: data-ms-chart=&quot;bubble&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="bubble" data-ms-chart-data='{"datasets":[{"label":"Bubbles","data":[{"x":1,"y":2,"r":6},{"x":2,"y":5,"r":12},{"x":3,"y":3,"r":8},{"x":4,"y":7,"r":15}]}]}' aria-label="bubble chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="stacked-bar" data-note="Declarative: data-ms-chart=&quot;stacked-bar&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="stacked-bar" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"A","data":[4,6,5,8]},{"label":"B","data":[3,2,6,4]}]}' aria-label="stacked-bar chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="stacked-line" data-note="Declarative: data-ms-chart=&quot;stacked-line&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="stacked-line" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"A","data":[4,6,5,8]},{"label":"B","data":[3,2,6,4]}]}' aria-label="stacked-line chart" role="img"></canvas></div>
+    </template>
+    <template class="example" data-title="combo" data-note="Declarative: data-ms-chart=&quot;combo&quot; + JSON in data-ms-chart-data. Colors come from the active theme and re-theme on ms:change.">
+      <div class="chart"><canvas data-ms-chart="combo" data-ms-chart-data='{"labels":["Jan","Feb","Mar","Apr"],"datasets":[{"label":"Bars","data":[12,19,8,15]},{"label":"Line","data":[10,14,11,17]}]}' aria-label="combo chart" role="img"></canvas></div>
+    </template>
+  <template class="example" data-title="Programmatic: MS.chart()" data-note="MS.chart(canvasOrSelector, chartJsConfig) returns the Chart instance (or null if Chart.js is missing).">
+    <div class="chart" style="--ms-chart-h:220px"><canvas x-data x-init="MS.chart($el, {type:'bar', data:{labels:['A','B','C'], datasets:[{label:'Programmatic', data:[3,7,4]}]}})" aria-label="programmatic chart" role="img"></canvas></div>
+  </template>
+</section>
+
+<section id="js-api">
+  <h2>8. JS API</h2>
+  <p>Everything hangs off <code>window.MS</code>.</p>
+  <div class="table-wrap">
+  <table class="striped">
+    <thead><tr><th>API</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>MS.set({style, theme, mode, primary, secondary, surface}, el?)</code></td><td>Swap classes (and custom tokens inline). A colour without a theme implies <code>custom</code>.</td></tr>
+      <tr><td><code>MS.get(el?)</code></td><td><code>{style, theme, mode, resolvedMode}</code></td></tr>
+      <tr><td><code>MS.toggleMode()</code></td><td>Cycle light, dark, system.</td></tr>
+      <tr><td><code>MS.styles / themes / modes</code></td><td>Lists of valid values.</td></tr>
+      <tr><td><code>MS.toast(msg, {type, timeout, dismissible})</code></td><td>Show a toast; <code>timeout:0</code> keeps it.</td></tr>
+      <tr><td><code>MS.chart(canvas, config)</code></td><td>Create a themed Chart.js chart.</td></tr>
+      <tr><td><code>MS.open(sel) / MS.close(sel)</code></td><td>Open or close a <code>dialog</code>.</td></tr>
+      <tr><td><code>MS.resolveColor(token|color)</code></td><td>Plain rgb() text for any token or colour (Chart.js safe).</td></tr>
+      <tr><td><code>ms:change</code> event</td><td>On <code>document</code>; <code>detail</code> is <code>MS.get()</code>. Also fires when the OS scheme changes in system mode.</td></tr>
+      <tr><td><code>&lt;select data-ms="style|theme|mode"&gt;</code></td><td>Auto-populated, auto-wired switcher.</td></tr>
+      <tr><td><code>data-ms-mode-toggle</code></td><td>Button that cycles the mode.</td></tr>
+      <tr><td><code>data-ms-open="#id"</code> / <code>data-ms-close</code></td><td>Open or close a dialog without JS.</td></tr>
+      <tr><td><code>data-ms-toast</code> / <code>data-ms-toast-type</code></td><td>Click to show a toast.</td></tr>
+      <tr><td><code>data-ms-chart</code>, <code>-data</code>, <code>-options</code></td><td>Declarative chart on a canvas.</td></tr>
+      <tr><td><code>&lt;body data-ms-persist&gt;</code></td><td>Remember choices in localStorage.</td></tr>
+      <tr><td><code>&lt;body data-ms-fonts="off"&gt;</code></td><td>Do not load Google Fonts.</td></tr>
+      <tr><td><code>$store.ms</code>, <code>$ms</code></td><td>Alpine store and magic (load multistyle before Alpine).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <template class="example" data-title="Try it" data-note="MS.set and MS.get are plain functions; listen to ms:change for updates.">
+    <button onclick="MS.set({theme:'ocean'})">MS.set({theme:'ocean'})</button>
+    <button class="secondary" onclick="MS.toast(JSON.stringify(MS.get()))">MS.get()</button>
+  </template>
+</section>
+
+<section id="alpine">
+  <h2>9. Alpine recipes</h2>
+  <template class="example" data-title="Style switcher" data-note="$store.ms is reactive and kept in sync by ms:change; $ms is the MS object.">
+    <div x-data>
+      <select x-model="$store.ms.style" @change="$ms.set({style: $event.target.value})" aria-label="Style">
+        <template x-for="s in $ms.styles"><option :value="s" x-text="s"></option></template>
+      </select>
+      <p>Current style: <strong x-text="$store.ms.style"></strong></p>
+    </div>
+  </template>
+
+  <template class="example" data-title="Modal with x-data" data-note="Local open state; the native dialog is driven with showModal and @close.">
+    <div x-data="{ open: false }">
+      <button @click="open = true; $refs.d.showModal()">Open</button>
+      <p>Open state: <code x-text="open"></code></p>
+      <dialog x-ref="d" @close="open = false">
+        <article>
+          <header><button rel="prev" aria-label="Close" @click="$refs.d.close()"></button><h3>Alpine modal</h3></header>
+          <p>Controlled by x-data.</p>
+        </article>
+      </dialog>
+    </div>
+  </template>
+
+  <template class="example" data-title="Toast on form submit" data-note="@submit.prevent then $ms.toast().">
+    <form x-data="{ name: '' }" @submit.prevent="$ms.toast('Saved ' + (name || 'nobody'), {type: 'success'})">
+      <label>Name <input x-model="name" placeholder="Your name"></label>
+      <button type="submit">Save</button>
+    </form>
+  </template>
+
+  <template class="example" data-title="Live-updating chart" data-note="Create with MS.chart in x-init, then mutate data and call update(). Chart.getChart avoids putting the instance inside Alpine's reactive proxy.">
+    <div x-data="{ vals: [3, 5, 2, 6] }">
+      <div class="chart" style="--ms-chart-h:220px"><canvas x-ref="cv" x-init="MS.chart($refs.cv, {type:'bar', data:{labels:['A','B','C','D'], datasets:[{label:'Live', data:[...vals]}]}})" aria-label="live chart" role="img"></canvas></div>
+      <button @click="vals = vals.map(() => Math.ceil(Math.random() * 9)); const c = Chart.getChart($refs.cv); c.data.datasets[0].data = [...vals]; c.update()">Randomise</button>
+    </div>
+  </template>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>

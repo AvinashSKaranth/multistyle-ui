@@ -1,0 +1,18 @@
+@layer ms.style {
+  :where(.style-illustration) {
+    --ms-c-radius-btn: 8px; --ms-c-radius-card: 8px; --ms-c-radius-input: 8px; --ms-c-border-w: 2px;
+    --ms-font: 'Patrick Hand', 'Segoe Print', 'Bradley Hand', system-ui, sans-serif;
+    --ms-c-border: var(--ms-c-text);
+    --ms-shadow-sm: 3px 3px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+    --ms-shadow-md: 4px 4px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+    --ms-shadow-lg: 6px 6px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+  }
+  :where(.style-illustration) :where(h1, h2, h3) { font-family: 'Dancing Script', cursive; font-weight: 700; }
+  :where(.style-illustration) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset]), article, .chip) { border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
+  :where(.style-illustration) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset])) { --_bd: var(--ms-c-text); }
+  :where(.style-illustration) :where(button, [role="button"]):hover { transform: translate(-1px, -1px) rotate(-.5deg); }
+  :where(.style-illustration) :where(input, select, textarea):not([type=checkbox], [type=radio]) { --_bd: var(--ms-c-text); }
+  :where(.style-illustration) :where(article > header, article > footer) { border-radius: 0; background: transparent; border-bottom-style: dashed; }
+  :where(.style-illustration) :where(article > footer) { border-bottom: 0; border-top-style: dashed; }
+  :where(.style-illustration) :where(.badge) { border: 2px solid var(--ms-c-text); }
+}

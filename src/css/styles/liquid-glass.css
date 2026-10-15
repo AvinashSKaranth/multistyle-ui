@@ -1,0 +1,25 @@
+@layer ms.style {
+  :where(.style-liquid-glass) {
+    --ms-c-radius-btn: 16px; --ms-c-radius-card: 20px; --ms-c-radius-input: 14px; --ms-c-border-w: 1px;
+    --ms-font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+    --_glass: color-mix(in oklab, var(--ms-c-surface) 55%, transparent);
+    --_edge: rgba(255,255,255,.25);
+    --ms-c-border: var(--_edge);
+    --ms-c-card: var(--_glass);
+    --ms-c-surface-3: color-mix(in oklab, var(--ms-c-surface) 40%, transparent);
+    --ms-shadow-sm: 0 2px 8px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.4);
+    --ms-shadow-md: 0 8px 24px rgba(0,0,0,.12), inset 0 1px 0 rgba(255,255,255,.4);
+    --ms-shadow-lg: 0 16px 40px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.4);
+    /* default colorful backdrop so the glass has something to blur; override with --ms-bg-image */
+    background-image: var(--ms-bg-image, radial-gradient(at 12% 8%, color-mix(in oklab, var(--ms-c-primary) 50%, var(--ms-c-surface)), transparent 55%), radial-gradient(at 88% 18%, color-mix(in oklab, var(--ms-c-secondary) 45%, var(--ms-c-surface)), transparent 50%), radial-gradient(at 50% 100%, color-mix(in oklab, var(--ms-c-primary) 30%, var(--ms-c-surface)), transparent 60%));
+    background-attachment: fixed;
+  }
+  :where(.style-liquid-glass) :where(article, dialog, nav, details, [role="tablist"], input:not([type=checkbox], [type=radio], [type=range]), select, textarea, .chip, .alert, [role="alert"]) {
+    -webkit-backdrop-filter: blur(24px) saturate(1.6); backdrop-filter: blur(24px) saturate(1.6);
+  }
+  :where(.style-liquid-glass) :where(article > header, article > footer) { background: transparent; }
+  :where(.style-liquid-glass) :where(input:not([type=checkbox], [type=radio], [type=range]), select, textarea) { --_bd: var(--_edge); background-color: var(--_glass); }
+  :where(.style-liquid-glass) :where(button:hover, [role="button"]:hover) { transform: translateY(-1px); }
+  :where(.style-liquid-glass) :where(dialog) { background: var(--_glass); border: 1px solid var(--_edge); }
+  :where(.style-liquid-glass) :where(dialog > article) { background: transparent; }
+}

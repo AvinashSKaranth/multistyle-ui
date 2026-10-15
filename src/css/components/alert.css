@@ -1,0 +1,14 @@
+@layer ms.base {
+  :where([role="alert"]) {
+    --_c: var(--ms-c-info); --_bg: var(--ms-c-info-subtle);
+    --_fg: light-dark(var(--ms-c-info-strong), color-mix(in oklch, var(--ms-c-info) 55%, white));
+    margin-bottom: var(--ms-space); padding: .75rem 1rem; border: var(--ms-c-border-w) solid color-mix(in oklch, var(--_c) 35%, transparent); border-inline-start: 4px solid var(--_c);
+    border-radius: var(--ms-c-radius-input); background: var(--_bg); color: var(--_fg);
+  }
+  :where([role="alert"][data-type=success]) { --_c: var(--ms-c-success); --_bg: var(--ms-c-success-subtle); --_fg: light-dark(var(--ms-c-success-strong), color-mix(in oklch, var(--ms-c-success) 55%, white)); }
+  :where([role="alert"][data-type=warning]) { --_c: var(--ms-c-warning); --_bg: var(--ms-c-warning-subtle); --_fg: light-dark(var(--ms-c-warning-strong), color-mix(in oklch, var(--ms-c-warning) 55%, white)); }
+  :where([role="alert"][data-type=error]) { --_c: var(--ms-c-error); --_bg: var(--ms-c-error-subtle); --_fg: light-dark(var(--ms-c-error-strong), color-mix(in oklch, var(--ms-c-error) 55%, white)); }
+  :where([role="alert"] > :last-child) { margin-bottom: 0; }
+  :where([role="alert"] :is(strong, h1, h2, h3, h4, h5, h6)) { color: inherit; }
+  :where([role="alert"] a) { color: inherit; font-weight: 600; }
+}

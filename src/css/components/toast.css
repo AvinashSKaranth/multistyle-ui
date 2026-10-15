@@ -1,0 +1,16 @@
+@layer ms.base {
+  :where(.ms-toasts) {
+    position: fixed; inset: auto 1rem 1rem auto; z-index: 1000; width: min(24rem, 100vw - 2rem); max-width: none; height: auto; margin: 0; padding: 0;
+    border: 0; background: transparent; color: inherit; box-shadow: none; overflow: visible; pointer-events: none; animation: none;
+  }
+  :where(.ms-toasts:not([popover]), .ms-toasts:popover-open) { display: flex; flex-direction: column; gap: .5rem; }
+  :where(.ms-toast) {
+    --_c: var(--ms-c-info); display: flex; align-items: flex-start; gap: .75rem; padding: .75rem 1rem; border: var(--ms-c-border-w) solid var(--ms-c-border); border-inline-start: 4px solid var(--_c);
+    border-radius: var(--ms-c-radius-input); background: var(--ms-c-card); color: var(--ms-c-text); box-shadow: var(--ms-shadow-lg); pointer-events: auto; animation: ms-toast-in .25s ease;
+  }
+  :where(.ms-toast[data-type=success]) { --_c: var(--ms-c-success); }
+  :where(.ms-toast[data-type=warning]) { --_c: var(--ms-c-warning); }
+  :where(.ms-toast[data-type=error]) { --_c: var(--ms-c-error); }
+  :where(.ms-toast[data-leaving], .ms-toast.leaving) { opacity: 0; transform: translateX(1rem); transition: opacity .2s ease, transform .2s ease; }
+  @keyframes ms-toast-in { from { opacity: 0; transform: translateY(.75rem) scale(.97); } }
+}

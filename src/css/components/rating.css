@@ -1,0 +1,11 @@
+@layer ms.base {
+  :where(.rating) { display: flex; flex-direction: row-reverse; justify-content: flex-end; width: fit-content; margin: 0 0 var(--ms-space); padding: 0; border: 0; }
+  :where(.rating input) { position: absolute; width: 1px; height: 1px; margin: 0; opacity: 0; pointer-events: none; }
+  :where(.rating label) {
+    display: inline-block; margin: 0; padding: 0 .1em; color: var(--ms-c-border); font-size: 1.75rem; line-height: 1.2; cursor: pointer; transition: color var(--ms-transition), transform var(--ms-transition);
+  }
+  :where(.rating label:hover) { transform: scale(1.15); }
+  :where(.rating input:checked ~ label, .rating label:hover, .rating label:hover ~ label) { color: var(--ms-c-warning); }
+  :where(.rating:has(label:hover) input:checked ~ label:not(:hover, :hover ~ label)) { color: var(--ms-c-border); }
+  :where(.rating input:focus-visible + label) { outline: 3px solid var(--ms-c-focus); outline-offset: 1px; border-radius: 4px; }
+}

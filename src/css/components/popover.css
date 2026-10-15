@@ -1,0 +1,26 @@
+@layer ms.base {
+  :where([popover]) {
+    margin: 0; padding: .35rem; border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-card);
+    background: var(--ms-c-surface); color: var(--ms-c-text); box-shadow: var(--ms-shadow-lg); overflow: auto;
+  }
+  :where([popover]:popover-open) { animation: ms-pop-in .15s ease; }
+  @keyframes ms-pop-in { from { opacity: 0; transform: translateY(-4px) scale(.98); } }
+  :where([popover]:not(.menu, menu, [data-anchor])) { inset: 0; margin: auto; padding: var(--ms-space); }
+
+  :where([popover].menu, menu[popover]) { min-width: 11rem; max-width: min(20rem, 95vw); inset: auto; margin: 0; }
+  @supports (position-area: bottom) {
+    :where([popover].menu, menu[popover], [popover][data-anchor]) { inset: auto; margin: 4px 0; position-area: bottom span-right; position-try-fallbacks: flip-block, flip-inline; }
+  }
+  :where(menu[popover]) { list-style: none; }
+  :where([popover] :is(ul, menu)) { margin: 0; padding: 0; list-style: none; }
+  :where([popover] li) { margin: 0; padding: 0; display: block; }
+  :where([popover].menu, menu[popover]) :where(a, button, [role="menuitem"]) {
+    --_bg: transparent; --_bd: transparent; --_fg: var(--ms-c-text); --_sh: none; --_shh: none; --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3);
+    display: flex; justify-content: flex-start; align-items: center; width: 100%; margin: 0; padding: .5rem .75rem; border-radius: var(--ms-c-radius-input);
+    background: var(--_bg); color: var(--_fg); font-weight: 400; text-align: start; text-decoration: none; white-space: nowrap; cursor: pointer;
+  }
+  :where([popover].menu, menu[popover]) :where(a:hover, button:hover, [role="menuitem"]:hover) { background: var(--ms-c-surface-3); color: var(--ms-c-text); border-color: transparent; }
+  :where([popover].menu, menu[popover]) :where(a:focus-visible, button:focus-visible) { outline-offset: -2px; background: var(--ms-c-surface-3); }
+  :where([popover].menu, menu[popover]) :where(.error, [data-danger]) { --_fg: var(--ms-c-error); color: var(--ms-c-error); }
+  :where([popover].menu, menu[popover]) hr { margin-block: .35rem; }
+}

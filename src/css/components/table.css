@@ -1,0 +1,14 @@
+@layer ms.base {
+  :where(table) { width: 100%; margin-bottom: var(--ms-space); font-variant-numeric: tabular-nums; }
+  :where(th, td) { padding: .75rem 1rem; border-bottom: var(--ms-c-border-w) solid var(--ms-c-border); text-align: start; vertical-align: middle; }
+  :where(thead th, thead td) { border-bottom-width: 2px; background: var(--ms-c-surface-2); color: var(--ms-c-muted); font-size: .8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  :where(thead tr:first-child th:first-child) { border-start-start-radius: var(--ms-c-radius-input); }
+  :where(thead tr:first-child th:last-child) { border-start-end-radius: var(--ms-c-radius-input); }
+  :where(tbody tr) { transition: background-color var(--ms-transition); }
+  :where(tbody tr:hover) { background: var(--ms-c-surface-2); }
+  :where(tfoot th, tfoot td) { border-top: 2px solid var(--ms-c-border); border-bottom: 0; font-weight: 600; }
+  :where(table.striped tbody tr:nth-child(even)) { background: var(--ms-c-surface-2); }
+  :where(table.striped tbody tr:hover) { background: var(--ms-c-surface-3); }
+  :where(caption) { padding: .5rem 1rem; color: var(--ms-c-muted); font-size: .875em; text-align: start; caption-side: bottom; }
+  :where(figure:has(> table)) { overflow-x: auto; }
+}

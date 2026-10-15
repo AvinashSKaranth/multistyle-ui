@@ -1,0 +1,14 @@
+@layer ms.utils {
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  .text-muted { color: var(--ms-c-muted); }
+  .text-center { text-align: center; }
+  .text-end { text-align: end; }
+  .m-0 { margin: 0; }
+  .mt-1 { margin-block-start: var(--ms-space); }
+  .mb-1 { margin-block-end: var(--ms-space); }
+  .gap-1 { gap: calc(var(--ms-space) * .5); }
+  .gap-2 { gap: var(--ms-space); }
+  .gap-3 { gap: calc(var(--ms-space) * 1.5); }
+  .flex { display: flex; }
+  .wrap { flex-wrap: wrap; }
+}

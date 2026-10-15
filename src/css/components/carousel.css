@@ -1,0 +1,10 @@
+@layer ms.base {
+  :where(.carousel) {
+    display: flex; gap: var(--ms-space); margin-bottom: var(--ms-space); padding-bottom: .5rem; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: 0; scrollbar-width: thin; scrollbar-color: var(--ms-c-border) transparent;
+  }
+  :where(.carousel > *) { flex: 0 0 clamp(14rem, 80%, 24rem); margin: 0; scroll-snap-align: start; }
+  :where(.carousel.full > *) { flex-basis: 100%; }
+  :where(.carousel > img) { height: 100%; object-fit: cover; }
+  :where(.carousel:focus-visible) { outline: 3px solid var(--ms-c-focus); outline-offset: 2px; }
+}

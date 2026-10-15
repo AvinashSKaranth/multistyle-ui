@@ -1,0 +1,22 @@
+@layer ms.style {
+  :where(.style-material3) {
+    --ms-c-radius-btn: 20px; --ms-c-radius-card: 24px; --ms-c-radius-input: 12px; --ms-c-border-w: 1px;
+    --ms-font: Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ms-shadow-sm: none;
+    --ms-shadow-md: 0 1px 3px var(--ms-c-shadow-color);
+    --ms-shadow-lg: 0 6px 16px -4px var(--ms-c-shadow-color);
+  }
+  /* pill buttons, flat; secondary = tonal */
+  :where(.style-material3) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev]), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { padding-inline: 1.5rem; font-weight: 500; letter-spacing: .01em; --_sh: none; --_shh: var(--ms-shadow-md); }
+  :where(.style-material3) :where(.secondary:is(button, [role=button], input):not(.outline,.ghost)) {
+    --_bg: color-mix(in oklch, var(--ms-c-secondary) 18%, var(--ms-c-surface)); --_bd: transparent; --_fg: var(--ms-c-secondary);
+    --_hbg: color-mix(in oklch, var(--ms-c-secondary) 28%, var(--ms-c-surface)); --_abg: var(--_hbg);
+  }
+  /* filled tonal inputs */
+  :where(.style-material3) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { --_bd: transparent; background-color: var(--ms-c-surface-3); }
+  :where(.style-material3) :where(article) { border-color: transparent; }
+  :where(.style-material3) :where(article > header, article > footer) { background: transparent; border-color: var(--ms-c-border); }
+  :where(.style-material3) :where(.chip, .badge) { border-radius: 8px; }
+  :where(.style-material3) :where([role=tab]) { border-radius: 0; font-weight: 500; }
+  :where(.style-material3) :where(dialog > article) { border-radius: 28px; box-shadow: var(--ms-shadow-lg); }
+}

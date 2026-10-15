@@ -1,0 +1,12 @@
+@layer ms.base {
+  :where([role="tablist"]) { display: flex; gap: .25rem; margin-bottom: var(--ms-space); overflow-x: auto; border-bottom: var(--ms-c-border-w) solid var(--ms-c-border); scrollbar-width: none; }
+  :where([role="tab"]) {
+    --_bg: transparent; --_bd: transparent; --_fg: var(--ms-c-muted); --_sh: none; --_shh: none; --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3);
+    flex: none; margin-bottom: -1px; padding: .65rem 1.1rem; border-width: 0 0 2px; border-radius: var(--ms-c-radius-input) var(--ms-c-radius-input) 0 0; font-weight: 500;
+  }
+  :where([role="tab"]:hover) { --_fg: var(--ms-c-text); border-bottom-color: var(--ms-c-border); }
+  :where([role="tab"][aria-selected=true]) { --_fg: var(--ms-c-primary); --_bd: var(--ms-c-primary); border-bottom-color: var(--ms-c-primary); }
+  :where([role="tab"]:focus-visible) { outline-offset: -3px; }
+  :where([role="tabpanel"]) { padding-block: calc(var(--ms-space) * .25); animation: ms-fade-in .2s ease; }
+  :where([role="tabpanel"]:focus-visible) { outline: 3px solid var(--ms-c-focus); outline-offset: 2px; border-radius: var(--ms-c-radius-input); }
+}
