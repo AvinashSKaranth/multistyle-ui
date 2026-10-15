@@ -1,0 +1,35 @@
+@layer ms.style {
+  :where(.style-neon) {
+    --ms-c-radius-btn: 6px; --ms-c-radius-card: 10px; --ms-c-radius-input: 6px; --ms-c-border-w: 1px;
+    --ms-font: 'Exo 2', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ms-shadow-sm: 0 0 5px var(--ms-c-primary), 0 0 12px var(--ms-c-shadow-color);
+    --ms-shadow-md: 0 0 5px var(--ms-c-primary), 0 0 15px var(--ms-c-shadow-color);
+    --ms-shadow-lg: 0 0 8px var(--ms-c-primary), 0 0 28px var(--ms-c-shadow-color);
+  }
+  /* glowing buttons: surface bg, colored text + border (variants change --_c) */
+  :where(.style-neon) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *):not(:disabled), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]):not(:disabled)) {
+    --_bg: var(--ms-c-surface); --_fg: var(--_c); --_bd: var(--_c);
+    --_hbg: color-mix(in oklch, var(--_c) 20%, var(--ms-c-surface)); --_abg: color-mix(in oklch, var(--_c) 32%, var(--ms-c-surface));
+    --_sh: 0 0 5px var(--_c), 0 0 12px color-mix(in oklch, var(--_c) 40%, transparent);
+    --_shh: 0 0 8px var(--_c), 0 0 24px color-mix(in oklch, var(--_c) 55%, transparent);
+    font-weight: 600; letter-spacing: .03em; text-shadow: 0 0 6px color-mix(in oklch, var(--_c) 60%, transparent);
+  }
+  :where(.style-neon) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *):not(:disabled), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):is(:hover, :active):not(:disabled) { border-color: var(--_c); }
+  :where(.style-neon) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { --_bd: color-mix(in oklch, var(--ms-c-primary) 55%, var(--ms-c-surface)); }
+  :where(.style-neon) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea):focus { box-shadow: 0 0 6px var(--ms-c-primary), 0 0 14px var(--ms-c-shadow-color); outline: 2px solid var(--ms-c-focus); outline-offset: 1px; }
+  :where(.style-neon) :where(article) { border-color: var(--ms-c-primary); }
+  :where(.style-neon) :where(article > header, article > footer) { background: transparent; border-color: color-mix(in oklch, var(--ms-c-primary) 50%, transparent); }
+  :where(.style-neon) :where(h1, h2, h3) { text-shadow: 0 0 8px var(--ms-c-shadow-color); }
+  :where(.style-neon) :where(.chip, .badge) { border-color: var(--ms-c-primary); box-shadow: 0 0 5px var(--ms-c-shadow-color); }
+  :where(.style-neon) :where(input:is([type=checkbox], [type=radio]):checked) { box-shadow: 0 0 6px var(--ms-c-primary); }
+  :where(.style-neon) :where(progress)::-webkit-progress-value { box-shadow: 0 0 8px var(--ms-c-primary); }
+  :where(.style-neon) :where([role=tab][aria-selected=true]) { text-shadow: 0 0 8px var(--ms-c-primary); }
+  :where(.style-neon) :where(.field, .ms-multi-control, .ms-code) { --_bd: color-mix(in oklch, var(--ms-c-primary) 55%, var(--ms-c-surface)); }
+  :where(.style-neon) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: 0 0 6px var(--ms-c-primary), 0 0 14px var(--ms-c-shadow-color); outline: 2px solid var(--ms-c-focus); outline-offset: 1px; }
+  :where(.style-neon) :where(.ms-toast, dialog.command, [popover], .ms-multi-list) { border-color: var(--ms-c-primary); }
+  :where(.style-neon) :where(.ms-toast) { border-inline-start-color: var(--_c); box-shadow: 0 0 5px var(--_c), 0 0 14px color-mix(in oklch, var(--_c) 40%, transparent); }
+  :where(.style-neon) :where(.carousel-prev, .carousel-next) { border-color: var(--ms-c-primary); box-shadow: var(--ms-shadow-sm); }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-neon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-neon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+}

@@ -1,0 +1,26 @@
+@layer ms.style {
+  :where(.style-carbon) {
+    --ms-c-radius-btn: 0; --ms-c-radius-card: 0; --ms-c-radius-input: 0; --ms-c-border-w: 1px;
+    --ms-font: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --ms-shadow-sm: none; --ms-shadow-md: none; --ms-shadow-lg: 0 2px 6px rgba(0,0,0,.3);
+  }
+  :where(.style-carbon) :where(button:not(.ms-toast-close, .carousel-dots > *, [popover] *, nav.pagination *), [role="button"], input:is([type=submit], [type=button], [type=reset])) { padding-block: .8rem; font-weight: 400; }
+  :where(.style-carbon) :where(input, select, textarea):not([type=checkbox], [type=radio], [type=range], [type=submit], [type=button], [type=reset], [type=file], [type=color]) {
+    background-color: var(--ms-c-surface-3); border-width: 0 0 2px; --_bd: var(--ms-c-border);
+  }
+  :where(.style-carbon) :where(input, select, textarea):not([type=checkbox], [type=radio]):hover { --_bd: var(--ms-c-primary); }
+  :where(.style-carbon) :where(input, select, textarea):not([type=checkbox], [type=radio]):focus { box-shadow: none; outline: 2px solid var(--ms-c-primary); outline-offset: -2px; }
+  :where(.style-carbon) :where(article) { box-shadow: none; background: var(--ms-c-surface-2); border-width: 0 0 0 3px; border-left-color: var(--ms-c-primary); }
+  :where(.style-carbon) :where(article > header, article > footer) { background: transparent; border-radius: 0; }
+  :where(.style-carbon) :where(.chip, .badge) { border-radius: 2px; }
+  :where(.style-carbon) :where([role="tab"]) { border-radius: 0; }
+  :where(.style-carbon) :where(.field, .ms-multi-control, .ms-code) { background-color: var(--ms-c-surface-3); border-width: 0 0 2px; --_bd: var(--ms-c-border); }
+  :where(.style-carbon) :where(.field, .ms-multi-control, .ms-code):hover { --_bd: var(--ms-c-primary); }
+  :where(.style-carbon) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: none; outline: 2px solid var(--ms-c-primary); outline-offset: -2px; }
+  :where(.style-carbon) :where(.ms-code) { border-width: 0 0 2px; }
+  :where(.style-carbon) :where(.ms-toast) { border-radius: 0; box-shadow: var(--ms-shadow-lg); }
+  :where(.style-carbon) :where(.carousel-prev, .carousel-next) { border-radius: 0; box-shadow: none; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-carbon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-carbon) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+}

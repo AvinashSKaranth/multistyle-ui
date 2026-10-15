@@ -1,0 +1,61 @@
+@layer ms.base {
+  /* ---- input with icons / affixes: wrapper looks like the input ---- */
+  :where(label.field, div.field) {
+    --_bd: color-mix(in oklch, var(--ms-c-text) 25%, var(--ms-c-surface));
+    display: flex; align-items: center; gap: .5rem; margin-bottom: var(--ms-space); padding-inline: .75rem; font-weight: 400;
+    border: var(--ms-c-border-w) solid var(--_bd); border-radius: var(--ms-c-radius-input); background: var(--ms-c-surface); color: var(--ms-c-text);
+    transition: border-color var(--ms-transition), box-shadow var(--ms-transition);
+  }
+  :where(.field:hover) { --_bd: color-mix(in oklch, var(--ms-c-text) 45%, var(--ms-c-surface)); }
+  :where(.field:focus-within) { --_bd: var(--ms-c-primary); box-shadow: 0 0 0 3px var(--ms-c-focus); }
+  :where(.field:has([aria-invalid=true], :user-invalid)) { --_bd: var(--ms-c-error); }
+  :where(.field:has(:disabled)) { background: var(--ms-c-surface-3); color: var(--ms-c-disabled); }
+  :where(.field > :is(input, select, textarea)) {
+    flex: 1; min-width: 0; width: auto; margin: 0; padding-inline: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none !important; /* beats style-layer focus shadows */
+  }
+    :where(.field > select:not([multiple], [size])) { background-image: none; padding-inline-end: 0; }
+  :where(.field > :is(.ms-icon, .affix)) { flex: none; color: var(--ms-c-muted); user-select: none; }
+  :where(.field > .ms-icon) { position: static; vertical-align: baseline; }
+  :where(.field > .affix) { font-size: .9375rem; }
+  :where(.field > :is(button, [role=button])) { flex: none; margin: 0; margin-inline-end: -.4rem; }
+
+  /* ---- floating label: <label class="floating"><input placeholder=" "><span>Label</span></label> ---- */
+  :where(label.floating) { position: relative; display: block; margin-bottom: var(--ms-space); font-weight: 400; }
+  :where(label.floating > :is(input, select, textarea)) { margin: 0; padding-top: 1.45rem; padding-bottom: .35rem; }
+  :where(label.floating > textarea) { min-height: 5rem; }
+  :where(label.floating > span) {
+    position: absolute; inset-inline: calc(.75rem + var(--ms-c-border-w)) auto; top: .8rem; max-width: calc(100% - 1.5rem); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    color: var(--ms-c-muted); line-height: 1.5; pointer-events: none; transform-origin: left top; transition: transform var(--ms-transition), color var(--ms-transition);
+  }
+  :where(label.floating > :is(input, textarea):focus + span, label.floating > :is(input, textarea):not(:placeholder-shown) + span, label.floating > select + span,
+         label.floating > input:is([type=date], [type=time], [type=month], [type=week], [type=datetime-local], [type=color], [type=file]) + span) { transform: translateY(-.55rem) scale(.78); }
+  :where(label.floating > :is(input, textarea, select):focus + span) { color: var(--ms-c-primary); }
+  :where(label.floating > :is(input, textarea)::placeholder) { color: transparent; }
+  :where(label.floating > :is(input, textarea):focus::placeholder) { color: var(--ms-c-muted); }
+  :where(label.floating > :is(input, textarea, select):is(:user-invalid, [aria-invalid=true]) + span) { color: var(--ms-c-error); }
+  :where(label.floating > :is(input, textarea, select):disabled + span) { color: var(--ms-c-disabled); }
+
+  /* ---- textarea ---- */
+  :where(textarea.autoresize) {
+    field-sizing: content; resize: none; min-height: calc(var(--min-rows, 2) * 1lh + 1.2rem + 2 * var(--ms-c-border-w)); max-height: calc(var(--max-rows, 10) * 1lh + 1.2rem + 2 * var(--ms-c-border-w)); overflow-y: auto;
+  }
+  :where(textarea + small.counter) { display: block; margin-top: calc(var(--ms-space) * -.75); margin-bottom: var(--ms-space); text-align: end; color: var(--ms-c-muted); font-variant-numeric: tabular-nums; }
+  :where(textarea + small.counter.full) { color: var(--ms-c-error); }
+
+  /* ---- progressive custom select (Chromium 135+): opt in with class="custom" ---- */
+  @supports (appearance: base-select) {
+    :where(select.custom, select.custom::picker(select)) { appearance: base-select; }
+    :where(select.custom) { display: flex; align-items: center; justify-content: space-between; background-image: none; padding-inline-end: .75rem; }
+    :where(select.custom)::picker-icon { color: var(--ms-c-muted); transition: rotate var(--ms-transition); }
+    :where(select.custom:open)::picker-icon { rotate: 180deg; }
+    :where(select.custom)::picker(select) {
+      margin-block: 4px; padding: .25rem; border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: var(--ms-c-radius-input);
+      background: var(--ms-c-card); color: var(--ms-c-text); box-shadow: var(--ms-shadow-lg);
+    }
+    :where(select.custom option) { display: flex; align-items: center; gap: .5rem; padding: .45rem .6rem; border-radius: calc(var(--ms-c-radius-input) * .6); cursor: pointer; }
+    :where(select.custom option:hover, select.custom option:focus-visible) { background: var(--ms-c-surface-3); outline: none; }
+    :where(select.custom option:checked) { background: color-mix(in oklch, var(--ms-c-primary) 16%, var(--ms-c-card)); color: var(--ms-c-primary); }
+    :where(select.custom option:disabled) { color: var(--ms-c-disabled); cursor: not-allowed; }
+    :where(select.custom option)::checkmark { color: currentColor; order: 1; margin-inline-start: auto; }
+  }
+}

@@ -1,0 +1,35 @@
+@layer ms.style {
+  :where(.style-pixel) {
+    --ms-c-radius-btn: 0; --ms-c-radius-card: 0; --ms-c-radius-input: 0; --ms-c-border-w: 2px;
+    --ms-font: ui-monospace, 'Courier New', monospace;
+    --ms-transition: .1s steps(3);
+    --ms-shadow-sm: inset -2px -2px 0 rgba(0, 0, 0, .35), inset 2px 2px 0 rgba(255, 255, 255, .35);
+    --ms-shadow-md: inset -3px -3px 0 rgba(0, 0, 0, .3), inset 3px 3px 0 rgba(255, 255, 255, .3);
+    --ms-shadow-lg: 4px 4px 0 rgba(0, 0, 0, .4), inset -3px -3px 0 rgba(0, 0, 0, .3), inset 3px 3px 0 rgba(255, 255, 255, .3);
+  }
+  :where(.style-pixel) :where(img, canvas, video) { image-rendering: pixelated; }
+  /* bevel buttons; pressed = inverted bevel */
+  :where(.style-pixel) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { --_bd: var(--ms-c-text); --_sh: var(--ms-shadow-sm); --_shh: var(--ms-shadow-sm); font-weight: 700; }
+  :where(.style-pixel) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):is(:hover, :active) { border-color: var(--ms-c-text); }
+  :where(.style-pixel) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])):active { box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .35), inset -2px -2px 0 rgba(255, 255, 255, .25); transform: translate(1px, 1px); }
+  :where(.style-pixel) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { --_bd: var(--ms-c-text); box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .25); }
+  :where(.style-pixel) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea):focus { box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .25), 0 0 0 3px var(--ms-c-focus); }
+  :where(.style-pixel) :where(article, article > header, article > footer) { border-color: var(--ms-c-text); }
+  :where(.style-pixel) :where(.chip, .badge, [role=alert]) { border-color: var(--ms-c-text); box-shadow: var(--ms-shadow-sm); }
+  :where(.style-pixel) :where(input:is([type=checkbox], [type=radio]):not([role=switch])) { --_bd: var(--ms-c-text); border-radius: 0; box-shadow: var(--ms-shadow-sm); }
+  :where(.style-pixel) :where(input[type=checkbox][role=switch]) { border-radius: 0; border: 2px solid var(--ms-c-text); }
+  :where(.style-pixel) :where(input[type=checkbox][role=switch])::before { border-radius: 0; }
+  :where(.style-pixel) :where(progress, meter) { border: 2px solid var(--ms-c-text); border-radius: 0; height: 1rem; }
+  :where(.style-pixel) :where(progress)::-webkit-progress-value { border-radius: 0; }
+  :where(.style-pixel) :where([role=tab], .chip, .badge, .fab) { border-radius: 0; }
+  :where(.style-pixel) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--ms-c-text); box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .25); }
+  :where(.style-pixel) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: inset 2px 2px 0 rgba(0, 0, 0, .25), 0 0 0 3px var(--ms-c-focus); }
+  :where(.style-pixel) :where(.ms-toast, dialog.command, [popover], .ms-multi-list, .carousel-prev, .carousel-next) { border-color: var(--ms-c-text); }
+  :where(.style-pixel) :where(.ms-toast, .carousel-prev, .carousel-next) { box-shadow: var(--ms-shadow-sm); }
+  :where(.style-pixel) :where(nav.pagination :is(a, button)[aria-current]:not([aria-current=false])) { border-color: var(--ms-c-text); }
+  :where(.style-pixel) :where(.carousel-dots > button) { border-radius: 0; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-pixel) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-pixel) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+  :where(.style-pixel) :where(.ms-code) { border-color: var(--ms-c-text); }
+}

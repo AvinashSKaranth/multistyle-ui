@@ -1,0 +1,30 @@
+@layer ms.base {
+  :where([data-tooltip]) { position: relative; }
+  :where([data-tooltip]:not(a, button, input, [role="button"])) { border-bottom: 1px dotted; cursor: help; text-decoration: none; }
+  :where(button[data-tooltip], [role="button"][data-tooltip]) { overflow: visible; }
+  :where([data-tooltip] > .ms-ripple) { display: none; }
+  :where([data-tooltip])::before, :where([data-tooltip])::after { position: absolute; z-index: 10; pointer-events: none; opacity: 0; transition: opacity var(--ms-transition), transform var(--ms-transition); }
+  :where([data-tooltip])::before {
+    content: attr(data-tooltip); inset-inline-start: 50%; bottom: calc(100% + 8px); width: max-content; max-width: min(20rem, 80vw); padding: .35rem .65rem;
+    border-radius: var(--ms-c-radius-input); background: var(--ms-c-text); color: var(--ms-c-surface); box-shadow: var(--ms-shadow-md);
+    font-size: .8125rem; font-style: normal; font-weight: 400; line-height: 1.35; text-align: center; white-space: normal; transform: translate(-50%, 4px);
+  }
+  :where([data-tooltip])::after { content: ""; inset-inline-start: 50%; bottom: calc(100% + 3px); width: 10px; height: 10px; background: var(--ms-c-text); transform: translate(-50%, 4px) rotate(45deg); z-index: 9; }
+  :where([data-tooltip]:is(:hover, :focus-visible))::before { opacity: 1; transform: translate(-50%, 0); }
+  :where([data-tooltip]:is(:hover, :focus-visible))::after { opacity: 1; transform: translate(-50%, 0) rotate(45deg); }
+
+  :where([data-tooltip][data-placement=bottom])::before { bottom: auto; top: calc(100% + 8px); transform: translate(-50%, -4px); }
+  :where([data-tooltip][data-placement=bottom])::after { bottom: auto; top: calc(100% + 3px); transform: translate(-50%, -4px) rotate(45deg); }
+  :where([data-tooltip][data-placement=bottom]:is(:hover, :focus-visible))::before { transform: translate(-50%, 0); }
+  :where([data-tooltip][data-placement=bottom]:is(:hover, :focus-visible))::after { transform: translate(-50%, 0) rotate(45deg); }
+
+  :where([data-tooltip][data-placement=left])::before { inset-inline-start: auto; bottom: auto; top: 50%; right: calc(100% + 8px); transform: translate(4px, -50%); }
+  :where([data-tooltip][data-placement=left])::after { inset-inline-start: auto; bottom: auto; top: 50%; right: calc(100% + 3px); transform: translate(4px, -50%) rotate(45deg); }
+  :where([data-tooltip][data-placement=left]:is(:hover, :focus-visible))::before { transform: translate(0, -50%); }
+  :where([data-tooltip][data-placement=left]:is(:hover, :focus-visible))::after { transform: translate(0, -50%) rotate(45deg); }
+
+  :where([data-tooltip][data-placement=right])::before { inset-inline-start: calc(100% + 8px); bottom: auto; top: 50%; transform: translate(-4px, -50%); }
+  :where([data-tooltip][data-placement=right])::after { inset-inline-start: calc(100% + 3px); bottom: auto; top: 50%; transform: translate(-4px, -50%) rotate(45deg); }
+  :where([data-tooltip][data-placement=right]:is(:hover, :focus-visible))::before { transform: translate(0, -50%); }
+  :where([data-tooltip][data-placement=right]:is(:hover, :focus-visible))::after { transform: translate(0, -50%) rotate(45deg); }
+}

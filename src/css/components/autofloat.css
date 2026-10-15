@@ -1,0 +1,164 @@
+/* Class-free floating labels. Plain markup floats by default in style-material (filled M2) and style-material3 (outlined M3); every other style is untouched.
+     A  <label>Email <input></label>                 the label IS the field box; the control is absolutely positioned inside it (transparent), so the
+                                                        label's bare text node is its only in-flow content and floats by changing font-size/padding-top.
+     B  <label for=x>Email</label><input id=x>        the input is the box; the label (56px, pointer-events:none) overlays it via a negative margin.
+   Scope: --ms-af (filled | outlined | off) is an INHERITED custom property read with @container style(), so the nearest ancestor wins.
+     :root = filled (bare page = material) · other .style-* = off · .style-material = filled · .style-material3 = outlined ·
+     data-ms-fields="stacked|floating|filled|outlined" on any ancestor overrides (floating = the style's natural variant, --ms-nat).
+   Never floats: checkbox/radio/range/color/file/buttons, multi-control labels, label.floating|.field|.dropzone (own rules).
+   Floated = :focus | has value | no placeholder attr (no-JS fallback; forms.js injects placeholder=" " in floating scopes) | autofill | date-like | select.
+   Same layer as floating.css (ms.utils): must beat per-style input rules when forced; every selector is :where() so utilities and user CSS still win.
+   M3 notch: the label text straddles the border (line-height 0) and its ::first-line background (page colour) hides the outline behind the text. */
+@layer ms.utils {
+  :where(:root) { --ms-af: filled; --ms-nat: filled; }
+  :where([class^="style-"], [class*=" style-"]) { --ms-af: off; --ms-nat: filled; }
+  :where(.style-material) { --ms-af: filled; }
+  :where(.style-material3) { --ms-af: outlined; --ms-nat: outlined; }
+  :where([data-ms-fields=stacked]) { --ms-af: off; }
+  :where([data-ms-fields=filled]) { --ms-af: filled; }
+  :where([data-ms-fields=outlined]) { --ms-af: outlined; }
+  :where([data-ms-fields=floating]) { --ms-af: var(--ms-nat); }
+
+  @container style(--ms-af: filled) or style(--ms-af: outlined) {
+    /* ---- the label (A: field box + text, B: text overlay) ---- */
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) {
+      --_ease: 180ms cubic-bezier(.4, 0, .2, 1); --_tx: 16px; --_tex: 16px; --_bw: 0px; --_np: 0px;
+      --_ln: var(--ms-c-muted); --_lc: var(--ms-c-muted); --_ac: var(--ms-c-primary); --_nb: transparent; --_is: 0%;
+      --_pt: 16px; --_fs: 16px; --_lh: 24px; --_pl: calc(var(--_tx) - var(--_bw) - var(--_np)); --_pr: calc(var(--_tex) - var(--_bw) - var(--_np));
+    }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea))) {
+      position: relative; display: block; box-sizing: border-box; height: 56px; margin: 0 0 var(--ms-space);
+      padding: var(--_pt) var(--_pr) 0 var(--_pl);
+      overflow: clip; overflow-clip-margin: 24px; text-overflow: ellipsis; white-space: nowrap;
+      font-size: var(--_fs); line-height: var(--_lh); font-weight: 400; letter-spacing: normal; text-transform: none; color: var(--_lc); cursor: text;
+      transition: padding-top var(--_ease), font-size var(--_ease), line-height var(--_ease), color var(--_ease), background-size var(--_ease), border-color var(--_ease), background-color var(--_ease), box-shadow var(--_ease);
+    }
+    :where(label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea))) { margin-bottom: -56px; z-index: 1; pointer-events: none; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)))::first-line { background: var(--_nb); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> textarea)) { height: auto; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :required),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):has(+ :required))::after { content: " *"; }
+
+    /* ---- the control: A = transparent, fills the label · B = the box itself ---- */
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) {
+      box-sizing: border-box; margin: 0; width: 100%; font-family: inherit; font-size: 16px; line-height: 24px; font-weight: 400; letter-spacing: normal; text-transform: none;
+      color: var(--ms-c-text); caret-color: var(--ms-c-primary); box-shadow: none; outline: 0; cursor: text;
+      padding: 20px calc(var(--_tex) - var(--_bw)) 6px calc(var(--_tx) - var(--_bw));
+    }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea)) { position: absolute; inset: 0; height: 100%; border: 0; border-radius: inherit; background-color: transparent; }
+    :where(label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) { display: block; height: 56px; margin: 0 0 var(--ms-space); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > textarea) {
+      position: relative; inset: auto; display: block; height: auto; min-height: 5rem; resize: vertical;
+      width: calc(100% + var(--_pl) + var(--_pr)); margin: calc(-1 * (var(--_pt) + var(--_lh))) calc(-1 * var(--_pr)) 0 calc(-1 * var(--_pl));
+      transition: margin-top var(--_ease);
+    }
+    :where(label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(textarea)) { height: auto; min-height: 5rem; resize: vertical; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea))::placeholder { color: transparent; opacity: 1; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea):focus,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):focus)::placeholder { color: var(--ms-c-muted); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > select,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(select)) { --_arrow: var(--ms-c-muted); appearance: none; -webkit-appearance: none; cursor: pointer; padding-inline-end: 40px; background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5.6px 5.6px; background-repeat: no-repeat; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > select) { background-image: linear-gradient(45deg, transparent 50%, var(--_arrow) 50%), linear-gradient(135deg, var(--_arrow) 50%, transparent 50%); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > select:focus,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(select):focus) { --_arrow: var(--ms-c-primary); }
+
+    /* icons (pattern A): leading by default, trailing when after the control */
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> .ms-icon)) { --_tx: 52px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :is(input,select,textarea) ~ .ms-icon)) { --_tx: 16px; --_tex: 52px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > .ms-icon) { position: absolute; top: calc(16px - var(--_bw)); inset-inline-start: calc(12px - var(--_bw)); margin: 0; font-size: 24px; line-height: 1; color: var(--ms-c-muted); pointer-events: none; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea) ~ .ms-icon) { inset-inline: auto calc(12px - var(--_bw)); }
+
+    /* helper: inside the label (pattern A, Pico style) or right after it / the control */
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> small)) { margin-bottom: calc(var(--ms-space) + 20px); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > small) { position: absolute; top: 100%; inset-inline: 0; margin: 4px 0 0; padding-inline: 16px; font-size: 12px; line-height: 16px; font-weight: 400; color: var(--ms-c-muted); white-space: nowrap; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) + small,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea) + small) { display: block; margin: calc(4px - var(--ms-space)) 0 var(--ms-space); padding-inline: 16px; font-size: 12px; line-height: 16px; color: var(--ms-c-muted); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) + small.counter,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea) + small.counter) { text-align: end; font-variant-numeric: tabular-nums; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) + small.counter:has(+ small:not(.counter)),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea) + small.counter:has(+ small:not(.counter))) { float: inline-end; margin-top: 4px; margin-bottom: 0; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) + small.counter.full,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea) + small.counter.full) { color: var(--ms-c-error); }
+
+    /* states (order matters: hover < focus < floated < invalid < disabled) */
+    :where(label:hover,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):hover) { --_ln: var(--ms-c-text); }
+    :where(label:focus-within,
+    label[for]:has(+ :is(input,select,textarea):focus),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):focus) { --_lc: var(--ms-c-primary); --_is: 100%; }
+    :where(label:has(> :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local])),
+    label[for]:has(+ :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local]))) { --_fs: 12px; }
+    :where(label:has(> :is(input,select,textarea):is(:user-invalid,[aria-invalid=true])),
+    label[for]:has(+ :is(input,select,textarea):is(:user-invalid,[aria-invalid=true])),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(:user-invalid,[aria-invalid=true])) { --_ln: var(--ms-c-error); --_lc: var(--ms-c-error); --_ac: var(--ms-c-error); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :is(input,select,textarea):is(:user-invalid,[aria-invalid=true])) > small) { color: var(--ms-c-error); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :disabled),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):has(+ :disabled),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):disabled) { opacity: .38; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea):disabled,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):disabled) { cursor: not-allowed; color: inherit; }
+  }
+
+  /* ---- filled (M2) ---- */
+  @container style(--ms-af: filled) {
+    :where(label:has(> :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local])),
+    label[for]:has(+ :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local]))) { --_pt: 8px; --_lh: 16px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) {
+      border: 0; border-bottom: 1px solid var(--_ln); border-radius: 4px 4px 0 0;
+      background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 4%);
+      background-image: linear-gradient(var(--_ac), var(--_ac)); background-repeat: no-repeat; background-origin: border-box; background-position: 50% 100%; background-size: var(--_is) 2px;
+    }
+    :where(label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(select)) { background-image: linear-gradient(var(--_ac), var(--_ac)), linear-gradient(45deg, transparent 50%, var(--_arrow) 50%), linear-gradient(135deg, var(--_arrow) 50%, transparent 50%); background-position: 50% 100%, calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: var(--_is) 2px, 5.6px 5.6px, 5.6px 5.6px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):hover:not(:has(> :disabled)),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):hover:not(:disabled)) { background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 8%); }
+    :where(label:focus-within,
+    label[for]:has(+ :is(input,select,textarea):focus),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):focus) { --_ln: var(--_ac); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :disabled),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):disabled) { border-bottom-style: dotted; background-color: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 4%); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > textarea,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(textarea)) { padding-top: 28px; padding-bottom: 8px; }
+  }
+
+  /* ---- outlined (M3) ---- */
+  @container style(--ms-af: outlined) {
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) { --_bw: 1px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea))) { --_np: 4px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)))::before { content: ""; padding-inline-start: 4px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)))::after { content: ""; padding-inline-end: 4px; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :required),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)):has(+ :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):has(+ :required))::after { content: " *"; }
+    :where(label:has(> :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local])),
+    label[for]:has(+ :is(input,select,textarea):is(:focus,:not(:placeholder-shown),:not([placeholder]),:autofill,:-webkit-autofill,[type=date],[type=time],[type=month],[type=week],[type=datetime-local]))) { --_pt: 0px; --_lh: 0px; --_nb: var(--ms-field-bg, var(--ms-c-surface)); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) { border: 1px solid var(--_ln); border-radius: 4px; background-color: transparent; }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > :is(input,select,textarea),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)) { padding-block: 0; }
+    :where(label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(select)) { background-image: linear-gradient(45deg, transparent 50%, var(--_arrow) 50%), linear-gradient(135deg, var(--_arrow) 50%, transparent 50%); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))) > textarea,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):is(textarea)) { padding-block: 16px; }
+    :where(label:focus-within,
+    label[for]:has(+ :is(input,select,textarea):focus),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):focus) { --_ln: var(--_ac); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):focus-within,
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):focus) { box-shadow: 0 0 0 1px var(--_ac); }
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> :disabled),
+    label[for]:not(.floating,.field,.dropzone,:has(input,select,textarea)) + :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea):disabled) { --_ln: var(--ms-c-border); }
+  }
+
+  /* a textarea is in-flow: a pseudo after it would add a blank line, so no required marker / notch end-padding there */
+  @container style(--ms-af: filled) or style(--ms-af: outlined) {
+    :where(label:has(> :is(input:not([type^=c],[type^=r],[type=file],[type^=h],[type^=b],[type=submit],[type^=i]),select:not([multiple],[size]),textarea)):not(.floating,.field,.dropzone,:has(> :is(input,select,textarea) ~ :is(input,select,textarea))):has(> textarea))::after { content: none; }
+  }
+}

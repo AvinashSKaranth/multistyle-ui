@@ -1,0 +1,54 @@
+@layer ms.base {
+  :where(label) { display: block; margin-bottom: .35rem; font-size: .9375rem; font-weight: 500; }
+  :where(label > :is(input, select, textarea):not([type=checkbox], [type=radio])) { margin-block: .35rem 0; }
+  :where(label:has(> :is(input:not([type=checkbox], [type=radio]), select, textarea))) { margin-bottom: var(--ms-space); }
+  :where(label:has(> input:is([type=checkbox], [type=radio]))) { display: flex; align-items: center; gap: .6rem; margin-bottom: .5rem; font-weight: 400; cursor: pointer; }
+  :where(fieldset) { min-width: 0; padding: 0; border: 0; }
+  :where(legend) { padding: 0; margin-bottom: .5rem; font-weight: 600; }
+
+  :where(input:not([type=checkbox], [type=radio], [type=range], [type=submit], [type=button], [type=reset], [type=image], [type=hidden]), select, textarea) {
+    --_bd: color-mix(in oklch, var(--ms-c-text) 25%, var(--ms-c-surface));
+    display: block; width: 100%; margin-bottom: var(--ms-space); padding: .6rem .75rem;
+    border: var(--ms-c-border-w) solid var(--_bd); border-radius: var(--ms-c-radius-input);
+    background-color: var(--ms-c-surface); color: var(--ms-c-text); font: inherit; line-height: 1.5; outline: none;
+    transition: border-color var(--ms-transition), box-shadow var(--ms-transition), background-color var(--ms-transition);
+  }
+  :where(input:not([type=checkbox], [type=radio], [type=range], [type=submit], [type=button], [type=reset], [type=image], [type=hidden]):hover, select:hover, textarea:hover) { --_bd: color-mix(in oklch, var(--ms-c-text) 45%, var(--ms-c-surface)); }
+  :where(input:not([type=checkbox], [type=radio], [type=range], [type=submit], [type=button], [type=reset], [type=image], [type=hidden]):focus, select:focus, textarea:focus) { --_bd: var(--ms-c-primary); box-shadow: 0 0 0 3px var(--ms-c-focus); }
+  :where(input, textarea)::placeholder { color: var(--ms-c-muted); opacity: 1; }
+  :where(input:disabled, select:disabled, textarea:disabled) { background-color: var(--ms-c-surface-3); color: var(--ms-c-disabled); cursor: not-allowed; }
+  :where(textarea) { min-height: 6rem; resize: vertical; }
+
+  :where(select:not([multiple], [size])) {
+    padding-inline-end: 2.25rem; cursor: pointer; appearance: none; -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 1.25rem) 50%, calc(100% - .9rem) 50%;
+    background-size: .35rem .35rem, .35rem .35rem; background-repeat: no-repeat;
+  }
+  :where(select[multiple], select[size]:not([size="1"])) { padding: .35rem; }
+  :where(select[multiple] option, select[size] option) { padding: .35rem .5rem; border-radius: calc(var(--ms-c-radius-input) * .5); }
+  :where(select[multiple] option:checked, select[size] option:checked) { background: linear-gradient(var(--ms-c-primary), var(--ms-c-primary)); color: var(--ms-c-on-primary); }
+
+  :where(input)::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .7; }
+  :where(input)::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+  :where(input[type=search]) { appearance: none; -webkit-appearance: none; }
+  :where(input[type=color]) { height: 2.75rem; padding: .25rem; cursor: pointer; }
+  :where(input[type=color])::-webkit-color-swatch-wrapper { padding: 0; }
+  :where(input[type=color])::-webkit-color-swatch { border: 0; border-radius: calc(var(--ms-c-radius-input) * .6); }
+  :where(input[type=color])::-moz-color-swatch { border: 0; border-radius: calc(var(--ms-c-radius-input) * .6); }
+  :where(input[type=file]) { padding: .4rem; cursor: pointer; }
+  :where(input[type=file])::file-selector-button {
+    margin-inline-end: .75rem; padding: .3rem .8rem; border: 0; border-radius: calc(var(--ms-c-radius-input) * .75);
+    background: var(--ms-c-secondary); color: var(--ms-c-on-secondary); font: inherit; font-weight: 500; cursor: pointer; transition: background-color var(--ms-transition);
+  }
+  :where(input[type=file])::file-selector-button:hover { background: color-mix(in oklch, var(--ms-c-secondary), var(--ms-c-text) 14%); }
+
+  :where(:is(input, select, textarea) + small) { display: block; margin-top: calc(var(--ms-space) * -.75); margin-bottom: var(--ms-space); }
+
+  :where(:is(input, select, textarea):user-invalid, :is(input, select, textarea)[aria-invalid=true]) { --_bd: var(--ms-c-error); }
+  :where(:is(input, select, textarea):user-invalid:focus, :is(input, select, textarea)[aria-invalid=true]:focus) { --_bd: var(--ms-c-error); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ms-c-error) 30%, transparent); }
+  :where(:is(input, select, textarea)[aria-invalid=false]) { --_bd: var(--ms-c-success); }
+  :where(:is(input, select, textarea)[aria-invalid=false]:focus) { --_bd: var(--ms-c-success); box-shadow: 0 0 0 3px color-mix(in oklch, var(--ms-c-success) 30%, transparent); }
+  :where(:is(input, select, textarea):user-invalid + small, :is(input, select, textarea)[aria-invalid=true] + small) { color: var(--ms-c-error); }
+  :where(:is(input, select, textarea)[aria-invalid=false] + small) { color: var(--ms-c-success); }
+}

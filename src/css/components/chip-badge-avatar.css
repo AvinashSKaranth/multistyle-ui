@@ -1,0 +1,48 @@
+@layer ms.base {
+  :where(.chip) {
+    display: inline-flex; align-items: center; gap: .4rem; padding: .25rem .75rem; border: var(--ms-c-border-w) solid var(--ms-c-border); border-radius: 999px;
+    background: var(--ms-c-surface-3); color: var(--ms-c-text); font-size: .875rem; line-height: 1.5; vertical-align: middle; transition: background-color var(--ms-transition), border-color var(--ms-transition);
+  }
+  :where(.chip[aria-pressed=true], .chip.selected) { background: color-mix(in oklch, var(--ms-c-primary) 16%, var(--ms-c-surface)); border-color: var(--ms-c-primary); color: var(--ms-c-primary); }
+  :where(.chip:is(button, a, [role="button"])) {
+    --_bg: var(--ms-c-surface-3); --_fg: var(--ms-c-text); --_bd: var(--ms-c-border); --_hbg: var(--ms-c-surface-2); --_abg: var(--ms-c-surface-2); --_sh: none; --_shh: none;
+    padding: .25rem .75rem; font-weight: 400;
+  }
+  :where(.chip > :is(button, [role="button"])) {
+    --_bg: transparent; --_bd: transparent; --_fg: currentColor; --_sh: none; --_shh: none; --_hbg: color-mix(in oklch, currentColor 15%, transparent); --_abg: var(--_hbg);
+    width: 1.25rem; height: 1.25rem; padding: 0; margin-inline-end: -.4rem; border-radius: 50%; font-size: 1rem; line-height: 1;
+  }
+  :where(.badge) {
+    display: inline-block; padding: .125rem .55rem; border-radius: 999px; background: var(--ms-c-primary); color: var(--ms-c-on-primary);
+    font-size: .75rem; font-weight: 600; line-height: 1.5; letter-spacing: .02em; vertical-align: middle; white-space: nowrap;
+  }
+  :where(.badge.secondary) { background: var(--ms-c-secondary); color: var(--ms-c-on-secondary); }
+  :where(.badge.success) { background: var(--ms-c-success); color: #fff; }
+  :where(.badge.warning) { background: var(--ms-c-warning); color: #fff; }
+  :where(.badge.error) { background: var(--ms-c-error); color: #fff; }
+  :where(.badge.info) { background: var(--ms-c-info); color: #fff; }
+  :where(.badge.outline) { background: transparent; box-shadow: inset 0 0 0 var(--ms-c-border-w) currentColor; color: var(--ms-c-primary); }
+
+  :where(.avatar) {
+    --_s: 2.5rem; display: inline-grid; place-items: center; flex: none; width: var(--_s); height: var(--_s); overflow: hidden; border-radius: 50%;
+    background: color-mix(in oklch, var(--ms-c-primary) 18%, var(--ms-c-surface)); color: var(--ms-c-primary); font-size: calc(var(--_s) * .4); font-weight: 600; line-height: 1;
+    text-transform: uppercase; vertical-align: middle; user-select: none;
+  }
+  :where(.avatar.sm) { --_s: 2rem; }
+  :where(.avatar.lg) { --_s: 3.5rem; }
+  :where(.avatar > img, img.avatar) { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+  :where(.chip.sm) { padding: .1rem .55rem; font-size: .75rem; }
+  :where(.chip.lg) { padding: .4rem 1rem; font-size: 1rem; }
+  :where(.avatar[data-status]) { position: relative; overflow: visible; }
+  :where(.avatar[data-status])::after {
+    content: ""; position: absolute; inset: auto 0 0 auto; width: max(.5rem, calc(var(--_s) * .28)); aspect-ratio: 1; border-radius: 50%;
+    background: var(--ms-c-muted); box-shadow: 0 0 0 2px var(--ms-c-surface);
+  }
+  :where(.avatar[data-status=online])::after { background: var(--ms-c-success); }
+  :where(.avatar[data-status=busy])::after { background: var(--ms-c-error); }
+  :where(.avatar[data-status=away])::after { background: var(--ms-c-warning); }
+  :where(.avatar[data-status] > img) { border-radius: 50%; }
+  :where(.avatar-group) { display: inline-flex; vertical-align: middle; }
+  :where(.avatar-group > .avatar) { box-shadow: 0 0 0 2px var(--ms-c-surface); }
+  :where(.avatar-group > .avatar + .avatar) { margin-inline-start: -.75rem; }
+}

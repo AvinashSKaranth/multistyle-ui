@@ -1,0 +1,7 @@
+@layer ms.base {
+  :where(img, picture, video) { max-width: 100%; height: auto; }
+  :where(img) { border-radius: var(--ms-c-radius-input); }
+  :where(figure) { margin-inline: 0; }
+  :where(figcaption) { padding-top: .5rem; color: var(--ms-c-muted); font-size: .875rem; }
+  :where(figure > img, figure > picture) { width: 100%; }
+}

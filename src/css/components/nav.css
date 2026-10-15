@@ -1,0 +1,18 @@
+@layer ms.base {
+  :where(nav) { display: flex; align-items: center; justify-content: space-between; gap: var(--ms-space); margin-bottom: var(--ms-space); }
+  :where(nav ul) { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; margin: 0; padding: 0; list-style: none; }
+  :where(nav li) { display: inline-flex; align-items: center; margin: 0; padding: 0; }
+  :where(nav li)::marker { content: none; }
+  :where(nav a:not([role="button"])) { display: inline-block; padding: .45rem .75rem; border-radius: var(--ms-c-radius-btn); color: var(--ms-c-text); font-weight: 500; text-decoration: none; transition: background-color var(--ms-transition), color var(--ms-transition); }
+  :where(nav a:not([role="button"]):hover) { background: var(--ms-c-surface-3); color: var(--ms-c-primary); text-decoration: none; }
+  :where(nav a[aria-current]:not([aria-current=false])) { color: var(--ms-c-primary); background: color-mix(in oklch, var(--ms-c-primary) 12%, transparent); }
+  :where(nav li > strong:first-child) { font-size: 1.125rem; padding-inline: .5rem; }
+
+  /* breadcrumb */
+  :where(nav[aria-label=breadcrumb]) { justify-content: flex-start; }
+  :where(nav[aria-label=breadcrumb] ul) { gap: 0; }
+  :where(nav[aria-label=breadcrumb] li:not(:last-child))::after { content: "/"; margin-inline: .35rem; color: var(--ms-c-muted); }
+  :where(nav[aria-label=breadcrumb] a:not([role="button"])) { padding: .25rem .4rem; color: var(--ms-c-muted); font-weight: 400; }
+  :where(nav[aria-label=breadcrumb] a[aria-current]:not([aria-current=false]), nav[aria-label=breadcrumb] li:last-child) { background: none; color: var(--ms-c-text); font-weight: 500; }
+  :where(nav[aria-label=breadcrumb] li:last-child) { padding-inline: .4rem; }
+}

@@ -1,0 +1,122 @@
+/* tokens.css - input defaults (= theme-blue), effective --ms-c-* derivations, mode, body. See .document/contract.md */
+@layer ms.tokens {
+  /* ---- mode: system by default ---- */
+  :root { color-scheme: light dark; }
+  .mode-light { color-scheme: light; }
+  .mode-dark { color-scheme: dark; }
+
+  /* ---- fixed defaults (never overridden by themes) ---- */
+  :root {
+    --ms-default-surface-light: #ffffff;
+    --ms-default-surface-dark: #13171f;
+    --ms-default-text-light: #0f172a;
+    --ms-default-text-dark: #e6e9ef;
+    --ms-space: 1rem;
+    --ms-font-size: 1rem;
+    --ms-line-height: 1.5;
+    --ms-transition: .15s ease;
+  }
+
+  /* ---- INPUT defaults (= blue). Reset on every theme scope so nested themes don't leak. Zero specificity. ---- */
+  :where(:root, [class*="theme-"]) {
+    --ms-primary: #2060df;
+    --ms-secondary: #0172ad;
+    --ms-surface: light-dark(var(--ms-default-surface-light), var(--ms-default-surface-dark));
+    --ms-card: initial;                       /* unset => derived from surface */
+    --ms-text: light-dark(var(--ms-default-text-light), var(--ms-default-text-dark));
+    --ms-info: #3b82f6;
+    --ms-success: #22c55e;
+    --ms-warning: #eab308;
+    --ms-error: #ef4444;
+    --ms-radius-btn: 8px;
+    --ms-radius-card: 12px;
+    --ms-radius-input: 8px;
+    --ms-border-w: 1px;
+  }
+  :where(:root) {
+    --ms-font: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* ---- EFFECTIVE tokens. Declared on every scope element so derivations compute from THAT element's inputs. ---- */
+  :root, [class*="theme-"], [class*="mode-"], [class*="style-"] {
+    --ms-c-primary: var(--ms-primary);
+    --ms-c-secondary: var(--ms-secondary);
+    --ms-c-surface: var(--ms-surface);
+    --ms-c-text: var(--ms-text);
+    --ms-c-card: var(--ms-card, var(--ms-c-surface-2));
+    --ms-c-surface-2: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 4%);
+    --ms-c-surface-3: color-mix(in oklab, var(--ms-c-surface), var(--ms-c-text) 8%);
+    --ms-c-border: color-mix(in oklab, var(--ms-c-text) 14%, var(--ms-c-surface));
+    --ms-c-muted: color-mix(in oklab, var(--ms-c-text) 55%, var(--ms-c-surface));
+    --ms-c-disabled: color-mix(in oklab, var(--ms-c-text) 35%, var(--ms-c-surface));
+    --ms-c-focus: color-mix(in oklch, var(--ms-c-primary) 45%, transparent);
+    --ms-c-shadow-color: color-mix(in oklch, var(--ms-c-primary) 18%, transparent);
+    --ms-c-on-primary: #fff;
+    --ms-c-on-secondary: #fff;
+
+    --ms-c-info: var(--ms-info);
+    --ms-c-success: var(--ms-success);
+    --ms-c-warning: var(--ms-warning);
+    --ms-c-error: var(--ms-error);
+    --ms-c-info-subtle: color-mix(in oklch, var(--ms-c-info) 14%, var(--ms-c-surface));
+    --ms-c-success-subtle: color-mix(in oklch, var(--ms-c-success) 14%, var(--ms-c-surface));
+    --ms-c-warning-subtle: color-mix(in oklch, var(--ms-c-warning) 14%, var(--ms-c-surface));
+    --ms-c-error-subtle: color-mix(in oklch, var(--ms-c-error) 14%, var(--ms-c-surface));
+    --ms-c-info-strong: color-mix(in oklch, var(--ms-c-info) 75%, black);
+    --ms-c-success-strong: color-mix(in oklch, var(--ms-c-success) 75%, black);
+    --ms-c-warning-strong: color-mix(in oklch, var(--ms-c-warning) 75%, black);
+    --ms-c-error-strong: color-mix(in oklch, var(--ms-c-error) 75%, black);
+
+    --ms-c-radius-btn: var(--ms-radius-btn);
+    --ms-c-radius-card: var(--ms-radius-card);
+    --ms-c-radius-input: var(--ms-radius-input);
+    --ms-c-border-w: var(--ms-border-w);
+    --ms-shadow-sm: 0 1px 2px var(--ms-c-shadow-color);
+    --ms-shadow-md: 0 4px 10px -2px var(--ms-c-shadow-color), 0 2px 4px -2px var(--ms-c-shadow-color);
+    --ms-shadow-lg: 0 12px 28px -6px var(--ms-c-shadow-color), 0 4px 10px -4px var(--ms-c-shadow-color);
+
+    --ms-c-primary-50: color-mix(in oklch, var(--ms-c-primary) 8%, white);
+    --ms-c-primary-100: color-mix(in oklch, var(--ms-c-primary) 16%, white);
+    --ms-c-primary-200: color-mix(in oklch, var(--ms-c-primary) 32%, white);
+    --ms-c-primary-300: color-mix(in oklch, var(--ms-c-primary) 52%, white);
+    --ms-c-primary-400: color-mix(in oklch, var(--ms-c-primary) 76%, white);
+    --ms-c-primary-600: color-mix(in oklch, var(--ms-c-primary) 84%, black);
+    --ms-c-primary-700: color-mix(in oklch, var(--ms-c-primary) 68%, black);
+    --ms-c-primary-800: color-mix(in oklch, var(--ms-c-primary) 52%, black);
+    --ms-c-primary-900: color-mix(in oklch, var(--ms-c-primary) 38%, black);
+    --ms-c-primary-950: color-mix(in oklch, var(--ms-c-primary) 24%, black);
+    --ms-c-primary-500: var(--ms-c-primary);
+    --ms-c-secondary-50: color-mix(in oklch, var(--ms-c-secondary) 8%, white);
+    --ms-c-secondary-100: color-mix(in oklch, var(--ms-c-secondary) 16%, white);
+    --ms-c-secondary-200: color-mix(in oklch, var(--ms-c-secondary) 32%, white);
+    --ms-c-secondary-300: color-mix(in oklch, var(--ms-c-secondary) 52%, white);
+    --ms-c-secondary-400: color-mix(in oklch, var(--ms-c-secondary) 76%, white);
+    --ms-c-secondary-600: color-mix(in oklch, var(--ms-c-secondary) 84%, black);
+    --ms-c-secondary-700: color-mix(in oklch, var(--ms-c-secondary) 68%, black);
+    --ms-c-secondary-800: color-mix(in oklch, var(--ms-c-secondary) 52%, black);
+    --ms-c-secondary-900: color-mix(in oklch, var(--ms-c-secondary) 38%, black);
+    --ms-c-secondary-950: color-mix(in oklch, var(--ms-c-secondary) 24%, black);
+    --ms-c-secondary-500: var(--ms-c-secondary);
+  }
+
+  /* ---- progressive: dark-lifted primary/secondary + auto contrast (needs relative color syntax) ---- */
+  @supports (color: oklch(from red l c h)) {
+    :root, [class*="theme-"], [class*="mode-"], [class*="style-"] {
+      --ms-c-primary: light-dark(var(--ms-primary), oklch(from var(--ms-primary) max(l, 0.68) c h));
+      --ms-c-secondary: light-dark(var(--ms-secondary), oklch(from var(--ms-secondary) max(l, 0.68) c h));
+      --ms-c-on-primary: oklch(from var(--ms-c-primary) clamp(0, (0.62 - l) * 999, 1) 0 0);
+      --ms-c-on-secondary: oklch(from var(--ms-c-secondary) clamp(0, (0.62 - l) * 999, 1) 0 0);
+    }
+  }
+
+  /* ---- surface painting: body and scoped sections ---- */
+  body, :where([class*="theme-"], [class*="mode-"], [class*="style-"]) {
+    background-color: var(--ms-c-surface);
+    color: var(--ms-c-text);
+  }
+  body {
+    font-family: var(--ms-font);
+    font-size: var(--ms-font-size);
+    line-height: var(--ms-line-height);
+  }
+}

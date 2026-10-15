@@ -1,0 +1,39 @@
+@layer ms.style {
+  :where(.style-brutalist) {
+    --ms-c-radius-btn: 0; --ms-c-radius-card: 0; --ms-c-radius-input: 0; --ms-c-border-w: 3px; --ms-c-border: var(--ms-c-text);
+    --ms-font: 'Courier New', ui-monospace, monospace;
+    --ms-transition: .08s linear;
+    --ms-shadow-sm: 3px 3px 0 var(--ms-c-text);
+    --ms-shadow-md: 4px 4px 0 var(--ms-c-text);
+    --ms-shadow-lg: 6px 6px 0 var(--ms-c-text);
+  }
+  :where(.style-brutalist) :where(h1, h2, h3, h4, strong, th, legend, label) { font-weight: 800; }
+  /* border stays text-colored in every state; hard shadow shifts on hover/active */
+  :where(.style-brutalist) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]), .outline:is(button, [role=button])) { --_sh: 4px 4px 0 var(--ms-c-text); --_shh: 6px 6px 0 var(--ms-c-text); font-weight: 800; text-transform: uppercase; }
+  :where(.style-brutalist) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]), .outline:is(button, [role=button])):is(:hover, :active) { border-color: var(--ms-c-text); }
+  :where(.style-brutalist) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]), .outline:is(button, [role=button])) { --_bd: var(--ms-c-text); }
+  :where(.style-brutalist) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]), .outline:is(button, [role=button])):hover { transform: translate(-2px, -2px); }
+  :where(.style-brutalist) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset]), .outline:is(button, [role=button])):active { transform: translate(4px, 4px); box-shadow: none; }
+  :where(.style-brutalist) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { --_bd: var(--ms-c-text); }
+  :where(.style-brutalist) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea):focus { box-shadow: 4px 4px 0 var(--ms-c-primary); }
+  :where(.style-brutalist) :where(article > header) { background: var(--ms-c-primary); color: var(--ms-c-on-primary); }
+  :where(.style-brutalist) :where(article > header, article > footer) { border-color: var(--ms-c-text); }
+  :where(.style-brutalist) :where(.chip, .badge, .fab, input[type=checkbox][role=switch]) { border-radius: 0; }
+  :where(.style-brutalist) :where(input[type=checkbox][role=switch])::before { border-radius: 0; }
+  :where(.style-brutalist) :where(article, table, [role=alert], .chip, .badge) { border-color: var(--ms-c-text); }
+  :where(.style-brutalist) :where([role=alert]) { box-shadow: 4px 4px 0 var(--ms-c-text); }
+  :where(.style-brutalist) :where(input:is([type=checkbox], [type=radio]):not([role=switch])) { --_bd: var(--ms-c-text); }
+  :where(.style-brutalist) :where(progress, meter) { border: 2px solid var(--ms-c-text); height: 1rem; border-radius: 0; }
+  :where(.style-brutalist) :where(progress)::-webkit-progress-value { border-radius: 0; }
+  :where(.style-brutalist) :where([role=tab][aria-selected=true]) { background: var(--ms-c-primary); --_fg: var(--ms-c-on-primary); }
+  :where(.style-brutalist) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--ms-c-text); }
+  :where(.style-brutalist) :where(.field, .ms-multi-control, .ms-code):focus-within { box-shadow: 4px 4px 0 var(--ms-c-primary); }
+  :where(.style-brutalist) :where(.ms-toast, .carousel-prev, .carousel-next, nav.pagination :is(a, button)[aria-current]) { border-color: var(--ms-c-text); }
+  :where(.style-brutalist) :where(.rating-display) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  :where(.style-brutalist) :where(.rating label) { color: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-brutalist) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-brutalist) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+  :where(.style-brutalist) :where(nav.pagination :is(a, button):not([aria-current])) { box-shadow: none; }
+  :where(.style-brutalist) :where(.carousel-dots > button:not([aria-current])) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+}

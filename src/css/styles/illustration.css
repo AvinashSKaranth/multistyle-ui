@@ -1,0 +1,29 @@
+@layer ms.style {
+  :where(.style-illustration) {
+    --ms-c-radius-btn: 8px; --ms-c-radius-card: 8px; --ms-c-radius-input: 8px; --ms-c-border-w: 2px;
+    --ms-font: 'Patrick Hand', 'Segoe Print', 'Bradley Hand', system-ui, sans-serif;
+    --ms-c-border: var(--ms-c-text);
+    --ms-shadow-sm: 3px 3px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+    --ms-shadow-md: 4px 4px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+    --ms-shadow-lg: 6px 6px 0 color-mix(in oklab, var(--ms-c-text) 30%, var(--ms-c-surface));
+  }
+  :where(.style-illustration) :where(h1, h2, h3) { font-family: 'Dancing Script', cursive; font-weight: 700; }
+  :where(.style-illustration) :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset]), article, .chip) { border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
+  :where(.style-illustration) :where(button:not(.ms-toast-close, .carousel-dots > *, [popover] *), [role="button"], input:is([type=submit], [type=button], [type=reset])) { --_bd: var(--ms-c-text); }
+  :where(.style-illustration) :where(button, [role="button"]):hover { transform: translate(-1px, -1px) rotate(-.5deg); }
+  :where(.style-illustration) :where(input, select, textarea):not([type=checkbox], [type=radio]) { --_bd: var(--ms-c-text); }
+  :where(.style-illustration) :where(article > header, article > footer) { border-radius: 0; background: transparent; border-bottom-style: dashed; }
+  :where(.style-illustration) :where(article > footer) { border-bottom: 0; border-top-style: dashed; }
+  :where(.style-illustration) :where(.badge) { border: 2px solid var(--ms-c-text); }
+  :where(.style-illustration) :where(.field, .ms-multi-control, .ms-code) { --_bd: var(--ms-c-text); }
+  :where(.style-illustration) :where(.ms-toast, .carousel-prev, .carousel-next) { border-color: var(--ms-c-text); }
+  :where(.style-illustration) :where(.carousel-dots > button, .ms-toast-close, [popover] :is(a, button)) { border-radius: 50%; }
+  :where(.style-illustration) :where([popover] :is(a, button)) { border-radius: 8px; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-illustration) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-illustration) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+  :where(.style-illustration) :where(.rating-display) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  :where(.style-illustration) :where(.rating label) { color: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+  :where(.style-illustration) :where(nav.pagination :is(a, button):not([aria-current])) { box-shadow: none; }
+  :where(.style-illustration) :where(.carousel-dots > button:not([aria-current])) { background: color-mix(in oklab, var(--ms-c-text) 25%, var(--ms-c-surface)); }
+}

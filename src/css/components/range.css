@@ -1,0 +1,21 @@
+@layer ms.base {
+  :where(input[type=range]) {
+    --_track: color-mix(in oklch, var(--ms-c-text) 18%, var(--ms-c-surface));
+    appearance: none; -webkit-appearance: none; display: block; width: 100%; height: 1.5rem; margin: 0 0 var(--ms-space); padding: 0; background: transparent; cursor: pointer;
+  }
+  :where(input[type=range])::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(to right, var(--ms-c-primary) var(--_pct, 0%), var(--_track) var(--_pct, 0%)); }
+  :where(input[type=range])::-moz-range-track { height: 6px; border-radius: 999px; background: var(--_track); }
+  :where(input[type=range])::-moz-range-progress { height: 6px; border-radius: 999px; background: var(--ms-c-primary); }
+  :where(input[type=range])::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 1.25rem; height: 1.25rem; margin-top: calc((6px - 1.25rem) / 2); border: 0; border-radius: 50%;
+    background: var(--ms-c-primary); box-shadow: var(--ms-shadow-md); transition: box-shadow var(--ms-transition);
+  }
+  :where(input[type=range])::-moz-range-thumb { width: 1.25rem; height: 1.25rem; border: 0; border-radius: 50%; background: var(--ms-c-primary); box-shadow: var(--ms-shadow-md); transition: box-shadow var(--ms-transition); }
+  :where(input[type=range]:hover)::-webkit-slider-thumb { box-shadow: 0 0 0 8px color-mix(in oklch, var(--ms-c-primary) 16%, transparent); }
+  :where(input[type=range]:hover)::-moz-range-thumb { box-shadow: 0 0 0 8px color-mix(in oklch, var(--ms-c-primary) 16%, transparent); }
+  :where(input[type=range]:focus-visible) { outline: none; }
+  :where(input[type=range]:focus-visible)::-webkit-slider-thumb { box-shadow: 0 0 0 6px var(--ms-c-focus); }
+  :where(input[type=range]:focus-visible)::-moz-range-thumb { box-shadow: 0 0 0 6px var(--ms-c-focus); }
+  :where(input[type=range]:disabled) { opacity: .5; cursor: not-allowed; }
+  /* tick marks: <input type=range list=ticks> + <datalist id=ticks> render natively; no custom styling */
+}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="../../dist/multistyle.min.css"></head>
+<body style="padding:1rem;max-width:640px">
+<form id="f">
+<label class="floating"><input id="fl" type="email" placeholder=" "><span>Email</span></label>
+<label class="floating"><textarea id="flt" placeholder=" "></textarea><span>Message</span></label>
+<label class="floating"><select id="fls"><option>One</option><option>Two</option></select><span>Plan</span></label>
+<label class="field"><span class="ms-icon">search</span><input placeholder="Search"><button type="button" class="ghost icon" aria-label="Clear">×</button></label>
+<label class="field"><span class="affix">https://</span><input placeholder="example.com"><span class="affix">.com</span></label>
+<textarea id="ta" class="autoresize" maxlength="20" data-ms-counter placeholder="Say something"></textarea>
+<select class="custom" aria-label="Custom"><option>Alpha</option><option>Beta</option></select>
+<label>Skills
+<select id="ms" name="skills" multiple data-ms-multiselect data-placeholder="Pick skills…">
+  <option value="js">JavaScript</option><option value="css" selected>CSS</option><option value="html">HTML</option><option value="py">Python</option>
+</select></label>
+<p><span id="rd" class="rating-display" style="--value:3.5" role="img" aria-label="3.5 of 5"></span></p>
+<fieldset class="rating lg"><input type="radio" name="r" id="r5"><label for="r5">★</label><input type="radio" name="r" id="r4"><label for="r4">★</label><input type="radio" name="r" id="r3" checked><label for="r3">★</label><input type="radio" name="r" id="r2"><label for="r2">★</label><input type="radio" name="r" id="r1"><label for="r1">★</label></fieldset>
+<label class="dropzone" id="dz"><input id="file" type="file" multiple>Drop files here</label>
+<input id="rg" type="range" min="0" max="100" value="25">
+<label><input type="checkbox" class="sm"> sm</label> <label><input type="checkbox" id="ind"> indeterminate</label> <label><input type="checkbox" class="lg" checked> lg</label>
+<label><input type="checkbox" role="switch" checked> Switch</label>
+</form>
+<script>document.getElementById('ind').indeterminate = true;</script>
+<script src="../../dist/multistyle.min.js"></script>
+</body></html>

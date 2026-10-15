@@ -1,0 +1,24 @@
+@layer ms.style {
+  :where(.style-fluent) {
+    --ms-c-radius-btn: 4px; --ms-c-radius-card: 8px; --ms-c-radius-input: 4px; --ms-c-border-w: 1px;
+    --ms-font: 'Segoe UI', 'Segoe UI Variable', system-ui, -apple-system, sans-serif;
+    --ms-shadow-sm: 0 1px 2px rgba(0, 0, 0, .14);
+    --ms-shadow-md: 0 2px 4px rgba(0, 0, 0, .14), 0 0 2px rgba(0, 0, 0, .12);
+    --ms-shadow-lg: 0 8px 16px rgba(0, 0, 0, .14), 0 0 2px rgba(0, 0, 0, .12);
+  }
+  :where(.style-fluent) :where(button:not(.outline,.ghost,.chip,.fab,[role=tab],[data-ms-close],[rel=prev],.ms-toast-close,.carousel-dots>*,[popover] *, nav.pagination *), [role=button]:not(.outline,.ghost,.chip), input:is([type=submit],[type=button],[type=reset])) { font-weight: 600; --_sh: none; --_shh: none; padding: .45rem 1.1rem; }
+  :where(.style-fluent) :where(.secondary:is(button, [role=button], input):not(.outline,.ghost)) {
+    --_bg: var(--ms-c-surface); --_fg: var(--ms-c-text); --_bd: var(--ms-c-border); --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3);
+  }
+  /* accent bottom border on focus */
+  :where(.style-fluent) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea) { border-bottom-color: color-mix(in oklch, var(--ms-c-text) 45%, var(--ms-c-surface)); }
+  :where(.style-fluent) :where(input:not([type=checkbox],[type=radio],[type=range],[type=submit],[type=button],[type=reset],[type=image],[type=hidden]), select, textarea):focus { border-bottom: 2px solid var(--ms-c-primary); padding-bottom: calc(.6rem - 1px); box-shadow: none; outline: 2px solid var(--ms-c-focus); outline-offset: 1px; }
+  :where(.style-fluent) :where(article > header, article > footer) { background: transparent; }
+  :where(.style-fluent) :where(.chip, .badge) { border-radius: 4px; }
+  :where(.style-fluent) :where([role=tab]) { border-radius: 0; font-weight: 600; }
+  :where(.style-fluent) :where(.field, .ms-multi-control, .ms-code) { border-bottom-color: color-mix(in oklch, var(--ms-c-text) 45%, var(--ms-c-surface)); }
+  :where(.style-fluent) :where(.field, .ms-multi-control, .ms-code):focus-within { border-bottom: 2px solid var(--ms-c-primary); box-shadow: none; outline: 0; }
+  /* composite wrappers (.field, multiselect, code editor, command) carry the look; their inner control stays bare */
+  :where(.style-fluent) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]),
+  :where(.style-fluent) :where(.field, .ms-multi-control, .ms-code, dialog.command) > :is(input, select, textarea):not([type=checkbox], [type=radio], [type=range]):is(:hover, :focus, :focus-visible) { background: revert-layer; border: revert-layer; box-shadow: revert-layer; backdrop-filter: none; outline: 0; padding-bottom: revert-layer; }
+}

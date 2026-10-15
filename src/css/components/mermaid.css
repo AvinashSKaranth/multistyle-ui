@@ -1,0 +1,9 @@
+@layer ms.base {
+  :where(.mermaid) {
+    display: block; margin: 0 0 var(--ms-space); padding: var(--ms-space); text-align: center; overflow-x: auto;
+    background: var(--ms-c-surface-2); color: var(--ms-c-text); border-radius: var(--ms-c-radius-card);
+  }
+  :where(.mermaid svg) { max-width: 100%; height: auto; }
+  /* JS sets data-ms-wait only when Mermaid is present, so a missing lib still shows the source */
+  :where(.mermaid[data-ms-wait]) { visibility: hidden; }
+}

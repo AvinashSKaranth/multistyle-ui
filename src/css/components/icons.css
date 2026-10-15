@@ -1,0 +1,21 @@
+@layer ms.base {
+  /* Material Symbols Outlined ligature: <span class="ms-icon" aria-hidden="true">star</span>. Font loaded by icons.js. */
+  :where(.ms-icon) {
+    display: inline-block; flex: none; width: 1em; overflow: hidden; vertical-align: -.25em;
+    font: normal normal 400 1.25em/1 'Material Symbols Outlined'; letter-spacing: normal; text-transform: none; white-space: nowrap; direction: ltr;
+    font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; user-select: none;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  :where(.ms-icon.filled) { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+  /* until the font is ready (or if it never loads) hide the ligature word; set body[data-ms-icons=off] to skip loading */
+  :where(html:not(.ms-icons-ready) .ms-icon) { color: transparent; }
+  :where(.icon:is(button, [role="button"]) > .ms-icon, .fab > .ms-icon) { vertical-align: 0; }
+  :where(.chip, .badge, [role="alert"], [popover].menu a, menu[popover] a, th) > :where(.ms-icon) { vertical-align: -.2em; }
+  :where(.badge) > :where(.ms-icon) { font-size: 1.1em; margin-inline-end: .2em; }
+  :where([role="alert"] > .ms-icon) { margin-inline-end: .5rem; }
+  :where([popover].menu a, menu[popover] a) > :where(.ms-icon) { margin-inline-end: .5rem; }
+  /* icon inside an input label: <label><span class="ms-icon">search</span><input></label> */
+  :where(label:has(> .ms-icon + :is(input, select))) { position: relative; }
+  :where(label > .ms-icon:has(+ :is(input, select))) { position: absolute; inset-block-start: 2.05em; inset-inline-start: .75rem; color: var(--ms-c-muted); pointer-events: none; }
+  :where(label > .ms-icon + :is(input, select)) { padding-inline-start: 2.5rem; }
+}

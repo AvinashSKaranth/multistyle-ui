@@ -1,0 +1,20 @@
+@layer ms.base {
+  :where(ol.stepper) { display: flex; margin: 0 0 var(--ms-space); padding: 0; list-style: none; counter-reset: ms-step; }
+  :where(ol.stepper > li) {
+    position: relative; display: flex; flex: 1 1 0; flex-direction: column; align-items: center; gap: .4rem; margin: 0; padding: 0 .25rem;
+    color: var(--ms-c-muted); font-size: .875rem; text-align: center; counter-increment: ms-step;
+  }
+  :where(ol.stepper > li)::marker { content: none; }
+  :where(ol.stepper > li)::before {
+    content: counter(ms-step); z-index: 1; display: grid; place-items: center; width: 2rem; height: 2rem; border: 2px solid var(--ms-c-border); border-radius: 50%;
+    background: var(--ms-c-surface); color: var(--ms-c-muted); font-weight: 600; transition: all var(--ms-transition);
+  }
+  :where(ol.stepper > li:not(:last-child))::after {
+    content: ""; position: absolute; top: 1rem; inset-inline-start: calc(50% + 1.25rem); width: calc(100% - 2.5rem); height: 2px; background: var(--ms-c-border); transform: translateY(-50%);
+  }
+  :where(ol.stepper > li.done) { color: var(--ms-c-text); }
+  :where(ol.stepper > li.done)::before { content: "\2713"; border-color: var(--ms-c-primary); background: var(--ms-c-primary); color: var(--ms-c-on-primary); }
+  :where(ol.stepper > li.done:not(:last-child))::after { background: var(--ms-c-primary); }
+  :where(ol.stepper > li[aria-current=step]) { color: var(--ms-c-text); font-weight: 600; }
+  :where(ol.stepper > li[aria-current=step])::before { border-color: var(--ms-c-primary); color: var(--ms-c-primary); box-shadow: 0 0 0 4px var(--ms-c-focus); }
+}

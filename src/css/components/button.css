@@ -1,0 +1,64 @@
+@layer ms.base {
+  :where(button, [role="button"], input:is([type=submit], [type=button], [type=reset])) {
+    --_c: var(--ms-c-primary); --_on: var(--ms-c-on-primary);
+    --_bg: var(--_c); --_fg: var(--_on); --_bd: var(--_c);
+    --_hbg: color-mix(in oklch, var(--_c), var(--ms-c-text) 14%);
+    --_abg: color-mix(in oklch, var(--_c), var(--ms-c-text) 26%);
+    --_sh: var(--ms-shadow-sm); --_shh: var(--ms-shadow-md);
+    position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .6rem 1.1rem; border: var(--ms-c-border-w) solid var(--_bd); border-radius: var(--ms-c-radius-btn);
+    background: var(--_bg); color: var(--_fg); box-shadow: var(--_sh);
+    font: inherit; font-weight: 500; line-height: 1.5; text-align: center; text-decoration: none; white-space: nowrap;
+    cursor: pointer; user-select: none; -webkit-user-select: none; vertical-align: middle;
+    transition: background-color var(--ms-transition), border-color var(--ms-transition), box-shadow var(--ms-transition), color var(--ms-transition), transform var(--ms-transition);
+  }
+  :where(button:hover, [role="button"]:hover, input:is([type=submit], [type=button], [type=reset]):hover) { background: var(--_hbg); border-color: var(--_hbg); box-shadow: var(--_shh); text-decoration: none; color: var(--_fg); }
+  :where(button:active, [role="button"]:active, input:is([type=submit], [type=button], [type=reset]):active) { background: var(--_abg); border-color: var(--_abg); box-shadow: var(--_sh); }
+  :where(button:focus-visible, [role="button"]:focus-visible, input:is([type=submit], [type=button], [type=reset]):focus-visible) { outline: 3px solid var(--ms-c-focus); outline-offset: 2px; }
+  :where(input[type=reset]) { --_c: var(--ms-c-secondary); --_on: var(--ms-c-on-secondary); }
+
+  /* variants set vars only, so they combine */
+  :where(.secondary:is(button, [role="button"], input)) { --_c: var(--ms-c-secondary); --_on: var(--ms-c-on-secondary); }
+  :where(.contrast:is(button, [role="button"], input)) { --_c: var(--ms-c-text); --_on: var(--ms-c-surface); }
+  :where(.success:is(button, [role="button"], input)) { --_c: var(--ms-c-success); --_on: #fff; }
+  :where(.warning:is(button, [role="button"], input)) { --_c: var(--ms-c-warning); --_on: #fff; }
+  :where(.error:is(button, [role="button"], input)) { --_c: var(--ms-c-error); --_on: #fff; }
+  :where(.info:is(button, [role="button"], input)) { --_c: var(--ms-c-info); --_on: #fff; }
+  :where(.tonal:is(button, [role="button"], input)) {
+    --_bg: color-mix(in oklch, var(--_c) 16%, var(--ms-c-surface)); --_bd: transparent; --_sh: none; --_shh: none;
+    --_fg: light-dark(color-mix(in oklch, var(--_c) 55%, black), color-mix(in oklch, var(--_c) 60%, white));
+    --_hbg: color-mix(in oklch, var(--_c) 26%, var(--ms-c-surface)); --_abg: color-mix(in oklch, var(--_c) 34%, var(--ms-c-surface));
+  }
+  :where(.tonal:is(button, [role="button"], input):is(:hover, :active)) { border-color: transparent; }
+  :where(.outline:is(button, [role="button"], input)) {
+    --_bg: transparent; --_fg: var(--_c); --_sh: none; --_shh: none;
+    --_hbg: color-mix(in oklch, var(--_c) 12%, transparent); --_abg: color-mix(in oklch, var(--_c) 22%, transparent);
+  }
+  :where(.outline:is(button, [role="button"], input):is(:hover, :active)) { border-color: var(--_c); }
+  :where(.ghost:is(button, [role="button"], input)) {
+    --_bg: transparent; --_bd: transparent; --_fg: var(--_c); --_sh: none; --_shh: none;
+    --_hbg: color-mix(in oklch, var(--_c) 12%, transparent); --_abg: color-mix(in oklch, var(--_c) 22%, transparent);
+  }
+  :where(.ghost:is(button, [role="button"], input):is(:hover, :active)) { border-color: transparent; }
+
+  /* sizes and shapes */
+  :where(.sm:is(button, [role="button"], input)) { padding: .3rem .7rem; font-size: .875rem; }
+  :where(.lg:is(button, [role="button"], input)) { padding: .85rem 1.6rem; font-size: 1.125rem; }
+  :where(.icon:is(button, [role="button"], input)) { padding: .6rem; aspect-ratio: 1; line-height: 1; }
+  :where(.icon.sm:is(button, [role="button"])) { padding: .3rem; }
+  :where(.icon.lg:is(button, [role="button"])) { padding: .85rem; }
+  :where(.fab:is(button, [role="button"])) { --_sh: var(--ms-shadow-lg); --_shh: var(--ms-shadow-lg); width: 3.5rem; height: 3.5rem; padding: 0; border-radius: 50%; font-size: 1.5rem; line-height: 1; }
+  :where(.fab.sm:is(button, [role="button"])) { width: 2.5rem; height: 2.5rem; font-size: 1.125rem; }
+  :where(.fab.lg:is(button, [role="button"])) { width: 4.5rem; height: 4.5rem; font-size: 1.75rem; }
+  :where(.fab:is(button, [role="button"]):active) { transform: scale(.95); }
+
+  :where(button:disabled, [role="button"][aria-disabled=true], input:is([type=submit], [type=button], [type=reset]):disabled) {
+    --_bg: var(--ms-c-surface-3); --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3); --_bd: transparent; --_fg: var(--ms-c-disabled);
+    --_sh: none; --_shh: none; cursor: not-allowed; pointer-events: none;
+  }
+  :where(.tonal:is(button, [role="button"], input):disabled) { --_bg: var(--ms-c-surface-3); --_fg: var(--ms-c-disabled); }
+  :where(.outline:is(button, [role="button"], input):disabled) { --_bd: var(--ms-c-border); --_bg: transparent; --_hbg: transparent; --_abg: transparent; }
+  :where(.ghost:is(button, [role="button"], input):disabled) { --_bg: transparent; --_hbg: transparent; --_abg: transparent; }
+
+  :where(button[aria-busy=true], [role="button"][aria-busy=true]) { pointer-events: none; opacity: .85; }
+}

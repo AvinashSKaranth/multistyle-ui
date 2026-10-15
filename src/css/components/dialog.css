@@ -1,0 +1,49 @@
+@layer ms.base {
+  :where(dialog) {
+    width: min(100% - var(--ms-space) * 2, 34rem); max-width: none; max-height: calc(100dvh - var(--ms-space) * 2); margin: auto; padding: 0; overflow: visible; border: 0; background: transparent; color: inherit;
+  }
+  :where(dialog[open]) { animation: ms-dialog-in .2s ease; }
+  :where(dialog)::backdrop { background: color-mix(in oklch, var(--ms-c-text) 45%, transparent); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); animation: ms-fade-in .2s ease; }
+  :where(dialog > article) { margin: 0; max-height: calc(100dvh - var(--ms-space) * 4); overflow: auto; box-shadow: var(--ms-shadow-lg); }
+  :where(dialog > article > header) { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  :where(dialog > article > header > :is(h1, h2, h3, h4, h5, h6)) { margin: 0; font-size: 1.25rem; }
+  :where(dialog > article > footer) { display: flex; justify-content: flex-end; gap: .5rem; flex-wrap: wrap; }
+  :where(dialog > article > header :is(button, a)[rel=prev], dialog > article > header :is(button, [role="button"])[data-ms-close]) {
+    --_bg: transparent; --_bd: transparent; --_fg: var(--ms-c-muted); --_sh: none; --_shh: none; --_hbg: var(--ms-c-surface-3); --_abg: var(--ms-c-surface-3);
+    display: inline-grid; place-items: center; flex: none; order: 1; width: 2rem; height: 2rem; margin: 0 0 0 auto; padding: 0; border-radius: 50%; cursor: pointer;
+  }
+  :where(dialog > article > header :is(button, a)[rel=prev]:hover, dialog > article > header :is(button, [role="button"])[data-ms-close]:hover) { --_fg: var(--ms-c-text); border-color: transparent; }
+  :where(dialog > article > header :is(button, a)[rel=prev]:empty, dialog > article > header :is(button, [role="button"])[data-ms-close]:empty)::before {
+    content: ""; width: 1em; height: 1em; transform: rotate(45deg);
+    background: linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat, linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+  }
+
+  /* sizes: md (default) = 34rem */
+  :where(dialog[data-size=sm]) { width: min(100% - var(--ms-space) * 2, 22rem); }
+  :where(dialog[data-size=lg]) { width: min(100% - var(--ms-space) * 2, 54rem); }
+  :where(dialog[data-size=full]) { width: 100vw; height: 100dvh; max-height: none; }
+  :where(dialog[data-size=full] > article) { height: 100%; max-height: none; border-radius: 0; }
+
+  /* drawer: left by default, data-side="right" to flip */
+  :where(dialog.drawer) { position: fixed; inset: 0 auto 0 0; width: min(24rem, 100vw); height: 100dvh; max-height: none; margin: 0; }
+  :where(dialog.drawer[data-side=right]) { inset: 0 0 0 auto; }
+  :where(dialog.drawer:is([data-side=top], [data-side=bottom])) { width: 100vw; height: auto; max-height: 90dvh; }
+  :where(dialog.drawer[data-side=top]) { inset: 0 0 auto 0; }
+  :where(dialog.drawer[data-side=bottom]) { inset: auto 0 0 0; }
+  :where(dialog.drawer:is([data-side=top], [data-side=bottom]) > article) { height: auto; max-height: 90dvh; }
+  :where(dialog.drawer[data-side=top] > article) { border-width: 0 0 var(--ms-c-border-w) 0; }
+  :where(dialog.drawer[data-side=bottom] > article) { border-width: var(--ms-c-border-w) 0 0 0; }
+  :where(dialog.drawer > article) { height: 100%; max-height: none; border-radius: 0; border-width: 0 var(--ms-c-border-w) 0 0; }
+  :where(dialog.drawer[data-side=right] > article) { border-width: 0 0 0 var(--ms-c-border-w); }
+  :where(dialog.drawer > article > :is(header, footer)) { border-radius: 0; }
+  :where(dialog.drawer[open]) { animation: ms-drawer-left .25s ease; }
+  :where(dialog.drawer[data-side=right][open]) { animation-name: ms-drawer-right; }
+  :where(dialog.drawer[data-side=top][open]) { animation-name: ms-drawer-top; }
+  :where(dialog.drawer[data-side=bottom][open]) { animation-name: ms-drawer-bottom; }
+  @keyframes ms-drawer-top { from { transform: translateY(-100%); } }
+  @keyframes ms-drawer-bottom { from { transform: translateY(100%); } }
+  @keyframes ms-dialog-in { from { opacity: 0; transform: translateY(1rem) scale(.97); } }
+  @keyframes ms-fade-in { from { opacity: 0; } }
+  @keyframes ms-drawer-left { from { transform: translateX(-100%); } }
+  @keyframes ms-drawer-right { from { transform: translateX(100%); } }
+}

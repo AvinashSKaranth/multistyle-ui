@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>multistyle-ui docs</title>
+  <link rel="stylesheet" href="./multistyle.min.css">
+  <link rel="stylesheet" href="./docs.css">
+  <script defer src="./multistyle.min.js"></script>
+  <script defer src="./docs.js"></script>
+  <script defer src="./vendor/alpine.min.js"></script>
+  <script defer src="./vendor/chart.umd.min.js"></script>
+</head>
+<body data-ms-persist>
+<div id="app" x-data="app" @ms:change.document="tick++">
+
+<header class="topbar" data-ms-fields="stacked">
+  <div class="topbar-row">
+    <span class="brand">multistyle-ui</span>
+    <nav class="pages" aria-label="Pages"><a href="index.html" aria-current="page">Guide</a><a href="components.html">Components</a></nav>
+    <button type="button" class="menu-btn sm outline secondary" @click="nav = !nav" :aria-expanded="nav">Menu</button>
+    <label>Style <select data-ms="style" aria-label="Style"></select></label>
+    <label>Theme
+      <select data-ms="theme" aria-label="Theme" @change="$event.target.value === 'custom' && apply()"></select>
+    </label>
+    <label>Mode <select data-ms="mode" aria-label="Mode"></select></label>
+    <label>Font <select data-ms="font" aria-label="Font"></select></label>
+    <button type="button" class="sm outline" data-ms-mode-toggle>Toggle mode</button>
+    <template x-if="$store.ms.theme === 'custom'">
+      <span class="topbar-row" style="gap:.35rem">
+        <label>Primary <input type="color" aria-label="Primary" :value="p" @input="p = $event.target.value; apply()"></label>
+        <label>Secondary <input type="color" aria-label="Secondary" :value="s" @input="s = $event.target.value; apply()"></label>
+        <label>Surface <input type="color" aria-label="Surface" :value="f" @input="f = $event.target.value; apply()"></label>
+      </span>
+    </template>
+  </div>
+  <div class="bodystr">
+    <code id="bodystr" x-text="bodyTag()"></code>
+    <button type="button" class="sm" data-copy="#bodystr">Copy</button>
+  </div>
+</header>
+
+<div class="layout">
+<nav id="sidenav" aria-label="Sections" :class="{ open: nav }" @click="nav = false">
+  <ul>
+    <li><a href="#getting-started">1. Getting started</a></li>
+    <li><a href="#styles">2. Styles</a></li>
+    <li><a href="#themes">3. Themes</a></li>
+    <li><a href="#custom-theme">4. Custom theme</a></li>
+    <li><a href="#components">5. Components</a></li>
+    <li><a href="#js-api">6. JS API</a></li>
+    <li><a href="#alpine">7. Alpine recipes</a></li>
+  </ul>
+</nav>
+
+<main>
+<h1>multistyle-ui</h1>
+<p>Framework-free, classless CSS UI with 12 styles, 30 themes and light/dark mode. This page is built with the library itself: every example below is written once and rendered live plus as copyable source.</p>
+
+<section id="getting-started">
+  <h2>1. Getting started</h2>
+  <template class="example" data-preview="off" data-title="Drop it in with two CDN tags" data-note="Order matters: multistyle before Alpine. Alpine, Chart.js, Mermaid, Quill, Prism and Material Symbols are optional add-ons.">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/multistyle-ui@0/dist/multistyle.min.js"></script>
+    <!-- optional, AFTER multistyle -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- optional, only for charts -->
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.x.x/dist/chart.umd.min.js"></script>
+  </template>
+  <template class="example" data-preview="off" data-code='<body class="style-brutalist theme-ocean mode-dark">' data-title="Three body classes" data-note="All optional. Defaults with no classes: style-material, theme-blue, mode-system (follows the OS).">
+  </template>
+  <p>Then write plain HTML. Classless elements are styled automatically; a handful of short classes opt in to extra components.</p>
+</section>
+
+<section id="styles">
+  <h2>2. Styles</h2>
+  <p>Twelve looks. Each card is scoped with its own <code>style-*</code> class, so they coexist on one page. Press a button to apply a style to the whole page.</p>
+  <div class="pick-grid" id="style-grid"></div>
+</section>
+
+<section id="themes">
+  <h2>3. Themes</h2>
+  <p>Thirty themes (19 colour themes, 10 named themes and <code>custom</code>). Swatches show the primary and secondary shades 50 to 950.</p>
+  <div class="pick-grid" id="theme-grid"></div>
+</section>
+
+<section id="custom-theme">
+  <h2>4. Custom theme</h2>
+  <p>Pick any three colours. The surface should be a light colour; dark mode derives its own surface.</p>
+  <div class="cols">
+    <label>Primary <input type="color" :value="p" @input="p = $event.target.value; apply()"></label>
+    <label>Secondary <input type="color" :value="s" @input="s = $event.target.value; apply()"></label>
+    <label>Surface <input type="color" :value="f" @input="f = $event.target.value; apply()"></label>
+  </div>
+  <div class="ex">
+    <div class="ex-head"><strong>Generated snippet</strong><button type="button" class="sm outline secondary" data-copy="#custom-snippet">Copy</button></div>
+    <pre><code id="custom-snippet" x-text="customTag()"></code></pre>
+    <p class="ex-note"><small>Same thing from JS: <code x-text="`MS.set({primary:'${p}', secondary:'${s}', surface:'${f}'})`"></code>.</small></p>
+  </div>
+</section>
+
+<section id="components">
+  <h2>5. Components</h2>
+  <p>42 components, one tab each, with live <strong>Preview</strong> and copyable <strong>Code</strong> views and deep links. They live on their own page.</p>
+  <p><a role="button" href="components.html">Open the component explorer</a></p>
+  <ul class="comp-links">
+    <li><a href="components.html#c-typography">Typography</a></li>
+    <li><a href="components.html#c-fonts">Fonts</a></li>
+    <li><a href="components.html#c-buttons">Buttons</a></li>
+    <li><a href="components.html#c-icons">Icons</a></li>
+    <li><a href="components.html#c-inputs">Inputs</a></li>
+    <li><a href="components.html#c-checkbox-radio">Checkbox & Radio</a></li>
+    <li><a href="components.html#c-switch">Switch</a></li>
+    <li><a href="components.html#c-range">Range</a></li>
+    <li><a href="components.html#c-select">Select</a></li>
+    <li><a href="components.html#c-multiselect">Multi-select</a></li>
+    <li><a href="components.html#c-textarea">Textarea</a></li>
+    <li><a href="components.html#c-fieldset">Fieldset & Validation</a></li>
+    <li><a href="components.html#c-group">Group</a></li>
+    <li><a href="components.html#c-table">Table</a></li>
+    <li><a href="components.html#c-accordion">Accordion</a></li>
+    <li><a href="components.html#c-modal">Modal</a></li>
+    <li><a href="components.html#c-drawer">Drawer</a></li>
+    <li><a href="components.html#c-card">Card</a></li>
+    <li><a href="components.html#c-divider">Divider</a></li>
+    <li><a href="components.html#c-nav">Nav & Breadcrumb</a></li>
+    <li><a href="components.html#c-progress">Progress & Meter</a></li>
+    <li><a href="components.html#c-spinner">Spinner</a></li>
+    <li><a href="components.html#c-tooltip">Tooltip</a></li>
+    <li><a href="components.html#c-alert">Alert</a></li>
+    <li><a href="components.html#c-tabs">Tabs</a></li>
+    <li><a href="components.html#c-sortable">Sortable list</a></li>
+    <li><a href="components.html#c-dropdown">Dropdown / Popover</a></li>
+    <li><a href="components.html#c-command">Command palette</a></li>
+    <li><a href="components.html#c-toast">Toast</a></li>
+    <li><a href="components.html#c-chip">Chip, Badge, Avatar</a></li>
+    <li><a href="components.html#c-skeleton">Skeleton</a></li>
+    <li><a href="components.html#c-stepper">Stepper</a></li>
+    <li><a href="components.html#c-pagination">Pagination</a></li>
+    <li><a href="components.html#c-carousel">Carousel</a></li>
+    <li><a href="components.html#c-rating">Rating</a></li>
+    <li><a href="components.html#c-dropzone">Dropzone</a></li>
+    <li><a href="components.html#c-layout">Grid / Layout</a></li>
+    <li><a href="components.html#c-charts">Charts</a></li>
+    <li><a href="components.html#c-mermaid">Mermaid</a></li>
+    <li><a href="components.html#c-editor">Text editor</a></li>
+    <li><a href="components.html#c-code">Code</a></li>
+  </ul>
+</section>
+
+
+<section id="js-api">
+  <h2>6. JS API</h2>
+  <p>Everything hangs off <code>window.MS</code>.</p>
+  <div class="table-wrap">
+  <table class="striped">
+    <thead><tr><th>API</th><th>What it does</th></tr></thead>
+    <tbody>
+      <tr><td><code>MS.set({style, theme, mode, primary, secondary, surface}, el?)</code></td><td>Swap classes (and custom tokens inline). A colour without a theme implies <code>custom</code>.</td></tr>
+      <tr><td><code>MS.get(el?)</code></td><td><code>{style, theme, mode, resolvedMode}</code></td></tr>
+      <tr><td><code>MS.toggleMode()</code></td><td>Cycle light, dark, system.</td></tr>
+      <tr><td><code>MS.styles / themes / modes</code></td><td>Lists of valid values.</td></tr>
+            <tr><td><code>MS.set({..., font}, el?)</code></td><td><code>font</code>: a key of <code>MS.fonts</code> (case-insensitive), any CSS font-family string, or <code>'auto'</code> (style default). Lazy-loads Google Fonts.</td></tr>
+      <tr><td><code>MS.fonts</code></td><td>Curated font keys for <code>select[data-ms=font]</code>.</td></tr>
+      <tr><td><code>MS.toast(msg, {type, timeout, dismissible, title, position, icon})</code></td><td><code>position</code>: top|bottom + left|center|right (default bottom-right); <code>icon</code> is a Material Symbols name. Declarative: <code>data-ms-toast-position</code>, <code>data-ms-toast-title</code>.</td></tr>
+      <tr><td><code>MS.command(sel)</code></td><td>Open a <code>dialog.command</code> palette (also Ctrl/Cmd+K). Fires <code>ms:command</code>.</td></tr>
+      <tr><td><code>MS.paginate(nav, {total, current, window})</code></td><td>Render a generated pager; fires <code>ms:page {page}</code>.</td></tr>
+      <tr><td><code>MS.multiselect(el)</code></td><td>Init a <code>select[multiple]</code> as chips + listbox (auto for <code>[data-ms-multiselect]</code>).</td></tr>
+      <tr><td><code>MS.code(el, {language, lines})</code></td><td>Code editor on a textarea; returns <code>{el, update(), destroy()}</code>. Highlights if Prism is loaded.</td></tr>
+      <tr><td>Events <code>ms:command</code> <code>ms:sort</code> <code>ms:page</code> <code>ms:select</code> <code>ms:dismiss</code></td><td>Bubbling CustomEvents; <code>detail</code>: <code>{value, el}</code>, <code>{from, to, order}</code>, <code>{page}</code>, <code>{values}</code>, and <code>{}</code> (fires before removal).</td></tr>
+      <tr><td><code>&lt;select data-ms="font"&gt;</code></td><td>Auto-populated font switcher (persisted with <code>data-ms-persist</code>).</td></tr>
+      <tr><td><code>data-ms-dismiss</code></td><td>Removes the closest alert, chip, toast or <code>[data-ms-dismissable]</code>.</td></tr>
+      <tr><td><code>data-ms-sortable</code>, <code>data-ms-handle</code></td><td>Drag/keyboard reorder of a list; <code>="horizontal"</code> for rows.</td></tr>
+      <tr><td><code>data-ms-multiselect</code>, <code>data-ms-counter</code></td><td>Multi-select widget; character counter on a <code>textarea[maxlength]</code>.</td></tr>
+      <tr><td><code>data-ms-code="lang"</code>, <code>data-ms-lines</code></td><td>Code editor textarea, optional line numbers.</td></tr>
+      <tr><td><code>data-ms-autoplay</code>, <code>-arrows</code>, <code>-dots</code></td><td>Carousel extras (autoplay in ms, pauses on hover/focus).</td></tr>
+      <tr><td><code>data-ms-pages</code>, <code>-page</code>, <code>-window</code></td><td>Generate a pagination nav.</td></tr>
+      <tr><td><code>data-ms-select="single|multi"</code></td><td>Toggle <code>aria-pressed</code> in a <code>role=group</code>.</td></tr>
+      <tr><td><code>data-ms-hover-popover="#id"</code></td><td>Show a popover on hover/focus.</td></tr>
+      <tr><td><code>&lt;body data-ms-icons="off"&gt;</code></td><td>Do not load Material Symbols (self-host).</td></tr>
+      <tr><td><code>MS.chart(canvas, config)</code></td><td>Create a themed Chart.js chart.</td></tr>
+      <tr><td><code>MS.open(sel) / MS.close(sel)</code></td><td>Open or close a <code>dialog</code>.</td></tr>
+      <tr><td><code>MS.resolveColor(token|color)</code></td><td>Plain rgb() text for any token or colour (Chart.js safe).</td></tr>
+      <tr><td><code>ms:change</code> event</td><td>On <code>document</code>; <code>detail</code> is <code>MS.get()</code>. Also fires when the OS scheme changes in system mode.</td></tr>
+      <tr><td><code>&lt;select data-ms="style|theme|mode"&gt;</code></td><td>Auto-populated, auto-wired switcher.</td></tr>
+      <tr><td><code>data-ms-mode-toggle</code></td><td>Button that cycles the mode.</td></tr>
+      <tr><td><code>data-ms-open="#id"</code> / <code>data-ms-close</code></td><td>Open or close a dialog without JS.</td></tr>
+      <tr><td><code>data-ms-toast</code> / <code>data-ms-toast-type</code></td><td>Click to show a toast.</td></tr>
+      <tr><td><code>data-ms-chart</code>, <code>-data</code>, <code>-options</code></td><td>Declarative chart on a canvas.</td></tr>
+      <tr><td><code>&lt;body data-ms-persist&gt;</code></td><td>Remember choices in localStorage.</td></tr>
+      <tr><td><code>&lt;body data-ms-fonts="off"&gt;</code></td><td>Do not load Google Fonts.</td></tr>
+      <tr><td><code>$store.ms</code>, <code>$ms</code></td><td>Alpine store and magic (load multistyle before Alpine).</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <template class="example" data-title="Try it" data-note="MS.set and MS.get are plain functions; listen to ms:change for updates.">
+    <button onclick="MS.set({theme:'ocean'})">MS.set({theme:'ocean'})</button>
+    <button class="secondary" onclick="MS.toast(JSON.stringify(MS.get()))">MS.get()</button>
+  </template>
+</section>
+
+<section id="alpine">
+  <h2>7. Alpine recipes</h2>
+  <template class="example" data-title="Style switcher" data-note="$store.ms is reactive and kept in sync by ms:change; $ms is the MS object.">
+    <div x-data>
+      <select x-model="$store.ms.style" @change="$ms.set({style: $event.target.value})" aria-label="Style">
+        <template x-for="s in $ms.styles"><option :value="s" x-text="s"></option></template>
+      </select>
+      <p>Current style: <strong x-text="$store.ms.style"></strong></p>
+    </div>
+  </template>
+
+  <template class="example" data-title="Modal with x-data" data-note="Local open state; the native dialog is driven with showModal and @close.">
+    <div x-data="{ open: false }">
+      <button @click="open = true; $refs.d.showModal()">Open</button>
+      <p>Open state: <code x-text="open"></code></p>
+      <dialog x-ref="d" @close="open = false">
+        <article>
+          <header><button rel="prev" aria-label="Close" @click="$refs.d.close()"></button><h3>Alpine modal</h3></header>
+          <p>Controlled by x-data.</p>
+        </article>
+      </dialog>
+    </div>
+  </template>
+
+  <template class="example" data-title="Toast on form submit" data-note="@submit.prevent then $ms.toast().">
+    <form x-data="{ name: '' }" @submit.prevent="$ms.toast('Saved ' + (name || 'nobody'), {type: 'success'})">
+      <label>Name <input x-model="name" placeholder="Your name"></label>
+      <button type="submit">Save</button>
+    </form>
+  </template>
+
+  <template class="example" data-title="Live-updating chart" data-note="Create with MS.chart in x-init, then mutate data and call update(). Chart.getChart avoids putting the instance inside Alpine's reactive proxy.">
+    <div x-data="{ vals: [3, 5, 2, 6] }">
+      <div class="chart" style="--ms-chart-h:220px"><canvas x-ref="cv" x-init="MS.chart($refs.cv, {type:'bar', data:{labels:['A','B','C','D'], datasets:[{label:'Live', data:[...vals]}]}})" aria-label="live chart" role="img"></canvas></div>
+      <button @click="vals = vals.map(() => Math.ceil(Math.random() * 9)); const c = Chart.getChart($refs.cv); c.data.datasets[0].data = [...vals]; c.update()">Randomise</button>
+    </div>
+  </template>
+</section>
+</main>
+</div>
+</div>
+</body>
+</html>
