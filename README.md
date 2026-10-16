@@ -4,7 +4,9 @@ Framework-free, classless CSS UI library with **12 styles**, **30 themes** and l
 
 **Live demo:** <https://avinashskaranth.github.io/multistyle-ui> (guide) and [components](https://avinashskaranth.github.io/multistyle-ui/components.html) (explorer). Offline: open [`docs/index.html`](docs/index.html) (works from `file://`). The guide is `docs/index.html`; the component explorer is on its own page, [`docs/components.html`](docs/components.html) (one tab per component, Preview/Code toggle, deep links like `docs/components.html#c-modal`); the Mermaid, Text editor, Code and Icons tabs load their libraries from a CDN and need network.
 
-## Usage (CDN)
+## Getting started
+
+### 1. Add the CDN tags
 
 Served by jsDelivr straight from this repo. `@HEAD` is the latest `master` (jsDelivr caches branches for up to 12 hours); for production pin a commit, e.g. `@5d573ca`.
 
@@ -34,6 +36,16 @@ Served by jsDelivr straight from this repo. `@HEAD` is the latest `master` (jsDe
   </main>
 </body>
 ```
+
+### 2. Optional: install the AI skill
+
+`skill/` teaches an AI coding agent (Claude Code and others) to build pages with multistyle-ui:
+
+```bash
+npx skills add https://github.com/AvinashSKaranth/multistyle-ui
+```
+
+Add `-g` to install it for every project instead of only the current one. Run `npx skills update` to get the latest version.
 
 ## Body classes
 
@@ -67,29 +79,6 @@ Or from JS: `MS.set({ primary: '#ff6600', secondary: '#0066ff', surface: '#fffaf
 ## JavaScript
 
 `window.MS`: `set` (style, theme, mode, font, colours), `get`, `toggleMode`, `toast`, `command`, `paginate`, `multiselect`, `code`, `chart`, `open`, `close`, `resolveColor`, `fonts`, plus the events `ms:change`, `ms:command`, `ms:sort`, `ms:page`, `ms:select`, `ms:dismiss`, and declarative attributes (`data-ms`, `data-ms-mode-toggle`, `data-ms-open`, `data-ms-toast`, `data-ms-chart`, `data-ms-persist`). See the docs page for the full table.
-
-## LLM skill
-
-`skill/SKILL.md` (+ `skill/references/<group>/*.md`) teaches an AI assistant (Claude Code) to build pages with multistyle-ui. It is not part of the npm package. Install it with one command:
-
-macOS / Linux / Git Bash:
-
-```bash
-mkdir -p ~/.claude/skills/multistyle-ui && curl -fsSL https://github.com/AvinashSKaranth/multistyle-ui/archive/refs/heads/master.tar.gz \
-  | tar -xz --strip-components=2 -C ~/.claude/skills/multistyle-ui multistyle-ui-master/skill
-```
-
-Windows PowerShell:
-
-```powershell
-$t = "$env:TEMP\multistyle-ui"; Remove-Item $t -Recurse -Force -ErrorAction Ignore
-Invoke-WebRequest https://github.com/AvinashSKaranth/multistyle-ui/archive/refs/heads/master.zip -OutFile "$t.zip"
-Expand-Archive "$t.zip" $t -Force
-$d = "$HOME\.claude\skills\multistyle-ui"; New-Item -ItemType Directory -Force $d | Out-Null
-Copy-Item "$t\multistyle-ui-master\skill\*" $d -Recurse -Force
-```
-
-That installs it for every project (`~/.claude/skills/`). For one project only, use `.claude/skills/multistyle-ui` inside that project instead. Re-run to update.
 
 ## Develop
 
